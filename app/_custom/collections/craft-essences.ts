@@ -1,16 +1,21 @@
 import type { CollectionConfig } from "payload/types";
-import { Update_TermRelations } from "./hooks/Update_TermRelations";
-import { Delete_TermRelations } from "./hooks/Delete_TermRelations";
-import { Update_TermRelationsOneDeep } from "./hooks/Update_TermRelationsOneDeep";
-import { Delete_TermRelationsOneDeep } from "./hooks/Delete_TermRelationsOneDeep";
 
+import { Delete_TermRelations } from "./hooks/Delete_TermRelations";
+import { Delete_TermRelationsOneDeep } from "./hooks/Delete_TermRelationsOneDeep";
+import { Update_TermRelations } from "./hooks/Update_TermRelations";
+import { Update_TermRelationsOneDeep } from "./hooks/Update_TermRelationsOneDeep";
 import { isStaff } from "../../db/collections/users/users.access";
+import {
+   afterChangeSearchSyncHook,
+   afterDeleteSearchSyncHook,
+} from "../hooks/search-hooks";
 
 export const CraftEssences: CollectionConfig = {
    slug: "craft-essences",
-   labels: { singular: "Craft-Essence", plural: "Craft-Essences" },
+   labels: { singular: "Craft Essence", plural: "Craft Essences" },
    admin: { group: "Custom", useAsTitle: "name" },
    hooks: {
+      afterChange: [afterChangeSearchSyncHook],
       afterDelete: [
          Delete_TermRelations(
             "cv", // Origin collection first level field name
@@ -34,6 +39,7 @@ export const CraftEssences: CollectionConfig = {
             "materials", // Target collection to update
             "ce_With_Drop_Bonus", // Target collection field to update
          ),
+         afterDeleteSearchSyncHook,
       ],
    },
    access: {

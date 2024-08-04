@@ -1,12 +1,19 @@
 import type { CollectionConfig } from "payload/types";
 
 import { isStaff } from "../../db/collections/users/users.access";
+import {
+   afterChangeSearchSyncHook,
+   afterDeleteSearchSyncHook,
+} from "../hooks/search-hooks";
 
 export const Servants: CollectionConfig = {
    slug: "servants",
    labels: { singular: "Servant", plural: "Servants" },
    admin: { group: "Custom", useAsTitle: "name" },
-
+   hooks: {
+      afterDelete: [afterDeleteSearchSyncHook],
+      afterChange: [afterChangeSearchSyncHook],
+   },
    access: {
       create: isStaff, //udpate in future to allow site admins as well
       read: () => true,
