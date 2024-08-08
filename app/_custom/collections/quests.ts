@@ -26,6 +26,7 @@ export const Quests: CollectionConfig = {
          name: "name",
          type: "text",
       },
+
       {
          name: "ap_cost",
          type: "number",
@@ -296,6 +297,11 @@ export const Quests: CollectionConfig = {
       {
          name: "checksum",
          type: "text",
+      },
+      {
+         name: "icon",
+         type: "upload",
+         relationTo: "images",
       },
    ],
 };

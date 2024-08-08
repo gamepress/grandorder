@@ -59,7 +59,7 @@ const Materials = CollectionData[Object.keys(CollectionData)[0]];
 
 require("dotenv").config();
 
-const { PAYLOADCMS_SECRET, CUSTOM_MONGO_URL } = process.env;
+const { PAYLOADCMS_SECRET, CUSTOM_DB_URI } = process.env;
 
 //Array of objects matching the payload shape, change to match your need
 const collectionName = collection;
@@ -96,7 +96,8 @@ flatFields = flatFields.filter(
 const start = async () =>
    await Payload.init({
       secret: PAYLOADCMS_SECRET as any,
-      // mongoURL: CUSTOM_MONGO_URL as any,
+      //@ts-ignore
+      mongoURL: CUSTOM_DB_URI as any,
       local: true,
       onInit: (_payload) => {
          payload = _payload;
