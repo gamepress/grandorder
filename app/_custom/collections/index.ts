@@ -29,6 +29,7 @@ import { _NPClassifications } from "./_np-classifications";
 import { _QuestTypes } from "./_quest-types";
 import { _Rarities } from "./_rarities";
 import { _ReleaseStatuses } from "./_release-statuses";
+import { _SimulatorPools } from "./_simulator-pools";
 import { _SkillClassificationSpecifics } from "./_skill-classification-specifics";
 import { _SkillImages } from "./_skill-images";
 import { _StarRarities } from "./_star-rarities";
@@ -103,6 +104,7 @@ export const CustomCollections = [
    _QuestTypes,
    _Rarities,
    _ReleaseStatuses,
+   _SimulatorPools,
    _SkillClassificationSpecifics,
    _SkillImages,
    _StarRarities,
@@ -111,4 +113,3 @@ export const CustomCollections = [
    _Targets,
    _Traits,
 ];
-
