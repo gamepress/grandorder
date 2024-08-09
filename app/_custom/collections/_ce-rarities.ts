@@ -38,6 +38,11 @@ export const _CeRarities: CollectionConfig = {
          relationTo: "images",
       },
       {
+         name: "icon_frame",
+         type: "upload",
+         relationTo: "images",
+      },
+      {
          name: "checksum",
          type: "text",
       },
