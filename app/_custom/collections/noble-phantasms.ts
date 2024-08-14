@@ -107,6 +107,10 @@ export const NoblePhantasms: CollectionConfig = {
                type: "number",
             },
             {
+               name: "activates_before_damage",
+               type: "checkbox",
+            },
+            {
                name: "effect_condition",
                type: "relationship",
                relationTo: [
@@ -167,6 +171,10 @@ export const NoblePhantasms: CollectionConfig = {
             {
                name: "times",
                type: "number",
+            },
+            {
+               name: "activates_before_damage",
+               type: "checkbox",
             },
             {
                name: "effect_condition",
