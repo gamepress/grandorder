@@ -7,6 +7,7 @@ import { gql } from "graphql-request";
 import { Main } from "~/_custom/components/servants/Main";
 import { NoblePhantasm } from "~/_custom/components/servants/NoblePhantasm";
 import { Skills } from "~/_custom/components/servants/Skills";
+import { Interludes } from "~/_custom/components/servants/Interludes";
 import { AdditionalInfo } from "~/_custom/components/servants/AdditionalInfo";
 import { Materials } from "~/_custom/components/servants/Materials";
 import { Writeup } from "~/_custom/components/servants/Writeup";
@@ -88,6 +89,7 @@ const SECTIONS = {
    main: Main,
    skills: Skills,
    noblePhantasm: NoblePhantasm,
+   interludes: Interludes,
    materials: Materials,
    additionalInfo: AdditionalInfo,
    writeup: Writeup,

@@ -109,50 +109,70 @@ function GameplayTips({ data }: { data: any }) {
 }
 
 function Strengths({ data }: { data: any }) {
-   const bullets = data.writeup_strengths?.split("<h3>").slice(1);
+   const bullets = data.writeup_strengths?.split("<h3").slice(1);
    return (
       <>
          {bullets ? (
             <>
                <H2 text="Strengths" />
-               {bullets?.map((b: any, i: any) => (
-                  <>
-                     <div className="flex" key={`writeup_strengths_key_${i}`}>
-                        <div className="w-5 mt-5 mr-1">
-                           <FaPlusCircle className="text-[#a0daa8] w-5 h-5 " />
-                        </div>
+               {bullets?.map((b: any, i: any) => {
+                  const bulletheader = b
+                     ?.replace(/^[^>]*/, "")
+                     ?.replace(/>/, "");
+                  return (
+                     <>
                         <div
-                           className="fgo-writeup"
-                           dangerouslySetInnerHTML={{ __html: "<h3>" + b }}
-                        ></div>
-                     </div>
-                  </>
-               ))}
+                           className="flex"
+                           key={`writeup_strengths_key_${i}`}
+                        >
+                           <div className="w-5 mt-5 mr-1">
+                              <FaPlusCircle className="text-[#a0daa8] w-5 h-5 " />
+                           </div>
+                           <div
+                              className="fgo-writeup"
+                              dangerouslySetInnerHTML={{
+                                 __html: "<h3>" + bulletheader,
+                              }}
+                           ></div>
+                        </div>
+                     </>
+                  );
+               })}
             </>
          ) : null}
       </>
    );
 }
 function Weaknesses({ data }: { data: any }) {
-   const bullets = data.writeup_weaknesses?.split("<h3>").slice(1);
+   const bullets = data.writeup_weaknesses?.split("<h3").slice(1);
    return (
       <>
          {bullets ? (
             <>
                <H2 text="Weaknesses" />
-               {bullets?.map((b: any, i: any) => (
-                  <>
-                     <div className="flex" key={`writeup_weaknesses_key_${i}`}>
-                        <div className="w-5 mt-5 mr-1">
-                           <FaMinusCircle className="text-[#daa0a0] w-5 h-5" />
-                        </div>
+               {bullets?.map((b: any, i: any) => {
+                  const bulletheader = b
+                     ?.replace(/^[^>]*/, "")
+                     ?.replace(/>/, "");
+                  return (
+                     <>
                         <div
-                           className="fgo-writeup"
-                           dangerouslySetInnerHTML={{ __html: "<h3>" + b }}
-                        ></div>
-                     </div>
-                  </>
-               ))}
+                           className="flex"
+                           key={`writeup_weaknesses_key_${i}`}
+                        >
+                           <div className="w-5 mt-5 mr-1">
+                              <FaMinusCircle className="text-[#daa0a0] w-5 h-5" />
+                           </div>
+                           <div
+                              className="fgo-writeup"
+                              dangerouslySetInnerHTML={{
+                                 __html: "<h3>" + bulletheader,
+                              }}
+                           ></div>
+                        </div>
+                     </>
+                  );
+               })}
             </>
          ) : null}
       </>
