@@ -27,6 +27,7 @@ const InterludeList = ({ character }: any) => {
    if (interlude_quests?.length > 0) {
       return (
          <>
+            <div id="chapter-completion"></div>
             <H2 text="Interlude Quests" />
             <Table grid framed>
                <TableHead>
