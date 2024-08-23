@@ -29,11 +29,12 @@ const NoblePhantasmDisplay = ({ np }: any) => {
    const np_overcharge = np.description_overcharge;
    const np_card_icon = np.card_type?.icon?.url;
    const np_rank = np.rank;
-   const video_link =
-      np.video_link?.split("=")?.[1]?.replace(/\?.*/g, "") +
-      (np.video_link?.split("=")?.[2]
-         ? "?start=" + np.video_link?.split("=")?.[2]
-         : "");
+   const video_link = np.video_link
+      ? np.video_link.split("=")?.[1]?.replace(/\?.*/g, "") +
+        (np.video_link?.split("=")?.[2]
+           ? "?start=" + np.video_link?.split("=")?.[2]
+           : "")
+      : null;
    const np_sub = np.sub_name;
    const np_classification = np.np_classification?.name;
    const np_hit_count = np.hit_count;

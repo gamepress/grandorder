@@ -89,3 +89,12 @@ pnpm import_collection_data collection:summon-events,filename:SummonEvent.json,i
 
 # ServantRedirects
 pnpm import_collection_data collection:servant-redirects,filename:ServantRedirect.json,idname:drupal_nid,sync:false,overwrite:false
+
+
+# Banner Updates for Guaranteed Gacha
+pnpm import_collection_raw collection:summon-events,filename:bannerupdate.json,idname:id,sync:false,overwrite:true
+
+# ## ## 
+# Testing area!
+# Importing tier-arrow info
+pnpm import_collection_raw collection:servants,filename:Servant.json,idname:drupal_nid,sync:false,overwrite:true
