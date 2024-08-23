@@ -770,6 +770,15 @@ export const Servants: CollectionConfig = {
          type: "number",
       },
       {
+         name: "tier_arrow",
+         type: "select",
+         hasMany: false,
+         options: [
+            { value: "green-arrow", label: "green-arrow" },
+            { value: "red-arrow", label: "red-arrow" },
+         ],
+      },
+      {
          name: "drupal_name_image_1",
          type: "text",
       },
