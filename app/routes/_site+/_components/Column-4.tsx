@@ -83,7 +83,7 @@ export function ColumnFour() {
    const theme = useTheme();
 
    //@ts-ignore
-   const trendingPages = (site?.trendingPages || []).slice(0, 50);
+   const trendingPages = site?.trendingPages || [];
    const groupedTrendingPages = [];
 
    //@ts-ignore
@@ -94,20 +94,17 @@ export function ColumnFour() {
 
    return (
       <section className="relative laptop:z-50 laptop:block">
-         {site.enableAds && (
-            <div className="laptop:hidden border-t border-color-sub bg-zinc-50 dark:bg-dark350 px-4 py-6">
-               <AdUnit
-                  className="h-[250px] w-[300px] tablet:h-[90px] tablet:w-[728px] laptop:h-[250px] laptop:w-[300px] 
-                  flex-none mx-auto rounded-lg relative"
-                  enableAds={site.enableAds}
-                  adType={{
-                     mobile: "med_rect_btf",
-                     tablet: "leaderboard_btf",
-                  }}
-                  selectorId="mobile-tablet-btf"
-               />
-            </div>
-         )}
+         {site.enableAds ? (
+            <AdUnit
+               className="laptop:hidden mt-6 mb-10 flex-none flex items-center justify-center mx-auto rounded-lg relative"
+               enableAds={site.enableAds}
+               adType={{
+                  mobile: "med_rect_btf",
+                  tablet: "leaderboard_btf",
+               }}
+               selectorId="mobile-tablet-btf"
+            />
+         ) : undefined}
          <div
             className="flex flex-col laptop:fixed laptop:border-l laptop:shadow-sm laptop:shadow-1 
             h-full bg-2-sub laptop:bg-2 border-color laptop:w-[334px] justify-between relative
@@ -177,9 +174,13 @@ export function ColumnFour() {
             </div>
             {groupedTrendingPages.length > 0 ? (
                <>
-                  <TabGroup className="flex-grow overflow-auto max-h-[652px] z-20">
+                  <TabGroup
+                     className="flex-grow overflow-auto max-h-[672px] z-20 scrollbar 
+                            dark:scrollbar-thumb-zinc-500 dark:scrollbar-track-dark450
+                            scrollbar-thumb-zinc-300 scrollbar-track-zinc-100"
+                  >
                      <TabList
-                        className="grid grid-cols-2 py-2 bg-white dark:bg-dark400 dark:laptop:bg-bg3Dark/80 sticky top-0 
+                        className="grid grid-cols-2 py-2 bg-white dark:bg-dark400 dark:laptop:bg-bg3Dark sticky top-0 
                         border-y dark:divide-zinc-600/50 max-laptop:dark:border-zinc-700 dark:laptop:divide-zinc-700 border-color divide-x z-10"
                      >
                         <Tab as={Fragment}>
@@ -232,7 +233,7 @@ export function ColumnFour() {
                                  className="relative overflow-auto pt-2.5 laptop:pb-[100px] max-laptop:bg-zinc-50 dark:max-laptop:bg-dark350"
                                  aria-label="Trending Pages"
                               >
-                                 <SplideTrack>
+                                 <SplideTrack className="pb-0.5">
                                     {groupedTrendingPages.map((row, index) => (
                                        <SplideSlide
                                           className="space-y-1.5"

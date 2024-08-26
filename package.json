@@ -1,5 +1,7 @@
 {
+   "name": "mana",
    "private": true,
+   "license": "MIT",
    "sideEffects": false,
    "scripts": {
       "dev": "run-p dev:core dev:custom",
@@ -26,7 +28,8 @@
       "clean": "shx rm -rf node_modules dist build public/build",
       "seed:core": "cross-env PAYLOAD_CONFIG_PATH=./app/db/payload.config.ts ts-node -T app/_custom/seed/index.ts",
       "seed:custom": "cross-env PAYLOAD_CONFIG_PATH=./app/db/payload.custom.config.ts ts-node -T app/_custom/seed/index.ts",
-      "resave": "cross-env PAYLOAD_CONFIG_PATH=./app/db/payload.custom.config.ts ts-node -T ./scripts/resaveCollection",
+      "resaveCore": "cross-env PAYLOAD_CONFIG_PATH=./app/db/payload.config.ts ts-node -T ./scripts/resaveCollection",
+      "resaveCustom": "cross-env PAYLOAD_CONFIG_PATH=./app/db/payload.custom.config.ts ts-node -T ./scripts/resaveCollection",
       "typesense": "cross-env ts-node -T ./scripts/typesenseActions",
       "postinstall": "patch-package"
    },
@@ -68,7 +71,7 @@
       "dotenv": "^16.0.3",
       "express": "^4.18.2",
       "graphql": "^16.8.0",
-      "graphql-request": "^6.1.0",
+      "graphql-request": "7.1.0",
       "html-to-image": "^1.11.11",
       "i18next": "^23.10.0",
       "i18next-browser-languagedetector": "^7.2.0",
