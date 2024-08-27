@@ -59,7 +59,6 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
             ?.servants?.map((a: any) => a.id.toString()),
       ]),
    ] as string[];
-   console.log("servantids success");
 
    var servants = await fetchGQL(ServantQuery, { servantIdList: servantids });
 
@@ -76,8 +75,6 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
             ?.craft_essences?.map((a: any) => a.id.toString()),
       ]),
    ] as string[];
-
-   console.log("ceids success");
 
    var craft_essences = await fetchGQL(CraftEssenceQuery, { ceIdList: ceids });
 
@@ -97,7 +94,18 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
    });
    const summonEvent = summonEventData?.SummonEvents?.docs[0];
 
-   console.log("summonevent success");
+   const allServantData = await fetchGQL(AllServantQuery);
+
+   var banner_function = getSelectFunction(summonEvent?.info); // will be undefined if not applicable
+   var banner_options = getSelectOptions(summonEvent?.info); // will be empty [] if not applicable, otherwise this is a list of rotating banners and featured Servants/Essences by name, format: // { "label": optionlabel, "value": [ arrayofnames, includes CEs ] }
+   var featured_servant_names = banner_options
+      ?.map((a) => a.value)
+      ?.flat()
+      ?.flat()
+      ?.filter((v, i, a) => a.indexOf(v) === i);
+   var featured_servant_ids = featured_servant_names
+      ?.map((a) => allServantData.Servants.docs.find((s) => s.name == a)?.id)
+      .filter((a) => a);
 
    var servantids = [
       ...new Set([
@@ -107,6 +115,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
             ?.servants?.map((a: any) => a.id.toString()),
          // Featured
          ...summonEvent?.featured_servants?.map((a: any) => a.id.toString()),
+         ...featured_servant_ids,
          // Servant Override 3
          ...summonEvent?.base_servant_override_3?.map((a: any) =>
             a.id.toString(),
@@ -119,6 +128,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
          ...summonEvent?.base_servant_override_5?.map((a: any) =>
             a.id.toString(),
          ),
+         // MUST ADD way to look up Servant by Name from parsed list of options!
       ]),
    ] as string[];
 
@@ -130,8 +140,6 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
             ?.servants?.map((a: any) => a.id.toString()),
       ]),
    ] as string[];
-
-   console.log("generalservantids success");
 
    // Craft Essences: Defaults to Story Summon - General Pool
    var ceids = [
@@ -210,6 +218,8 @@ const SummonSimulator = (data: any) => {
    var banner_data = loaderdata.summonEvent;
    var banner_function = getSelectFunction(banner_data?.info); // will be undefined if not applicable
    var banner_options = getSelectOptions(banner_data?.info); // will be empty [] if not applicable, otherwise this is a list of rotating banners and featured Servants/Essences by name, format: // { "label": optionlabel, "value": [ arrayofnames, includes CEs ] }
+   console.log(loaderdata);
+   console.log(banner_options);
    var banner_info_display = getSelectDisplay(banner_data?.info);
    var bannerid = parseFloat(banner_data?.sim_number);
    var bannerpity330 = false;
@@ -251,7 +261,11 @@ const SummonSimulator = (data: any) => {
 
       if (banner_options?.length > 0) {
          init_featured_servants = banner_options[0]?.value
-            ?.map((b) => loaderdata?.servants?.find((a) => a.name == b))
+            ?.map((b) => {
+               const sentry = loaderdata?.servants?.find((a) => a.name == b);
+               if (!sentry) console.log("Could not find Servant: " + b);
+               return sentry;
+            })
             ?.filter((n) => n);
 
          init_featured_essences = banner_options[0]?.value
@@ -1102,6 +1116,17 @@ query {
       name
       servants { id }
       craft_essences { id }
+    }
+  }
+}
+`;
+
+const AllServantQuery = `
+query {
+  Servants(limit: 2000) {
+    docs {
+      id
+      name
     }
   }
 }
