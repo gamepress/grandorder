@@ -11,6 +11,7 @@ import * as gtag from "~/utils/gtags.client";
 import { ColumnOne } from "./_components/Column-1";
 import { ColumnTwo } from "./_components/Column-2";
 import { ColumnFour } from "./_components/Column-4";
+import { GAScripts } from "./_components/GAScripts";
 import { MobileHeader } from "./_components/MobileHeader";
 import { RampInit } from "./_components/RampInit";
 import { AdUnit } from "./_components/RampUnit";
@@ -47,29 +48,7 @@ export default function SiteLayout() {
 
    return (
       <>
-         {process.env.NODE_ENV === "development" || !gaTrackingId ? null : (
-            <>
-               <script
-                  async
-                  src={`https://www.googletagmanager.com/gtag/js?id=${gaTrackingId}`}
-               />
-               <script
-                  async
-                  id="gtag-init"
-                  dangerouslySetInnerHTML={{
-                     __html: `
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-
-                gtag('config', '${gaTrackingId}', {
-                  page_path: window.location.pathname,
-                });
-              `,
-                  }}
-               />
-            </>
-         )}
+         <GAScripts gaTrackingId={gaTrackingId} />
          <MobileHeader />
          <main
             className="laptop:grid laptop:min-h-screen laptop:auto-cols-[70px_60px_1fr_334px] 

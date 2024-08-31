@@ -1,6 +1,7 @@
 import type { Dispatch, SetStateAction } from "react";
 import { useEffect, useState } from "react";
 
+import { Partytown } from "@builder.io/partytown/react";
 import type {
    MetaFunction,
    LinksFunction,
@@ -206,6 +207,28 @@ function App() {
                   rel="icon"
                   type="image/x-icon"
                   href="/favicon.ico"
+               />
+            )}
+            {process.env.NODE_ENV === "production" && !isBot && (
+               <Partytown
+                  debug={false}
+                  forward={["dataLayer.push"]}
+                  resolveUrl={(url, location, type) => {
+                     //proxy gtag requests to avoid cors issues
+                     if (
+                        type === "script" &&
+                        url.host.includes("googletagmanager.com")
+                     ) {
+                        console.log("gtag proxying", url.toString());
+                        return new URL(
+                           location.origin +
+                              "/proxy" +
+                              url.pathname +
+                              url.search,
+                        );
+                     }
+                     return url;
+                  }}
                />
             )}
             <Meta />
