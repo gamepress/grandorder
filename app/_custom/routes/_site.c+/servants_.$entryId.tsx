@@ -4,21 +4,19 @@ import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { gql } from "graphql-request";
 
-import { Main } from "~/_custom/components/servants/Main";
-import { NoblePhantasm } from "~/_custom/components/servants/NoblePhantasm";
-import { Skills } from "~/_custom/components/servants/Skills";
-import { Interludes } from "~/_custom/components/servants/Interludes";
 import { AdditionalInfo } from "~/_custom/components/servants/AdditionalInfo";
-import { Materials } from "~/_custom/components/servants/Materials";
-import { Writeup } from "~/_custom/components/servants/Writeup";
-import { Profile } from "~/_custom/components/servants/Profile";
 import { Availability } from "~/_custom/components/servants/Availability";
-
+import { Interludes } from "~/_custom/components/servants/Interludes";
+import { Main } from "~/_custom/components/servants/Main";
+import { Materials } from "~/_custom/components/servants/Materials";
+import { NoblePhantasm } from "~/_custom/components/servants/NoblePhantasm";
+import { Profile } from "~/_custom/components/servants/Profile";
+import { Skills } from "~/_custom/components/servants/Skills";
+import { Writeup } from "~/_custom/components/servants/Writeup";
+import type { Servant as ServantType } from "~/db/payload-custom-types";
 import { Entry } from "~/routes/_site+/c_+/$collectionId_.$entryId/components/Entry";
 import { entryMeta } from "~/routes/_site+/c_+/$collectionId_.$entryId/utils/entryMeta";
 import { fetchEntry } from "~/routes/_site+/c_+/$collectionId_.$entryId/utils/fetchEntry.server";
-
-import type { Servant as ServantType } from "~/db/payload-custom-types";
 
 // Custom Site / Collection Config Imports
 
