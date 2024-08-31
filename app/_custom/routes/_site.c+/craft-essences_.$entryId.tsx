@@ -1,21 +1,18 @@
 // Core Imports
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
 import { json } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
 import { gql } from "graphql-request";
+
+import { Effect } from "~/_custom/components/craft-essences/Effect";
+import { Main } from "~/_custom/components/craft-essences/Main";
+import { Similar } from "~/_custom/components/craft-essences/Similar";
+import type { CraftEssence as CraftEssenceType } from "~/db/payload-custom-types";
 import { Entry } from "~/routes/_site+/c_+/$collectionId_.$entryId/components/Entry";
 import { entryMeta } from "~/routes/_site+/c_+/$collectionId_.$entryId/utils/entryMeta";
 import { fetchEntry } from "~/routes/_site+/c_+/$collectionId_.$entryId/utils/fetchEntry.server";
 
 export { entryMeta as meta };
-
-// Custom Site / Collection Config Imports
-import type { CraftEssence as CraftEssenceType } from "~/db/payload-custom-types";
-
-// Custom Component Imports
-import { Main } from "~/_custom/components/craft-essences/Main";
-import { Effect } from "~/_custom/components/craft-essences/Effect";
-import { Similar } from "~/_custom/components/craft-essences/Similar";
 
 // Loader definition - loads Entry data!
 export async function loader({

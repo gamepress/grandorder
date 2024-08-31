@@ -3,8 +3,8 @@ import { json } from "@remix-run/node";
 import { Link } from "@remix-run/react";
 import { createColumnHelper } from "@tanstack/react-table";
 import { gql } from "graphql-request";
-import { Badge } from "~/components/Badge";
 
+import { Badge } from "~/components/Badge";
 import { Image } from "~/components/Image";
 import type { Servant } from "~/db/payload-custom-types";
 import { fetchList } from "~/routes/_site+/c_+/$collectionId/utils/fetchList.server";
@@ -270,7 +270,7 @@ const filters = [
    {
       id: "star_rarity",
       label: "Rarity",
-      cols: 5,
+      cols: 5 as const,
       options: [
          {
             value: "3046",
@@ -301,7 +301,7 @@ const filters = [
    {
       id: "release_status",
       label: "Server",
-      cols: 2,
+      cols: 2 as const,
       options: [
          {
             value: "1691",
@@ -316,7 +316,7 @@ const filters = [
    {
       id: "class",
       label: "Class",
-      cols: 2,
+      cols: 2 as const,
       options: [
          {
             value: "81",
