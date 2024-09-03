@@ -1,0 +1,65 @@
+   // Checks if at least one of the card_np_gain entries has a value
+   const initStat = card_np_gain.map((a) => a.val).filter((a) => a).length > 0;
+
+   const [showNPGainInfo, setShowNPGainInfo] = useState(false);
+Table dense grid framed>
+   <TableBody>
+      <TableRow>
+         <TableHeader>
+            <div className="flex items-center relative">
+               {/* Icon and label */}
+               <div className="flex-grow flex gap-2 items-center font-bold"></div>
+               {/* Conditionally hidden "Show Info" button */}
+               {initStat ? (
+                  <div className="flex-none">
+                     <div
+                        className={`${
+                           showNPGainInfo
+                              ? "bg-opacity-100 dark:bg-opacity-100"
+                              : "bg-opacity-80 dark:bg-opacity-40"
+                        } bg-blue-800 dark:border-zinc-600 dark:bg-zinc-800 rounded-sm text-white text-xs align-middle inline-block relative px-2 py-0.5 cursor-pointer`}
+                        onClick={() => setShowNPGainInfo(!showNPGainInfo)}
+                     >
+                        Show Info
+                     </div>
+                  </div>
+               ) : null}
+            </div>
+            {showNPGainInfo ? (
+               <Table>
+                  <TableBody>
+                     <TableRow>
+                        {card_np_gain.map((col: any, ind) => {
+                           return (
+                              <>
+                                 <TableHeader key={"stat_np_gain_" + ind}>
+                                    <Image
+                                       height={20}
+                                       url={col.img}
+                                       className="inline-block object-contain"
+                                       options="height=20"
+                                       alt="CardType"
+                                    />
+                                 </TableHeader>
+                              </>
+                           );
+                        })}
+                     </TableRow>
+                     <TableRow>
+                        {card_np_gain.map((col: any, ind) => {
+                           return (
+                              <>
+                                 <TableCell key={"stat_np_gain_value_" + ind}>
+                                    {col.val}%
+                                 </TableCell>
+                              </>
+                           );
+                        })}
+                     </TableRow>
+                  </TableBody>
+               </Table>
+            ) : null}
+         </TableHeader>
+      </TableRow>
+   </TableBody>
+</Table>

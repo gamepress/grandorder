@@ -1,9 +1,6 @@
-import { useState } from "react";
-
 import type { Servant as ServantType } from "payload/generated-custom-types";
+import { Bond } from "~/_custom/routes/_site.c.servants+/components/Bond";
 import { H2 } from "~/components/Headers";
-
-import { Bond } from "~/_custom/components/servants/Bond";
 
 const thformat =
    "p-2 leading-none text-left border border-color-sub bg-zinc-50 dark:bg-zinc-800";

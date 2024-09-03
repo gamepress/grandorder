@@ -4,19 +4,19 @@ import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { gql } from "graphql-request";
 
-import { AdditionalInfo } from "~/_custom/components/servants/AdditionalInfo";
-import { Availability } from "~/_custom/components/servants/Availability";
-import { Interludes } from "~/_custom/components/servants/Interludes";
-import { Main } from "~/_custom/components/servants/Main";
-import { Materials } from "~/_custom/components/servants/Materials";
-import { NoblePhantasm } from "~/_custom/components/servants/NoblePhantasm";
-import { Profile } from "~/_custom/components/servants/Profile";
-import { Skills } from "~/_custom/components/servants/Skills";
-import { Writeup } from "~/_custom/components/servants/Writeup";
-import type { Servant as ServantType } from "~/db/payload-custom-types";
+import { AdditionalInfo } from "~/_custom/routes/_site.c.servants+/components/AdditionalInfo";
+import { Availability } from "~/_custom/routes/_site.c.servants+/components/Availability";
+import { Interludes } from "~/_custom/routes/_site.c.servants+/components/Interludes";
+import { Materials } from "~/_custom/routes/_site.c.servants+/components/Materials";
+import { NoblePhantasm } from "~/_custom/routes/_site.c.servants+/components/NoblePhantasm";
+import { Profile } from "~/_custom/routes/_site.c.servants+/components/Profile";
+import { Writeup } from "~/_custom/routes/_site.c.servants+/components/Writeup";
 import { Entry } from "~/routes/_site+/c_+/$collectionId_.$entryId/components/Entry";
 import { entryMeta } from "~/routes/_site+/c_+/$collectionId_.$entryId/utils/entryMeta";
 import { fetchEntry } from "~/routes/_site+/c_+/$collectionId_.$entryId/utils/fetchEntry.server";
+
+import { Main } from "./components/Servants.Main";
+import { Skills } from "./components/Servants.Skills";
 
 // Custom Site / Collection Config Imports
 
@@ -122,7 +122,6 @@ const QUERY = gql`
          atk_max
          atk_grail
          atk_lv120
-
          star_generation_rate
          star_absorption
          instant_death_chance
