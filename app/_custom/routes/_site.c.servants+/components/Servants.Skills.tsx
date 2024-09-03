@@ -140,8 +140,8 @@ const SkillDisplay = ({ skill }: any) => {
                         className={clsx(
                            open
                               ? "bg-blue-100 text-blue-600 border-blue-300 dark:text-blue-200 dark:bg-blue-900 dark:border-blue-800"
-                              : "bg-blue-50 border-blue-200 dark:text-blue-200 dark:bg-blue-950 dark:border-blue-900",
-                           "flex items-center gap-1 text-xs font-semibold text-blue-400 border shadow-sm shadow-1 rounded-md px-2 py-1",
+                              : "bg-blue-50 border-blue-200 dark:text-blue-200 text-blue-400 dark:bg-blue-950 dark:border-blue-900",
+                           "flex items-center gap-1 text-[10px] font-semibold border shadow-sm shadow-1 rounded-md pl-2 pr-1 py-0.5",
                         )}
                      >
                         <span>Show Info</span>
@@ -238,14 +238,14 @@ const SkillUpgrade = ({ skill }: any) => {
             </div>
             <div className="flex-grow">
                <div className="flex items-start justify-between">
-                  <div className="font-bold">{skill_name}</div>
+                  <div className="font-bold text-sm">{skill_name}</div>
                   <button
                      onClick={() => setOpen(!open)}
                      className={clsx(
                         open
                            ? "bg-blue-100 text-blue-600 border-blue-300 dark:text-blue-200 dark:bg-blue-900 dark:border-blue-800"
-                           : "bg-blue-50 border-blue-200 dark:text-blue-200 dark:bg-blue-950 dark:border-blue-900",
-                        "flex items-center gap-1 text-xs font-semibold text-blue-400 border shadow-sm shadow-1 rounded-md px-2 py-1",
+                           : "bg-blue-50 border-blue-200 dark:text-blue-200 text-blue-400 dark:bg-blue-950 dark:border-blue-900",
+                        "flex items-center gap-1 text-[10px] font-semibold border shadow-sm shadow-1 rounded-md pl-2 pr-1 py-0.5",
                      )}
                   >
                      <span>Show Info</span>
@@ -325,19 +325,19 @@ const AppendSkillDisplay = ({ skill }: any) => {
       <>
          <div className="p-3 border border-color-sub rounded-lg mb-3 shadow-1 shadow-sm bg-zinc-50 dark:bg-dark350">
             <div className="flex items-start gap-3">
-               <div className="size-10 flex-none">
+               <div className="size-10 flex-none pt-1">
                   <Image height={80} url={skill_icon} alt="SkillIcon" />
                </div>
                <div className="flex-grow">
-                  <div className="flex items-start justify-between">
+                  <div className="flex items-end justify-between pb-1">
                      <div className="font-bold text-sm">{skill_name}</div>
                      <button
                         onClick={() => setOpen(!open)}
                         className={clsx(
                            open
                               ? "bg-blue-100 text-blue-600 border-blue-300 dark:text-blue-200 dark:bg-blue-900 dark:border-blue-800"
-                              : "bg-blue-50 border-blue-200 dark:text-blue-200 dark:bg-blue-950 dark:border-blue-900",
-                           "flex items-center gap-1 text-xs font-semibold text-blue-400 border shadow-sm shadow-1 rounded-md px-2 py-1",
+                              : "bg-blue-50 border-blue-200 dark:text-blue-200 text-blue-400 dark:bg-blue-950 dark:border-blue-900",
+                           "flex items-center gap-1 text-[10px] font-semibold border shadow-sm shadow-1 rounded-md pl-2 pr-1 py-0.5",
                         )}
                      >
                         <span>Show Info</span>
@@ -364,7 +364,7 @@ const AppendSkillDisplay = ({ skill }: any) => {
             </div>
             {open ? (
                <table
-                  className="text-xs text-center mt-3 w-full skill-table"
+                  className="text-xs text-center mt-3 w-full skill-table overflow-auto"
                   dangerouslySetInnerHTML={{ __html: skilltablehtml }}
                ></table>
             ) : null}

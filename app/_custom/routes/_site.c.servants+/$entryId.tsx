@@ -4,21 +4,19 @@ import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { gql } from "graphql-request";
 
-import { AdditionalInfo } from "~/_custom/routes/_site.c.servants+/components/AdditionalInfo";
 import { Availability } from "~/_custom/routes/_site.c.servants+/components/Availability";
-import { Interludes } from "~/_custom/routes/_site.c.servants+/components/Interludes";
-import { Materials } from "~/_custom/routes/_site.c.servants+/components/Materials";
-import { NoblePhantasm } from "~/_custom/routes/_site.c.servants+/components/NoblePhantasm";
 import { Profile } from "~/_custom/routes/_site.c.servants+/components/Profile";
+import { Interludes } from "~/_custom/routes/_site.c.servants+/components/Servants.Interludes";
 import { Writeup } from "~/_custom/routes/_site.c.servants+/components/Writeup";
 import { Entry } from "~/routes/_site+/c_+/$collectionId_.$entryId/components/Entry";
 import { entryMeta } from "~/routes/_site+/c_+/$collectionId_.$entryId/utils/entryMeta";
 import { fetchEntry } from "~/routes/_site+/c_+/$collectionId_.$entryId/utils/fetchEntry.server";
 
+import { AdditionalInfo } from "./components/Servants.AdditionalInfo";
 import { Main } from "./components/Servants.Main";
+import { Materials } from "./components/Servants.Materials";
+import { NoblePhantasm } from "./components/Servants.NoblePhantasm";
 import { Skills } from "./components/Servants.Skills";
-
-// Custom Site / Collection Config Imports
 
 // Custom Component Imports
 export { entryMeta as meta };

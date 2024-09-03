@@ -1,7 +1,5 @@
-import type { Servant as ServantType } from "payload/generated-custom-types";
-import type { Material as MaterialType } from "payload/generated-custom-types";
-import { H2 } from "~/components/Headers";
-
+import { H2Plain } from "~/components/Headers";
+import { Image } from "~/components/Image";
 import {
    Table,
    TableBody,
@@ -10,6 +8,7 @@ import {
    TableHeader,
    TableRow,
 } from "~/components/Table";
+import { SectionTitle } from "~/routes/_site+/c_+/$collectionId_.$entryId/components/SectionTitle";
 
 const qtyformat = `
 <style>
@@ -18,26 +17,26 @@ const qtyformat = `
    }
 </style>
 `;
-const tdformat = "p-2 leading-none border border-color-sub";
 
 export const Materials = ({ data }: { data: any }) => {
    const servant = data.servant;
    return (
       <>
          <div dangerouslySetInnerHTML={{ __html: `${qtyformat}` }}></div>
-         <H2 text="Ascension Materials" />
+         <SectionTitle customTitle="Materials" />
+         <H2Plain text="Ascension Materials" />
          <AscensionMaterials character={servant} />
 
-         <H2 text="Skill Enhancement Materials" />
+         <H2Plain text="Skill Enhancement Materials" />
          <SkillMaterials character={servant} />
 
-         <H2 text="Append Skill Materials" />
+         <H2Plain text="Append Skill Materials" />
          <AppendMaterials character={servant} />
 
-         <H2 text="Total Materials Required" />
+         <H2Plain text="Total Materials Required" />
          <TotalMaterials character={servant} />
 
-         <H2 text="Costume Dress Materials" />
+         <H2Plain text="Costume Dress Materials" />
          <CostumeMaterials character={servant} />
       </>
    );
@@ -47,7 +46,7 @@ const AscensionMaterials = ({ character }: any) => {
    const stages = ["2", "3", "4", "Max"];
    return (
       <>
-         <Table grid framed>
+         <Table grid framed dense>
             <TableHead>
                <TableRow>
                   <TableHeader center>Stage</TableHeader>
@@ -56,24 +55,24 @@ const AscensionMaterials = ({ character }: any) => {
                </TableRow>
             </TableHead>
             <TableBody>
-               {character.ascension_materials?.map((asc, index) => (
-                  <TableRow key={index}>
-                     <td className={`text-center ${tdformat}`}>
-                        {stages[index]}
-                     </td>
-                     <td className={`text-center ${tdformat}`}>
-                        {asc?.qp_cost}
-                     </td>
-                     <td className={`${tdformat}`}>
-                        {asc.materials?.map((mat, key) => (
-                           <MaterialQtyFrame
-                              materialqty={mat}
-                              key={"ascension_mats_" + key}
-                           />
-                        ))}
-                     </td>
-                  </TableRow>
-               ))}
+               {character.ascension_materials?.map(
+                  (asc: any, index: number) => (
+                     <TableRow key={index}>
+                        <TableCell center>{stages[index]}</TableCell>
+                        <TableCell center>
+                           {asc?.qp_cost?.toLocaleString()}
+                        </TableCell>
+                        <TableCell>
+                           {asc.materials?.map((mat, key) => (
+                              <MaterialQtyFrame
+                                 materialqty={mat}
+                                 key={"ascension_mats_" + key}
+                              />
+                           ))}
+                        </TableCell>
+                     </TableRow>
+                  ),
+               )}
             </TableBody>
          </Table>
       </>
@@ -83,7 +82,7 @@ const AscensionMaterials = ({ character }: any) => {
 const SkillMaterials = ({ character }: any) => {
    return (
       <>
-         <Table grid framed>
+         <Table grid framed dense>
             <TableHead>
                <TableRow>
                   <TableHeader center>Level</TableHeader>
@@ -94,20 +93,20 @@ const SkillMaterials = ({ character }: any) => {
             <TableBody>
                {character.skill_enhancements?.map((enh, index) => (
                   <TableRow key={index}>
-                     <td className={`text-center ${tdformat}`}>
+                     <TableCell center>
                         {index + 1} → {index + 2}
-                     </td>
-                     <td className={`text-center ${tdformat}`}>
-                        {enh?.qp_cost}
-                     </td>
-                     <td className={`${tdformat}`}>
+                     </TableCell>
+                     <TableCell center>
+                        {enh?.qp_cost?.toLocaleString()}
+                     </TableCell>
+                     <TableCell>
                         {enh.materials?.map((mat, key) => (
                            <MaterialQtyFrame
                               materialqty={mat}
                               key={"skill_mats_" + key}
                            />
                         ))}
-                     </td>
+                     </TableCell>
                   </TableRow>
                ))}
             </TableBody>
@@ -119,7 +118,7 @@ const SkillMaterials = ({ character }: any) => {
 const AppendMaterials = ({ character }: any) => {
    return (
       <>
-         <Table grid framed>
+         <Table grid framed dense>
             <TableHead>
                <TableRow>
                   <TableHeader center>Level</TableHeader>
@@ -130,20 +129,20 @@ const AppendMaterials = ({ character }: any) => {
             <TableBody>
                {character.append_skill_enhancements?.map((enh, index) => (
                   <TableRow key={index}>
-                     <td className={`text-center ${tdformat}`}>
+                     <TableCell center>
                         {index + 1} → {index + 2}
-                     </td>
-                     <td className={`text-center ${tdformat}`}>
-                        {enh?.qp_cost}
-                     </td>
-                     <td className={`${tdformat}`}>
+                     </TableCell>
+                     <TableCell center>
+                        {enh?.qp_cost?.toLocaleString()}
+                     </TableCell>
+                     <TableCell>
                         {enh.materials?.map((mat, key) => (
                            <MaterialQtyFrame
                               materialqty={mat}
                               key={"append_mats_" + key}
                            />
                         ))}
-                     </td>
+                     </TableCell>
                   </TableRow>
                ))}
             </TableBody>
@@ -222,13 +221,12 @@ const TotalMaterials = ({ character }: any) => {
 
    return (
       <>
-         <table className="border-y mobile:border mobile:rounded-lg border-color-sub dark:bg-dark350 shadow-sm shadow-1">
-            <TableHead></TableHead>
+         <Table grid framed dense>
             <TableBody>
                {displayTotals?.map((row, index) => (
                   <TableRow key={index}>
-                     <TableHeader>{row.name}</TableHeader>
-                     <td className={`${tdformat}`}>
+                     <TableHeader center>{row.name}</TableHeader>
+                     <TableCell>
                         <div className="w-full">
                            {row.data?.map((mat, key) => (
                               <MaterialQtyFrame
@@ -237,62 +235,22 @@ const TotalMaterials = ({ character }: any) => {
                               />
                            ))}
                         </div>
-                        <div>
-                           <div className="relative mr-0.5 inline-block h-12 w-12 align-middle text-xs">
-                              <img
-                                 src={
+                        <div className="flex items-center gap-2">
+                           <div className="size-8">
+                              <Image
+                                 width={80}
+                                 url={
                                     "https://static.mana.wiki/grandorder/Qp.png"
                                  }
-                                 className={`object-contain h-12`}
                                  alt="QP"
                                  loading="lazy"
                               />
                            </div>
-                           <div className="inline-block align-middle font-bold text-base">
+                           <div className="inline-block align-middle font-bold text-sm">
                               x{row.qp?.toLocaleString("en-US")}
                            </div>
                         </div>
-                     </td>
-                  </TableRow>
-               ))}
-            </TableBody>
-         </table>
-      </>
-   );
-};
-
-const CostumeMaterials = ({ character }: any) => {
-   return (
-      <>
-         <Table grid framed>
-            <TableHead>
-               <TableRow>
-                  <TableHeader center>Costume</TableHeader>
-                  <TableHeader center>Cost</TableHeader>
-                  <TableHeader>Materials</TableHeader>
-               </TableRow>
-            </TableHead>
-            <TableBody>
-               {character.costumes?.map((costume, index) => (
-                  <TableRow key={index}>
-                     <td className={`text-center ${tdformat}`}>
-                        {costume?.name}
-                     </td>
-                     <td className={`text-center ${tdformat}`}>
-                        {costume?.costume_materials?.[0]?.qp_cost?.toLocaleString(
-                           "en-US",
-                        )}
-                     </td>
-                     <td className={`${tdformat}`}>
-                        {costume?.costume_materials?.[0]?.materials?.map(
-                           (mat, key) => (
-                              <MaterialQtyFrame
-                                 materialqty={mat}
-                                 key={"costume_mat_" + key}
-                              />
-                           ),
-                        )}
-                     </td>
+                     </TableCell>
                   </TableRow>
                ))}
             </TableBody>
@@ -301,10 +259,42 @@ const CostumeMaterials = ({ character }: any) => {
    );
 };
 
-type ItemQtyFrameProps = {
-   material?: MaterialType;
-   qty: number;
-   id?: string;
+const CostumeMaterials = ({ character }: any) => {
+   return (
+      <>
+         <Table grid framed dense>
+            <TableHead>
+               <TableRow>
+                  <TableHeader>Costume</TableHeader>
+                  <TableHeader>Cost</TableHeader>
+                  <TableHeader>Materials</TableHeader>
+               </TableRow>
+            </TableHead>
+            <TableBody>
+               {character.costumes?.map((costume, index) => (
+                  <TableRow key={index}>
+                     <TableCell>{costume?.name}</TableCell>
+                     <TableCell>
+                        {costume?.costume_materials?.[0]?.qp_cost?.toLocaleString(
+                           "en-US",
+                        )}
+                     </TableCell>
+                     <TableCell>
+                        {costume?.costume_materials?.[0]?.materials?.map(
+                           (mat, key) => (
+                              <MaterialQtyFrame
+                                 materialqty={mat}
+                                 key={"costume_mat_" + key}
+                              />
+                           ),
+                        )}
+                     </TableCell>
+                  </TableRow>
+               ))}
+            </TableBody>
+         </Table>
+      </>
+   );
 };
 
 const MaterialQtyFrame = ({ materialqty }: any) => {

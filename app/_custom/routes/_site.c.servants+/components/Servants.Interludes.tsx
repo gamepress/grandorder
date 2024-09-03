@@ -1,6 +1,5 @@
-import type { Servant as ServantType } from "payload/generated-custom-types";
-import { H2 } from "~/components/Headers";
-
+import { Badge } from "~/components/Badge";
+import { Image } from "~/components/Image";
 import {
    Table,
    TableBody,
@@ -9,27 +8,16 @@ import {
    TableHeader,
    TableRow,
 } from "~/components/Table";
-
-const tdformat = "p-2 leading-none border border-color-sub";
+import { SectionTitle } from "~/routes/_site+/c_+/$collectionId_.$entryId/components/SectionTitle";
 
 export const Interludes = ({ data }: { data: any }) => {
    const servant = data.servant;
-   return (
-      <>
-         <InterludeList character={servant} />
-      </>
-   );
-};
-
-const InterludeList = ({ character }: any) => {
-   const interlude_quests = character?.interlude_quests;
-
+   const interlude_quests = servant?.interlude_quests;
    if (interlude_quests?.length > 0) {
       return (
          <>
-            <div id="chapter-completion"></div>
-            <H2 text="Interlude Quests" />
-            <Table grid framed>
+            <SectionTitle customTitle="Interlude Quests" />
+            <Table dense grid framed>
                <TableHead>
                   <TableRow>
                      <TableHeader>Quest</TableHeader>
@@ -38,7 +26,7 @@ const InterludeList = ({ character }: any) => {
                   </TableRow>
                </TableHead>
                <TableBody>
-                  {interlude_quests?.map((int, index) => {
+                  {interlude_quests?.map((int: any, index: number) => {
                      const questname = int.quest?.name;
                      const questid = int.quest?.id;
                      const chaptername = int.chapter?.name;
@@ -50,7 +38,7 @@ const InterludeList = ({ character }: any) => {
 
                      return (
                         <TableRow key={index}>
-                           <td className={`${tdformat}`}>
+                           <TableCell>
                               <div>
                                  {available}
                                  <a
@@ -66,28 +54,31 @@ const InterludeList = ({ character }: any) => {
                                  </span>
                                  {chaptername}
                               </div>
-                           </td>
-                           <td className={`${tdformat}`}>
-                              <div className="my-1">
-                                 <span className="font-bold">Ascension:</span>
-                                 {ascension}
+                           </TableCell>
+                           <TableCell>
+                              <div className="flex items-center gap-1">
+                                 <span className="text-1">Ascension:</span>
+                                 <span className="font-bold">{ascension}</span>
                               </div>
-                              <div className="my-1">
-                                 <span className="font-bold">Bond:</span>
-                                 {bond}
+                              <div className="flex items-center gap-1">
+                                 <span className="text-1">Bond:</span>
+                                 <span className="font-bold">{bond}</span>
                               </div>
-                           </td>
-                           <td className={`text-center ${tdformat}`}>
-                              <img
-                                 src={rewardicon ?? "no_image_42df124128"}
-                                 className={`object-contain h-12 inline-block`}
+                           </TableCell>
+                           <TableCell center>
+                              <Image
+                                 width={80}
+                                 className="size-9 mx-auto"
+                                 url={rewardicon ?? "no_image_42df124128"}
                                  alt={"Icon"}
                                  loading="lazy"
                               />
                               {rewardtext ? (
-                                 <div className="mt-1">{rewardtext}</div>
+                                 <div className="mt-1 text-xs font-semibold text-1">
+                                    {rewardtext}
+                                 </div>
                               ) : null}
-                           </td>
+                           </TableCell>
                         </TableRow>
                      );
                   })}
