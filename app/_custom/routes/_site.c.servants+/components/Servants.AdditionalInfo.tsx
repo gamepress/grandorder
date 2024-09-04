@@ -26,7 +26,7 @@ export function AdditionalInfo({ data }: { data: any }) {
             return (
                <>
                   <Link
-                     className="flex items-center gap-3 bg-2-sub border border-color-sub px-3 py-2 rounded-xl mb-3"
+                     className="flex items-center gap-3 shadow-sm shadow-1 bg-2-sub border border-color-sub px-3 py-2 rounded-xl mb-3"
                      to={`/c/craft-essences/${bc?.slug ?? bc?.id}`}
                   >
                      <Image
@@ -38,7 +38,7 @@ export function AdditionalInfo({ data }: { data: any }) {
                         loading="lazy"
                      />
                      <div className="space-y-0.5">
-                        <div className="font-bold text-blue-500">
+                        <div className="font-bold text-sm font-mono text-blue-500">
                            {bc?.name}
                         </div>
                         <div

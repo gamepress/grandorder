@@ -50,31 +50,11 @@ const NoblePhantasmDisplay = ({ np }: any) => {
                   height={80}
                />
                <div className="space-y-1 flex-grow">
-                  <div className="flex items-center justify-between">
-                     <div className="flex items-center gap-2">
+                  <div className="flex items-center justify-between pb-0.5">
+                     <div className="flex items-center gap-2 text-sm font-mono">
                         <span className="font-bold">{np_name}</span>
                         <span className="text-1">{np_rank}</span>
                      </div>
-                     <button
-                        onClick={() => setOpen(!open)}
-                        className={clsx(
-                           open
-                              ? "bg-blue-100 text-blue-600 border-blue-300 dark:text-blue-200 dark:bg-blue-900 dark:border-blue-800"
-                              : "bg-blue-50 border-blue-200 dark:text-blue-200 text-blue-400 dark:bg-blue-950 dark:border-blue-900",
-                           "flex items-center gap-1 text-[10px] font-semibold border shadow-sm shadow-1 rounded-md pl-2 pr-1 py-0.5",
-                        )}
-                     >
-                        {video_link ? "Show Info/Video Link" : "Show Info"}
-                        <div
-                           className={clsx(
-                              open
-                                 ? "TableRowansform rotate-180 text-blue-500 dark:text-blue-200 font-bold "
-                                 : "dark:text-blue-300 ",
-                           )}
-                        >
-                           <Icon size={16} name="chevron-down" />
-                        </div>
-                     </button>
                   </div>
                   <div
                      className="text-sm whitespace-pre-wrap leading-tight text-1"
@@ -95,13 +75,33 @@ const NoblePhantasmDisplay = ({ np }: any) => {
                      ) : null}
                      <div className="font-bold text-sm">{"<Overcharge>"}</div>
                      <div
-                        className="text-sm whitespace-pre-wrap leading-tight"
+                        className="text-sm whitespace-pre-wrap leading-tight pb-1"
                         dangerouslySetInnerHTML={{
                            __html: np_overcharge
                               .replace(/\<br\>/g, "")
                               .replace(/\<p\>\r\n/g, "<p>"),
                         }}
                      ></div>
+                     <button
+                        onClick={() => setOpen(!open)}
+                        className={clsx(
+                           open
+                              ? "bg-blue-100 text-blue-600 border-blue-300 dark:text-blue-200 dark:bg-blue-900 dark:border-blue-800"
+                              : "bg-blue-50 border-blue-200 dark:text-blue-200 text-blue-400 dark:bg-blue-950 dark:border-blue-900",
+                           "flex items-center justify-between gap-1 text-[10px] font-semibold border rounded-md pl-2 pr-1 w-full py-1",
+                        )}
+                     >
+                        <div>Show Info</div>
+                        <Icon
+                           className={clsx(
+                              open
+                                 ? "transform rotate-180 text-blue-500 dark:text-blue-200 font-bold "
+                                 : "dark:text-blue-300 ",
+                           )}
+                           size={16}
+                           name="chevron-down"
+                        />
+                     </button>
                   </div>
                </div>
             </div>

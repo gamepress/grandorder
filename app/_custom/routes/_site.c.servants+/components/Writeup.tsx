@@ -1,11 +1,8 @@
-import type { Servant as ServantType } from "payload/generated-custom-types";
 import { Disclosure } from "@headlessui/react";
-import { Image } from "~/components/Image";
-import { H2 } from "~/components/Headers";
 
-const thformat =
-   "p-2 leading-none text-center border border-color-sub bg-zinc-50 dark:bg-zinc-800";
-const tdformat = "p-2 leading-none text-center border border-color-sub";
+import type { Servant as ServantType } from "payload/generated-custom-types";
+import { H2 } from "~/components/Headers";
+import { Image } from "~/components/Image";
 
 export function Writeup({ data }: { data: any }) {
    const writeup = data.writeupData;

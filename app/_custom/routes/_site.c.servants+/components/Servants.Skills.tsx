@@ -129,35 +129,18 @@ const SkillDisplay = ({ skill }: any) => {
       <>
          <div className="p-3 border border-color-sub rounded-lg mb-3 shadow-1 shadow-sm bg-zinc-50 dark:bg-dark350">
             <div className="flex items-start gap-3">
-               <div className="size-10 flex-none pt-1">
-                  <Image height={80} url={skill_icon} alt="SkillIcon" />
-               </div>
+               <Image
+                  className="size-10 mt-1"
+                  height={80}
+                  url={skill_icon}
+                  alt="SkillIcon"
+               />
                <div className="flex-grow">
-                  <div className="flex items-start justify-between">
-                     <div className="font-bold pb-1">{skill_name}</div>
-                     <button
-                        onClick={() => setOpen(!open)}
-                        className={clsx(
-                           open
-                              ? "bg-blue-100 text-blue-600 border-blue-300 dark:text-blue-200 dark:bg-blue-900 dark:border-blue-800"
-                              : "bg-blue-50 border-blue-200 dark:text-blue-200 text-blue-400 dark:bg-blue-950 dark:border-blue-900",
-                           "flex items-center gap-1 text-[10px] font-semibold border shadow-sm shadow-1 rounded-md pl-2 pr-1 py-0.5",
-                        )}
-                     >
-                        <span>Show Info</span>
-                        <div
-                           className={clsx(
-                              open
-                                 ? "transform rotate-180 text-blue-500 dark:text-blue-200 font-bold "
-                                 : "dark:text-blue-300 ",
-                           )}
-                        >
-                           <Icon size={16} name="chevron-down" />
-                        </div>
-                     </button>
+                  <div className="font-bold text-sm font-mono pb-0.5">
+                     {skill_name}
                   </div>
                   <div
-                     className="text-xs whitespace-pre-wrap"
+                     className="text-sm whitespace-pre-wrap pb-1"
                      dangerouslySetInnerHTML={{
                         __html: skill_description
                            .replace(/\<br\>/g, "")
@@ -165,9 +148,29 @@ const SkillDisplay = ({ skill }: any) => {
                      }}
                   ></div>
                   <div
-                     className="text-xs text-1 mt-2 italic"
+                     className="text-xs text-1 italic pb-1.5"
                      dangerouslySetInnerHTML={{ __html: unlock }}
                   />
+                  <button
+                     onClick={() => setOpen(!open)}
+                     className={clsx(
+                        open
+                           ? "bg-blue-100 text-blue-600 border-blue-300 dark:text-blue-200 dark:bg-blue-900 dark:border-blue-800"
+                           : "bg-blue-50 border-blue-200 dark:text-blue-200 text-blue-400 dark:bg-blue-950 dark:border-blue-900",
+                        "flex items-center justify-between gap-1 text-[10px]  border rounded-md pl-2 pr-1 w-full py-1 font-bold",
+                     )}
+                  >
+                     <div>Show Info</div>
+                     <Icon
+                        className={clsx(
+                           open
+                              ? "transform rotate-180 text-blue-500 dark:text-blue-200"
+                              : "dark:text-blue-300 ",
+                        )}
+                        size={16}
+                        name="chevron-down"
+                     />
+                  </button>
                </div>
             </div>
             {open ? (
@@ -233,32 +236,15 @@ const SkillUpgrade = ({ skill }: any) => {
    return (
       <>
          <div className="flex items-start gap-3 pt-3 mt-3 border-t-2 border-dashed border-color-sub">
-            <div className="size-10 flex-none">
-               <Image height={80} url={skill_icon} alt="SkillIcon" />
-            </div>
+            <Image
+               className="size-10 mt-1"
+               height={80}
+               url={skill_icon}
+               alt="SkillIcon"
+            />
             <div className="flex-grow">
                <div className="flex items-start justify-between">
                   <div className="font-bold">{skill_name}</div>
-                  <button
-                     onClick={() => setOpen(!open)}
-                     className={clsx(
-                        open
-                           ? "bg-blue-100 text-blue-600 border-blue-300 dark:text-blue-200 dark:bg-blue-900 dark:border-blue-800"
-                           : "bg-blue-50 border-blue-200 dark:text-blue-200 text-blue-400 dark:bg-blue-950 dark:border-blue-900",
-                        "flex items-center gap-1 text-[10px] font-semibold border shadow-sm shadow-1 rounded-md pl-2 pr-1 py-0.5",
-                     )}
-                  >
-                     <span>Show Info</span>
-                     <div
-                        className={clsx(
-                           open
-                              ? "transform rotate-180 text-blue-500 dark:text-blue-200 font-bold "
-                              : "dark:text-blue-300 ",
-                        )}
-                     >
-                        <Icon size={16} name="chevron-down" />
-                     </div>
-                  </button>
                </div>
                <div
                   className="text-xs whitespace-pre-wrap"
@@ -276,6 +262,26 @@ const SkillUpgrade = ({ skill }: any) => {
                   className="border-t text-xs border-color-sub pt-2 mt-2"
                   dangerouslySetInnerHTML={{ __html: unlock }}
                />
+               <button
+                  onClick={() => setOpen(!open)}
+                  className={clsx(
+                     open
+                        ? "bg-blue-100 text-blue-600 border-blue-300 dark:text-blue-200 dark:bg-blue-900 dark:border-blue-800"
+                        : "bg-blue-50 border-blue-200 dark:text-blue-200 text-blue-400 dark:bg-blue-950 dark:border-blue-900",
+                     "flex items-center justify-between gap-1 text-[10px] border rounded-md pl-2 pr-1 w-full py-1 font-bold",
+                  )}
+               >
+                  <div>Show Info</div>
+                  <Icon
+                     className={clsx(
+                        open
+                           ? "transform rotate-180 text-blue-500 dark:text-blue-200"
+                           : "dark:text-blue-300 ",
+                     )}
+                     size={16}
+                     name="chevron-down"
+                  />
+               </button>
             </div>
          </div>
          {open ? (
@@ -325,41 +331,44 @@ const AppendSkillDisplay = ({ skill }: any) => {
       <>
          <div className="p-3 border border-color-sub rounded-lg mb-3 shadow-1 shadow-sm bg-zinc-50 dark:bg-dark350">
             <div className="flex items-start gap-3">
-               <div className="size-10 flex-none pt-1">
-                  <Image height={80} url={skill_icon} alt="SkillIcon" />
-               </div>
+               <Image
+                  className="size-10 mt-1"
+                  height={80}
+                  url={skill_icon}
+                  alt="SkillIcon"
+               />
                <div className="flex-grow">
-                  <div className="flex items-end justify-between pb-1">
-                     <div className="font-bold">{skill_name}</div>
-                     <button
-                        onClick={() => setOpen(!open)}
-                        className={clsx(
-                           open
-                              ? "bg-blue-100 text-blue-600 border-blue-300 dark:text-blue-200 dark:bg-blue-900 dark:border-blue-800"
-                              : "bg-blue-50 border-blue-200 dark:text-blue-200 text-blue-400 dark:bg-blue-950 dark:border-blue-900",
-                           "flex items-center gap-1 text-[10px] font-semibold border shadow-sm shadow-1 rounded-md pl-2 pr-1 py-0.5",
-                        )}
-                     >
-                        <span>Show Info</span>
-                        <div
-                           className={clsx(
-                              open
-                                 ? "transform rotate-180 text-blue-500 dark:text-blue-200 font-bold "
-                                 : "dark:text-blue-300 ",
-                           )}
-                        >
-                           <Icon size={16} name="chevron-down" />
-                        </div>
-                     </button>
+                  <div className="font-bold text-sm font-mono">
+                     {skill_name}
                   </div>
                   <div
-                     className="text-sm whitespace-pre-wrap"
+                     className="text-sm whitespace-pre-wrap pb-1.5"
                      dangerouslySetInnerHTML={{
                         __html: skill_description
                            .replace(/\<br\>/g, "")
                            .replace(/\<p\>\r\n/g, "<p>"),
                      }}
                   ></div>
+                  <button
+                     onClick={() => setOpen(!open)}
+                     className={clsx(
+                        open
+                           ? "bg-blue-100 text-blue-600 border-blue-300 dark:text-blue-200 dark:bg-blue-900 dark:border-blue-800"
+                           : "bg-blue-50 border-blue-200 dark:text-blue-200 text-blue-400 dark:bg-blue-950 dark:border-blue-900",
+                        "flex items-center justify-between gap-1 text-[10px] font-bold border rounded-md pl-2 pr-1 w-full py-1",
+                     )}
+                  >
+                     <div>Show Info</div>
+                     <Icon
+                        className={clsx(
+                           open
+                              ? "transform rotate-180 text-blue-500 dark:text-blue-200"
+                              : "dark:text-blue-300 ",
+                        )}
+                        size={16}
+                        name="chevron-down"
+                     />
+                  </button>
                </div>
             </div>
             {open ? (
@@ -385,13 +394,18 @@ const ClassSkillDisplay = ({ skill }: any) => {
       <>
          <div className="p-3 border border-color-sub rounded-lg mb-3 shadow-1 shadow-sm bg-zinc-50 dark:bg-dark350">
             <div className="flex items-start gap-3">
-               <div className="size-10 flex-none pt-1">
-                  <Image height={80} url={skill_icon} alt="SkillIcon" />
-               </div>
+               <Image
+                  className="size-10 flex-none mt-0.5"
+                  height={80}
+                  url={skill_icon}
+                  alt="SkillIcon"
+               />
                <div className="flex-grow">
-                  <div className="font-bold">{skill_name}</div>
+                  <div className="font-bold font-mono text-sm pb-0.5">
+                     {skill_name}
+                  </div>
                   <div
-                     className="mt-0.5 text-sm whitespace-pre-wrap"
+                     className="text-sm whitespace-pre-wrap"
                      dangerouslySetInnerHTML={{
                         __html: skill_description
                            ? skill_description

@@ -374,18 +374,18 @@ function TableHPATK({ data: servant }: { data: Servant }) {
                   <Icon
                      size={14}
                      name="arrow-right"
-                     className="text-blue-500 mx-auto"
+                     className="text-1 mx-auto"
                   />
                   <div className="flex items-start flex-col gap-1">
                      <span className="text-1 text-xs">Max</span>
-                     <span className="font-semibold">
+                     <span className="font-semibold text-yellow-500">
                         {maxatk?.toLocaleString()}
                      </span>
                   </div>
                   <Icon
                      size={14}
                      name="arrow-right"
-                     className="text-blue-500 mx-auto"
+                     className="text-1 mx-auto"
                   />
                   <div className="flex items-start flex-col gap-1">
                      <span className="text-1 text-xs">Lv 100</span>
@@ -396,7 +396,7 @@ function TableHPATK({ data: servant }: { data: Servant }) {
                   <Icon
                      size={14}
                      name="arrow-right"
-                     className="text-blue-500 mx-auto"
+                     className="text-1 mx-auto"
                   />
                   <div className="flex items-start flex-col gap-1">
                      <span className="text-1 text-xs">Lv 120</span>
@@ -421,18 +421,18 @@ function TableHPATK({ data: servant }: { data: Servant }) {
                   <Icon
                      size={14}
                      name="arrow-right"
-                     className="text-blue-500 mx-auto"
+                     className="text-1 mx-auto"
                   />
                   <div className="flex items-start flex-col gap-1">
                      <span className="text-1 text-xs">Max</span>
-                     <span className="font-semibold">
+                     <span className="font-semibold text-yellow-500">
                         {maxhp?.toLocaleString()}
                      </span>
                   </div>
                   <Icon
                      size={14}
                      name="arrow-right"
-                     className="text-blue-500 mx-auto"
+                     className="text-1 mx-auto"
                   />
                   <div className="flex items-start flex-col gap-1">
                      <span className="text-1 text-xs">Lv 100</span>
@@ -443,7 +443,7 @@ function TableHPATK({ data: servant }: { data: Servant }) {
                   <Icon
                      size={14}
                      name="arrow-right"
-                     className="text-blue-500 mx-auto"
+                     className="text-1 mx-auto"
                   />
                   <div className="flex items-start flex-col gap-1">
                      <span className="text-1 text-xs">Lv 120</span>
