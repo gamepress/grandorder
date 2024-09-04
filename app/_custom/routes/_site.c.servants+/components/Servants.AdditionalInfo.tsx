@@ -1,5 +1,8 @@
+import { Link } from "@remix-run/react";
+
 import type { Servant as ServantType } from "payload/generated-custom-types";
 import { H2Plain } from "~/components/Headers";
+import { Image } from "~/components/Image";
 import {
    Table,
    TableBody,
@@ -12,12 +15,41 @@ export function AdditionalInfo({ data }: { data: any }) {
    const servant = data.servant;
 
    const ce = data.ceData;
+   const bond_ce = ce?.filter((a: any) => a.is_bond_ce == true);
+
    return (
       <>
          <TableInfo data={servant} />
          <H2Plain text="Bond" />
          <BondTable data={servant} />
-         <BondCE ce={ce} />
+         {bond_ce?.map((bc: any) => {
+            return (
+               <>
+                  <Link
+                     className="flex items-center gap-3 bg-2-sub border border-color-sub px-3 py-2 rounded-xl mb-3"
+                     to={`/c/craft-essences/${bc?.slug ?? bc?.id}`}
+                  >
+                     <Image
+                        width={100}
+                        height={100}
+                        url={bc?.icon?.url ?? "no_image_42df124128"}
+                        className="size-14 rounded-md flex-none"
+                        alt={bc?.name}
+                        loading="lazy"
+                     />
+                     <div className="space-y-0.5">
+                        <div className="font-bold text-blue-500">
+                           {bc?.name}
+                        </div>
+                        <div
+                           className="text-sm"
+                           dangerouslySetInnerHTML={{ __html: bc?.description }}
+                        ></div>
+                     </div>
+                  </Link>
+               </>
+            );
+         })}
       </>
    );
 }
@@ -85,7 +117,7 @@ function BondTable({ data: servant }: { data: ServantType }) {
    const bond = servant?.bond_experience;
 
    return (
-      <Table grid framed dense>
+      <Table grid framed dense className="mb-2.5">
          <TableBody>
             <TableRow>
                <TableHeader>Bond Lv</TableHeader>
@@ -96,7 +128,7 @@ function BondTable({ data: servant }: { data: ServantType }) {
                ))}
             </TableRow>
             <TableRow>
-               <TableHeader>Bond EXP</TableHeader>
+               <TableHeader className="border-b-0">Bond EXP</TableHeader>
                {bond?.map((exp: any, ind: any) => (
                   <TableCell key={"bond_exp_value_" + ind}>
                      {exp.toLocaleString()}
@@ -105,46 +137,5 @@ function BondTable({ data: servant }: { data: ServantType }) {
             </TableRow>
          </TableBody>
       </Table>
-   );
-}
-
-function BondCE({ ce }: { ce: any }) {
-   const bond_ce = ce?.filter((a) => a.is_bond_ce == true);
-   return (
-      <>
-         {bond_ce?.map((bc: any) => {
-            return (
-               <>
-                  <div className="my-1 border border-color-sub rounded-sm p-3">
-                     <div className="inline-block mr-1 align-middle">
-                        <a href={`/c/craft-essences/${bc?.slug ?? bc?.id}`}>
-                           <div className="relative mr-0.5 inline-block h-14 w-14 align-middle text-xs">
-                              <img
-                                 src={bc?.icon?.url ?? "no_image_42df124128"}
-                                 className={`object-contain h-14`}
-                                 alt={bc?.name}
-                                 loading="lazy"
-                              />
-                           </div>
-                        </a>
-                     </div>
-                     <div className="inline-block align-middle">
-                        <div>
-                           <a href={`/c/craft-essences/${bc?.slug ?? bc?.id}`}>
-                              <div className="text-base text-blue-500">
-                                 {bc?.name}
-                              </div>
-                           </a>
-                        </div>
-                        <div
-                           className="text-sm"
-                           dangerouslySetInnerHTML={{ __html: bc?.description }}
-                        ></div>
-                     </div>
-                  </div>
-               </>
-            );
-         })}
-      </>
    );
 }

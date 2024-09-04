@@ -129,12 +129,12 @@ const SkillDisplay = ({ skill }: any) => {
       <>
          <div className="p-3 border border-color-sub rounded-lg mb-3 shadow-1 shadow-sm bg-zinc-50 dark:bg-dark350">
             <div className="flex items-start gap-3">
-               <div className="size-10 flex-none">
+               <div className="size-10 flex-none pt-1">
                   <Image height={80} url={skill_icon} alt="SkillIcon" />
                </div>
                <div className="flex-grow">
                   <div className="flex items-start justify-between">
-                     <div className="font-bold text-sm">{skill_name}</div>
+                     <div className="font-bold pb-1">{skill_name}</div>
                      <button
                         onClick={() => setOpen(!open)}
                         className={clsx(
@@ -238,7 +238,7 @@ const SkillUpgrade = ({ skill }: any) => {
             </div>
             <div className="flex-grow">
                <div className="flex items-start justify-between">
-                  <div className="font-bold text-sm">{skill_name}</div>
+                  <div className="font-bold">{skill_name}</div>
                   <button
                      onClick={() => setOpen(!open)}
                      className={clsx(
@@ -330,7 +330,7 @@ const AppendSkillDisplay = ({ skill }: any) => {
                </div>
                <div className="flex-grow">
                   <div className="flex items-end justify-between pb-1">
-                     <div className="font-bold text-sm">{skill_name}</div>
+                     <div className="font-bold">{skill_name}</div>
                      <button
                         onClick={() => setOpen(!open)}
                         className={clsx(
@@ -353,7 +353,7 @@ const AppendSkillDisplay = ({ skill }: any) => {
                      </button>
                   </div>
                   <div
-                     className="text-xs whitespace-pre-wrap"
+                     className="text-sm whitespace-pre-wrap"
                      dangerouslySetInnerHTML={{
                         __html: skill_description
                            .replace(/\<br\>/g, "")
@@ -385,13 +385,13 @@ const ClassSkillDisplay = ({ skill }: any) => {
       <>
          <div className="p-3 border border-color-sub rounded-lg mb-3 shadow-1 shadow-sm bg-zinc-50 dark:bg-dark350">
             <div className="flex items-start gap-3">
-               <div className="size-10 flex-none">
+               <div className="size-10 flex-none pt-1">
                   <Image height={80} url={skill_icon} alt="SkillIcon" />
                </div>
                <div className="flex-grow">
-                  <div className="font-bold text-sm">{skill_name}</div>
+                  <div className="font-bold">{skill_name}</div>
                   <div
-                     className="mt-1 text-sm whitespace-pre-wrap"
+                     className="mt-0.5 text-sm whitespace-pre-wrap"
                      dangerouslySetInnerHTML={{
                         __html: skill_description
                            ? skill_description

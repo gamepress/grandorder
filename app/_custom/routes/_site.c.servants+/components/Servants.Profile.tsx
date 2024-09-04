@@ -1,12 +1,18 @@
-import { useState } from "react";
+import { Link } from "@remix-run/react";
 
 import type { Servant as ServantType } from "payload/generated-custom-types";
-import { H2 } from "~/components/Headers";
+import { H2Plain } from "~/components/Headers";
 import { Image } from "~/components/Image";
+import {
+   Table,
+   TableBody,
+   TableCell,
+   TableHeader,
+   TableRow,
+} from "~/components/Table";
 
 const thformat =
    "p-2 leading-none text-left border border-color-sub bg-zinc-50 dark:bg-zinc-800";
-const tdformat = "p-2 leading-none text-center border border-color-sub";
 const tdVoiceline = "p-2 text-left border border-color-sub";
 
 export function Profile({ data }: { data: any }) {
@@ -14,16 +20,16 @@ export function Profile({ data }: { data: any }) {
    const ce = data.ceData;
    return (
       <>
-         <Table_Info data={servant} />
+         <TableInfo data={servant} />
          <Parameters data={servant} />
-         <Valentines_CE ce={ce} />
+         <ValentinesCE ce={ce} />
          <ProfileEntries data={servant} />
          <VoiceLines data={servant} />
       </>
    );
 }
 
-function Table_Info({ data: servant }: { data: ServantType }) {
+function TableInfo({ data: servant }: { data: ServantType }) {
    const info = [
       {
          name: "Illustrator",
@@ -56,38 +62,31 @@ function Table_Info({ data: servant }: { data: ServantType }) {
    ];
 
    return (
-      <>
-         <div className="my-1">
-            <table className="text-sm w-full ">
-               <tbody>
-                  {info?.map((irow: any, ind: any) => {
-                     return (
+      <Table dense grid framed>
+         <TableBody>
+            {info?.map((irow: any, ind: any) => {
+               return (
+                  <>
+                     {irow?.value ? (
                         <>
-                           {irow?.value ? (
-                              <>
-                                 <tr key={"additional_info_" + ind}>
-                                    <th
-                                       className={thformat}
-                                       key={"info_row_" + ind}
-                                    >
-                                       {irow?.name}
-                                    </th>
-                                    <td
-                                       className={tdformat}
-                                       key={"info_value_" + ind}
-                                    >
-                                       {irow?.value}
-                                    </td>
-                                 </tr>
-                              </>
-                           ) : null}
+                           <TableRow key={"additional_info_" + ind}>
+                              <TableHeader
+                                 className="border-b-0"
+                                 key={"info_row_" + ind}
+                              >
+                                 {irow?.name}
+                              </TableHeader>
+                              <TableCell key={"info_value_" + ind}>
+                                 {irow?.value}
+                              </TableCell>
+                           </TableRow>
                         </>
-                     );
-                  })}
-               </tbody>
-            </table>
-         </div>
-      </>
+                     ) : null}
+                  </>
+               );
+            })}
+         </TableBody>
+      </Table>
    );
 }
 
@@ -131,21 +130,24 @@ function Parameters({ data: servant }: { data: ServantType }) {
 
    return (
       <>
-         <H2 text="Parameters" />
-         <div className="grid grid-cols-2 text-sm justify-center gap-y-1">
+         <H2Plain text="Parameters" />
+         <div className="grid grid-cols-2 text-sm justify-center gap-x-6 gap-y-2 bg-2-sub shadow-1 shadow-sm rounded-lg p-3 py-4 border border-color-sub">
             {paramlist?.map((p: any) => {
                return (
                   <>
-                     <div className="w-full flex items-center justify-left px-2">
-                        <div className="text-center w-[15%] mr-1">{p.name}</div>
-                        <div className="w-[60%]">
+                     <div className="w-full flex items-center justify-left gap-2">
+                        <div className="flex-none w-7 font-mono font-bold">
+                           {p.name}
+                        </div>
+                        <div className="flex-grow">
                            {[1, 2, 3, 4, 5].map((bar: any) => {
                               return (
                                  <div
+                                    key={bar}
                                     className={`inline-block h-5 w-1/5 border border-color-sub
                                     ${
                                        bar <= p.bar && p.bar != 6
-                                          ? " bg-orange-400 bg-opacity-80"
+                                          ? " bg-orange-400"
                                           : null
                                     }
                                     ${
@@ -159,8 +161,7 @@ function Parameters({ data: servant }: { data: ServantType }) {
                               );
                            })}
                         </div>
-
-                        <div className="text-center ml-1">{p.grade}</div>
+                        <div className="w-6 ml-1 font-bold">{p.grade}</div>
                      </div>
                   </>
                );
@@ -170,39 +171,30 @@ function Parameters({ data: servant }: { data: ServantType }) {
    );
 }
 
-function Valentines_CE({ ce }: { ce: any }) {
-   const val_ce = ce?.filter((a) => a.is_valentines == true);
+function ValentinesCE({ ce }: { ce: any }) {
+   const val_ce = ce?.filter((a: any) => a.is_valentines == true);
    return (
       <>
-         {val_ce ? (
+         {val_ce && val_ce.length > 0 ? (
             <>
-               <H2 text="Valentine's CE" />
+               <H2Plain text="Valentine's CE" />
                {val_ce?.map((bc: any) => {
                   return (
                      <>
-                        <a href={`/c/craft-essences/${bc?.id}`}>
-                           <div className="my-1 border border-color-sub rounded-sm p-3">
-                              <div className="inline-block mr-1 align-middle">
-                                 <div className="relative mr-0.5 inline-block h-14 w-14 align-middle text-xs">
-                                    <img
-                                       src={
-                                          bc?.icon?.url ?? "no_image_42df124128"
-                                       }
-                                       className={`object-contain h-14`}
-                                       alt={bc?.name}
-                                       loading="lazy"
-                                    />
-                                 </div>
-                              </div>
-                              <div className="inline-block align-middle">
-                                 <div>
-                                    <div className="text-base text-blue-500">
-                                       {bc?.name}
-                                    </div>
-                                 </div>
-                              </div>
+                        <Link
+                           className="bg-2-sub shadow-1 shadow-sm rounded-xl flex items-center gap-3 p-2.5 border border-color-sub mb-2"
+                           to={`/c/craft-essences/${bc?.id}`}
+                        >
+                           <Image
+                              className="size-12 rounded-lg border border-color-sub shadow-1 shadow-sm"
+                              url={bc?.icon?.url ?? "no_image_42df124128"}
+                              alt={bc?.name}
+                              loading="lazy"
+                           />
+                           <div className="text-blue-500 font-bold">
+                              {bc?.name}
                            </div>
-                        </a>
+                        </Link>
                      </>
                   );
                })}
@@ -217,9 +209,9 @@ function ProfileEntries({ data: servant }: { data: ServantType }) {
 
    return (
       <>
-         {profiles ? (
+         {profiles && profiles.length > 0 ? (
             <>
-               <H2 text="Profile Entries" />
+               <H2Plain text="Profile Entries" />
                {profiles.map((pe: any) => {
                   return (
                      <>
@@ -244,9 +236,9 @@ function VoiceLines({ data: servant }: { data: ServantType }) {
 
    return (
       <>
-         {lines ? (
+         {lines && lines?.length > 0 ? (
             <>
-               <H2 text="Voice Lines" />
+               <H2Plain text="Voice Lines" />
                <div className="my-1">
                   <table className="text-sm w-full ">
                      <tbody>

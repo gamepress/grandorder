@@ -43,75 +43,68 @@ const NoblePhantasmDisplay = ({ np }: any) => {
       <>
          <div className="p-3 border border-color-sub rounded-lg mb-3 shadow-1 shadow-sm bg-zinc-50 dark:bg-dark350">
             {/* Main Noble Phantasm Information */}
-            <section>
-               <div className="flex items-start gap-3">
-                  <div className="flex-grow">
-                     <div className="flex items-start justify-between pb-1">
-                        <div className="flex items-start gap-2 text-sm">
-                           <div className="size-10 flex-none">
-                              <Image url={np_card_icon} height={80} />
-                           </div>
-                           <div className="space-y-1">
-                              <div className="flex items-center gap-2 text-sm">
-                                 <span className="font-bold">{np_name}</span>
-                                 <span className="text-1">{np_rank}</span>
-                              </div>
-                              <div
-                                 className="text-xs whitespace-pre-wrap leading-tight"
-                                 dangerouslySetInnerHTML={{
-                                    __html: np_description
-                                       .replace(/\<br\>/g, "")
-                                       .replace(/\<p\>\r\n/g, "<p>"),
-                                 }}
-                              />
-                              <div className="space-y-1">
-                                 {unlock ? (
-                                    <div
-                                       className="text-xs"
-                                       dangerouslySetInnerHTML={{
-                                          __html: unlock,
-                                       }}
-                                    ></div>
-                                 ) : null}
-                                 <div className="font-bold text-xs">
-                                    {"<Overcharge>"}
-                                 </div>
-                                 <div
-                                    className="text-xs whitespace-pre-wrap leading-tight"
-                                    dangerouslySetInnerHTML={{
-                                       __html: np_overcharge
-                                          .replace(/\<br\>/g, "")
-                                          .replace(/\<p\>\r\n/g, "<p>"),
-                                    }}
-                                 ></div>
-                              </div>
-                           </div>
-                        </div>
-                        <button
-                           onClick={() => setOpen(!open)}
+            <div className="flex items-start gap-2">
+               <Image
+                  className="size-10 flex-none"
+                  url={np_card_icon}
+                  height={80}
+               />
+               <div className="space-y-1 flex-grow">
+                  <div className="flex items-center justify-between">
+                     <div className="flex items-center gap-2">
+                        <span className="font-bold">{np_name}</span>
+                        <span className="text-1">{np_rank}</span>
+                     </div>
+                     <button
+                        onClick={() => setOpen(!open)}
+                        className={clsx(
+                           open
+                              ? "bg-blue-100 text-blue-600 border-blue-300 dark:text-blue-200 dark:bg-blue-900 dark:border-blue-800"
+                              : "bg-blue-50 border-blue-200 dark:text-blue-200 text-blue-400 dark:bg-blue-950 dark:border-blue-900",
+                           "flex items-center gap-1 text-[10px] font-semibold border shadow-sm shadow-1 rounded-md pl-2 pr-1 py-0.5",
+                        )}
+                     >
+                        {video_link ? "Show Info/Video Link" : "Show Info"}
+                        <div
                            className={clsx(
                               open
-                                 ? "bg-blue-100 text-blue-600 border-blue-300 dark:text-blue-200 dark:bg-blue-900 dark:border-blue-800"
-                                 : "bg-blue-50 border-blue-200 dark:text-blue-200 text-blue-400 dark:bg-blue-950 dark:border-blue-900",
-                              "flex items-center gap-1 text-[10px] font-semibold border shadow-sm shadow-1 rounded-md pl-2 pr-1 py-0.5",
+                                 ? "TableRowansform rotate-180 text-blue-500 dark:text-blue-200 font-bold "
+                                 : "dark:text-blue-300 ",
                            )}
                         >
-                           {video_link ? "Show Info/Video Link" : "Show Info"}
-                           <div
-                              className={clsx(
-                                 open
-                                    ? "TableRowansform rotate-180 text-blue-500 dark:text-blue-200 font-bold "
-                                    : "dark:text-blue-300 ",
-                              )}
-                           >
-                              <Icon size={16} name="chevron-down" />
-                           </div>
-                        </button>
-                     </div>
+                           <Icon size={16} name="chevron-down" />
+                        </div>
+                     </button>
+                  </div>
+                  <div
+                     className="text-sm whitespace-pre-wrap leading-tight text-1"
+                     dangerouslySetInnerHTML={{
+                        __html: np_description
+                           .replace(/\<br\>/g, "")
+                           .replace(/\<p\>\r\n/g, "<p>"),
+                     }}
+                  />
+                  <div className="space-y-1">
+                     {unlock ? (
+                        <div
+                           className="text-xs"
+                           dangerouslySetInnerHTML={{
+                              __html: unlock,
+                           }}
+                        ></div>
+                     ) : null}
+                     <div className="font-bold text-sm">{"<Overcharge>"}</div>
+                     <div
+                        className="text-sm whitespace-pre-wrap leading-tight"
+                        dangerouslySetInnerHTML={{
+                           __html: np_overcharge
+                              .replace(/\<br\>/g, "")
+                              .replace(/\<p\>\r\n/g, "<p>"),
+                        }}
+                     ></div>
                   </div>
                </div>
-            </section>
-
+            </div>
             {open ? (
                <section className="pt-4 space-y-3">
                   {/* NP Main info table */}

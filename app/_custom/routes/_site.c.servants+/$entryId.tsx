@@ -4,9 +4,9 @@ import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { gql } from "graphql-request";
 
-import { Availability } from "~/_custom/routes/_site.c.servants+/components/Availability";
-import { Profile } from "~/_custom/routes/_site.c.servants+/components/Profile";
+import { Availability } from "~/_custom/routes/_site.c.servants+/components/Servants.Availability";
 import { Interludes } from "~/_custom/routes/_site.c.servants+/components/Servants.Interludes";
+import { Profile } from "~/_custom/routes/_site.c.servants+/components/Servants.Profile";
 import { Writeup } from "~/_custom/routes/_site.c.servants+/components/Writeup";
 import { Entry } from "~/routes/_site+/c_+/$collectionId_.$entryId/components/Entry";
 import { entryMeta } from "~/routes/_site+/c_+/$collectionId_.$entryId/utils/entryMeta";

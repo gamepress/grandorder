@@ -164,7 +164,7 @@ function ServantImageBaseData({ charData }: { charData: Servant }) {
 
    return (
       <>
-         <div className="tablet:flex max-laptop:flex-col items-start gap-3 pb-4">
+         <div className="tablet:flex max-tablet:flex-col items-start gap-3 pb-4">
             <section className="space-y-0.5 max-tablet:pb-3">
                {/* Servant Image */}
                <Link
@@ -221,13 +221,17 @@ function ServantImageBaseData({ charData }: { charData: Servant }) {
                      <div className="flex items-center gap-2">
                         <span className="font-semibold">Attribute</span>
                      </div>
-                     <div className="font-semibold text-1">{attribute}</div>
+                     <div className="font-semibold text-1 text-right">
+                        {attribute}
+                     </div>
                   </div>
                   <div className="px-2.5 py-3 justify-between flex items-center gap-2 text-xs">
                      <div className="flex items-center gap-2">
                         <span className="font-semibold">Alignments</span>
                      </div>
-                     <div className="font-semibold text-1">{alignment}</div>
+                     <div className="font-semibold text-1 text-right">
+                        {alignment}
+                     </div>
                   </div>
                </div>
             </section>
@@ -357,7 +361,7 @@ function TableHPATK({ data: servant }: { data: Servant }) {
          <div className="space-y-3">
             <div className="bg-2-sub shadow-sm shadow-1 border border-color-sub rounded-lg p-3">
                <div className="font-bold text-sm flex items-center gap-2 pb-2">
-                  <span className="font-mono text-xs">Attack</span>
+                  <span className="font-mono text-sm">Attack</span>
                   <span className="flex-grow h-0.5 rounded-full dark:bg-dark450 bg-zinc-100" />
                </div>
                <div className="text-sm flex items-center justify-evenly gap-3">
@@ -404,7 +408,7 @@ function TableHPATK({ data: servant }: { data: Servant }) {
             </div>
             <div className="bg-2-sub shadow-sm shadow-1 border border-color-sub rounded-lg p-3">
                <div className="font-bold text-sm flex items-center gap-2 pb-2">
-                  <span className="font-mono text-xs">HP</span>
+                  <span className="font-mono text-sm">HP</span>
                   <span className="flex-grow h-0.5 rounded-full dark:bg-dark450 bg-zinc-100" />
                </div>
                <div className="text-sm flex items-center justify-evenly gap-3">

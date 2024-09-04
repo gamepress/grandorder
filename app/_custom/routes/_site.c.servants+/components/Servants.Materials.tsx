@@ -8,7 +8,6 @@ import {
    TableHeader,
    TableRow,
 } from "~/components/Table";
-import { SectionTitle } from "~/routes/_site+/c_+/$collectionId_.$entryId/components/SectionTitle";
 
 const qtyformat = `
 <style>
@@ -23,7 +22,6 @@ export const Materials = ({ data }: { data: any }) => {
    return (
       <>
          <div dangerouslySetInnerHTML={{ __html: `${qtyformat}` }}></div>
-         <SectionTitle customTitle="Materials" />
          <H2Plain text="Ascension Materials" />
          <AscensionMaterials character={servant} />
 
@@ -36,7 +34,6 @@ export const Materials = ({ data }: { data: any }) => {
          <H2Plain text="Total Materials Required" />
          <TotalMaterials character={servant} />
 
-         <H2Plain text="Costume Dress Materials" />
          <CostumeMaterials character={servant} />
       </>
    );
@@ -225,7 +222,9 @@ const TotalMaterials = ({ character }: any) => {
             <TableBody>
                {displayTotals?.map((row, index) => (
                   <TableRow key={index}>
-                     <TableHeader center>{row.name}</TableHeader>
+                     <TableHeader className="border-b-0" center>
+                        {row.name}
+                     </TableHeader>
                      <TableCell>
                         <div className="w-full">
                            {row.data?.map((mat, key) => (
@@ -262,37 +261,42 @@ const TotalMaterials = ({ character }: any) => {
 const CostumeMaterials = ({ character }: any) => {
    return (
       <>
-         <Table grid framed dense>
-            <TableHead>
-               <TableRow>
-                  <TableHeader>Costume</TableHeader>
-                  <TableHeader>Cost</TableHeader>
-                  <TableHeader>Materials</TableHeader>
-               </TableRow>
-            </TableHead>
-            <TableBody>
-               {character.costumes?.map((costume, index) => (
-                  <TableRow key={index}>
-                     <TableCell>{costume?.name}</TableCell>
-                     <TableCell>
-                        {costume?.costume_materials?.[0]?.qp_cost?.toLocaleString(
-                           "en-US",
-                        )}
-                     </TableCell>
-                     <TableCell>
-                        {costume?.costume_materials?.[0]?.materials?.map(
-                           (mat, key) => (
-                              <MaterialQtyFrame
-                                 materialqty={mat}
-                                 key={"costume_mat_" + key}
-                              />
-                           ),
-                        )}
-                     </TableCell>
-                  </TableRow>
-               ))}
-            </TableBody>
-         </Table>
+         {character.costumes?.length > 0 && (
+            <>
+               <H2Plain text="Costume Dress Materials" />
+               <Table grid framed dense>
+                  <TableHead>
+                     <TableRow>
+                        <TableHeader>Costume</TableHeader>
+                        <TableHeader>Cost</TableHeader>
+                        <TableHeader>Materials</TableHeader>
+                     </TableRow>
+                  </TableHead>
+                  <TableBody>
+                     {character.costumes?.map((costume, index) => (
+                        <TableRow key={index}>
+                           <TableCell>{costume?.name}</TableCell>
+                           <TableCell>
+                              {costume?.costume_materials?.[0]?.qp_cost?.toLocaleString(
+                                 "en-US",
+                              )}
+                           </TableCell>
+                           <TableCell>
+                              {costume?.costume_materials?.[0]?.materials?.map(
+                                 (mat, key) => (
+                                    <MaterialQtyFrame
+                                       materialqty={mat}
+                                       key={"costume_mat_" + key}
+                                    />
+                                 ),
+                              )}
+                           </TableCell>
+                        </TableRow>
+                     ))}
+                  </TableBody>
+               </Table>
+            </>
+         )}
       </>
    );
 };
