@@ -7,7 +7,10 @@ import { gql } from "graphql-request";
 import { Availability } from "~/_custom/routes/_site.c.servants+/components/Servants.Availability";
 import { Interludes } from "~/_custom/routes/_site.c.servants+/components/Servants.Interludes";
 import { Profile } from "~/_custom/routes/_site.c.servants+/components/Servants.Profile";
-import { Writeup } from "~/_custom/routes/_site.c.servants+/components/Writeup";
+import {
+   CERec,
+   LevelUpSkillRec,
+} from "~/_custom/routes/_site.c.servants+/components/Servants.Writeup";
 import { Entry } from "~/routes/_site+/c_+/$collectionId_.$entryId/components/Entry";
 import { entryMeta } from "~/routes/_site+/c_+/$collectionId_.$entryId/utils/entryMeta";
 import { fetchEntry } from "~/routes/_site+/c_+/$collectionId_.$entryId/utils/fetchEntry.server";
@@ -88,20 +91,16 @@ const SECTIONS = {
    interludes: Interludes,
    materials: Materials,
    additionalInfo: AdditionalInfo,
-   writeup: Writeup,
    profile: Profile,
+   "craft-essence-recommendations": CERec,
+   "level-up-skill-recommendations": LevelUpSkillRec,
    availability: Availability,
 };
 
 export default function EntryPage() {
    const loaderdata = useLoaderData<typeof loader>();
-   // console.log(loaderdata);
 
-   return (
-      <>
-         <Entry customComponents={SECTIONS} customData={loaderdata} />
-      </>
-   );
+   return <Entry customComponents={SECTIONS} customData={loaderdata} />;
 }
 
 // Add stats under atk_lv120 later.

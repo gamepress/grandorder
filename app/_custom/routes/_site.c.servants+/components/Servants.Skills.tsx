@@ -243,9 +243,7 @@ const SkillUpgrade = ({ skill }: any) => {
                alt="SkillIcon"
             />
             <div className="flex-grow">
-               <div className="flex items-start justify-between">
-                  <div className="font-bold">{skill_name}</div>
-               </div>
+               <div className="font-bold font-mono text-sm">{skill_name}</div>
                <div
                   className="text-xs whitespace-pre-wrap"
                   dangerouslySetInnerHTML={{
@@ -259,7 +257,7 @@ const SkillUpgrade = ({ skill }: any) => {
                   }}
                ></div>
                <div
-                  className="border-t text-xs border-color-sub pt-2 mt-2"
+                  className="border-t text-xs border-color-sub py-2 mt-2"
                   dangerouslySetInnerHTML={{ __html: unlock }}
                />
                <button
