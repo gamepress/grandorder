@@ -103,9 +103,10 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
       ?.flat()
       ?.flat()
       ?.filter((v, i, a) => a.indexOf(v) === i);
-   var featured_servant_ids = featured_servant_names
-      ?.map((a) => allServantData.Servants.docs.find((s) => s.name == a)?.id)
-      .filter((a) => a);
+   var featured_servant_ids =
+      featured_servant_names
+         ?.map((a) => allServantData.Servants.docs.find((s) => s.name == a)?.id)
+         .filter((a) => a) ?? [];
 
    var servantids = [
       ...new Set([
@@ -275,6 +276,13 @@ const SummonSimulator = (data: any) => {
          setRotatingBanner(banner_options?.[0]?.value);
       }
 
+      setPullEleven(
+         (bannerid > 188 && bannerid != 1029 && bannerid != 1009) ||
+            bannerid == 165 ||
+            isNaN(bannerid)
+            ? true
+            : false,
+      );
       setFServants(init_featured_servants);
       setFEssences(init_featured_essences);
    }, [loaderdata]);
@@ -339,10 +347,13 @@ const SummonSimulator = (data: any) => {
       setPullct(0);
    }
    function simulateSingle() {
-      console.log("simulateSingle");
-      return null;
+      simulate(ticketCount, true);
    }
    function simulate(num, isTicket) {
+      // Set 11-pull if a 10-pull is attempted on an 11-pull enabled banner
+      if (num == 10 && pullEleven) {
+         num = 11;
+      }
       setPullResults([]);
       var pulledServant = false;
       var pulledHigh = false;
@@ -425,23 +436,33 @@ const SummonSimulator = (data: any) => {
       }
 
       // Update pull metrics
-      setQuartzSpent((quartzSpent) => quartzSpent + 30);
+      if (isTicket) {
+         setTickets((tickets) => tickets + num);
+         if (pullEleven && pulledBonus) {
+            setTickets((tickets) => tickets - 1);
+         }
+      } else {
+         setQuartzSpent((quartzSpent) => quartzSpent + 30);
+      }
    }
 
    function pullServant(stars) {
       var featuredChance = Math.floor(Math.random() * 1000);
       var pullFeatured = false;
 
-      const currFeatured5S = fServants.filter((s: any) => s.rarity?.name == 5);
-      const currFeatured4S = fServants.filter((s: any) => s.rarity?.name == 4);
-      const currFeatured3S = fServants.filter((s: any) => s.rarity?.name == 3);
+      const currFeatured5S =
+         fServants?.filter((s: any) => s.rarity?.name == 5) ?? [];
+      const currFeatured4S =
+         fServants?.filter((s: any) => s.rarity?.name == 4) ?? [];
+      const currFeatured3S =
+         fServants?.filter((s: any) => s.rarity?.name == 3) ?? [];
 
       // @ts-ignore
       featured5sChance =
-         rates5s[Math.min(currFeatured5S.length, rates5s.length - 1)];
+         rates5s[Math.min(currFeatured5S?.length, rates5s.length - 1)];
       // @ts-ignore
       featured4sChance =
-         rates4s[Math.min(currFeatured4S.length, rates4s.length - 1)];
+         rates4s[Math.min(currFeatured4S?.length, rates4s.length - 1)];
 
       const currFiveStars = loaderdata?.general_servants?.filter(
          // @ts-ignore
@@ -499,7 +520,7 @@ const SummonSimulator = (data: any) => {
          setNotableResults((notableResults) => [...notableResults, servant]);
          // Reset pity counter to 0 if the pulled Servant was featured.
          if (pity330 && currFeatured5S.indexOf(servant) > -1) {
-            setPullct(0);
+            setPullct((pullct) => 0);
          }
       }
 
@@ -510,9 +531,9 @@ const SummonSimulator = (data: any) => {
       var featuredChance = Math.floor(Math.random() * 1000);
       var pullFeatured = false;
 
-      const currFeatured5E = fEssences.filter((s) => s.rarity?.name == 5);
-      const currFeatured4E = fEssences.filter((s) => s.rarity?.name == 4);
-      const currFeatured3E = fEssences.filter((s) => s.rarity?.name == 3);
+      const currFeatured5E = fEssences?.filter((s) => s.rarity?.name == 5);
+      const currFeatured4E = fEssences?.filter((s) => s.rarity?.name == 4);
+      const currFeatured3E = fEssences?.filter((s) => s.rarity?.name == 3);
 
       const currFiveStarEss = loaderdata?.general_craft_essences?.filter(
          (s) => s.rarity?.name == 5,
@@ -567,7 +588,7 @@ const SummonSimulator = (data: any) => {
    }
 
    function pullFeaturedObj(featured, currFeatured, currs) {
-      if (featured && currFeatured.length > 0) {
+      if (featured && currFeatured?.length > 0) {
          var idx = Math.floor(Math.random() * currFeatured.length);
          return currFeatured[idx];
       } else {
@@ -701,7 +722,7 @@ const SummonSimulator = (data: any) => {
                   id="summon-10-switch"
                   onClick={() => setSummonType("10")}
                >
-                  10-Pull
+                  10-Pull{pullEleven ? " (+1)" : ""}
                </button>
                <button
                   className={`my-1 p-2 text-center w-full bg-opacity-50 border-2 border-[#3076b2] ${
@@ -751,7 +772,9 @@ const SummonSimulator = (data: any) => {
                               >
                                  Double Summon in:{" "}
                                  <b>
-                                    <span id="double-summon-counter">10</span>
+                                    <span id="double-summon-counter">
+                                       {10 - (tickets % 10)}
+                                    </span>
                                  </b>{" "}
                                  tickets
                               </td>
@@ -792,6 +815,103 @@ const SummonSimulator = (data: any) => {
       );
    };
 
+   const StatisticsTable = () => {
+      return (
+         <table id="quartz-table" className="w-full text-center my-2">
+            <tbody>
+               <tr>
+                  <th className="border border-color-sub">Quartz Used:</th>
+
+                  <th className="border border-color-sub">$ Spent:</th>
+
+                  <th className="border border-color-sub">Tickets Used:</th>
+                  <th className="border border-color-sub">
+                     Pity Counter (/330):
+                  </th>
+               </tr>
+               <tr>
+                  <td className="border border-color-sub" id="quartz">
+                     {quartzSpent}
+                  </td>
+                  <td className="border border-color-sub" id="money">
+                     ${(quartzSpent * 0.4790419).toFixed(2)}
+                  </td>
+                  <td className="border border-color-sub" id="tickets">
+                     0
+                  </td>
+                  <td className="border border-color-sub" id="totalpull">
+                     {pullct}
+                  </td>
+               </tr>
+            </tbody>
+         </table>
+      );
+   };
+
+   const ResetButton = () => {
+      return (
+         <button onClick={() => reset()} className="w-full">
+            Reset
+         </button>
+      );
+   };
+
+   const NotableResults = () => {
+      return (
+         <div className="grid grid-cols-2">
+            <div className="pulls-parent margin-right:2%;">
+               <div className="font-bold text-lg border-b mb-1">
+                  Notable Servants
+               </div>
+               <div id="servants5" className="rare-pulls-list">
+                  {notableResults
+                     .filter((res) => res.summon_availability)
+                     ?.filter((v, i, a) => a.indexOf(v) == i)
+                     ?.sort(
+                        (a, b) =>
+                           parseInt(b.rarity.name) - parseInt(a.rarity.name),
+                     )
+                     ?.map((s) => (
+                        <a href={`/c/servants/${s.id}`}>
+                           <div>
+                              <span className="text-blue-500 mr-2">
+                                 {s.rarity.name}★ {s.name}
+                              </span>
+                              x
+                              {notableResults.filter((res) => res == s)?.length}
+                           </div>
+                        </a>
+                     ))}
+               </div>
+            </div>
+            <div className="pulls-parent">
+               <div className="font-bold text-lg border-b mb-1">
+                  5★ Craft Essences
+               </div>
+               <div id="essences5" className="rare-pulls-list">
+                  {notableResults
+                     .filter((res) => !res.summon_availability)
+                     ?.filter((v, i, a) => a.indexOf(v) == i)
+                     ?.map((ce) => (
+                        <a href={`/c/craft-essences/${ce.id}`}>
+                           <div>
+                              <span className="text-blue-500 mr-2">
+                                 {ce.name}
+                              </span>
+                              x
+                              {
+                                 notableResults.filter((res) => res == ce)
+                                    ?.length
+                              }
+                           </div>
+                        </a>
+                     ))}
+               </div>
+            </div>
+         </div>
+      );
+   };
+
    return (
       <>
          <div className="relative z-20 mx-auto max-w-[728px] justify-center px-3 pb-36 pt-24">
@@ -805,98 +925,9 @@ const SummonSimulator = (data: any) => {
                <SummonBannerInfo />
                <SummonButtonSelector />
                <SummonResults />
-
-               <table id="quartz-table" className="w-full text-center my-2">
-                  <tbody>
-                     <tr>
-                        <th className="border border-color-sub">
-                           Quartz Used:
-                        </th>
-
-                        <th className="border border-color-sub">$ Spent:</th>
-
-                        <th className="border border-color-sub">
-                           Tickets Used:
-                        </th>
-                        <th className="border border-color-sub">
-                           Pity Counter (/330):
-                        </th>
-                     </tr>
-                     <tr>
-                        <td className="border border-color-sub" id="quartz">
-                           {quartzSpent}
-                        </td>
-                        <td className="border border-color-sub" id="money">
-                           ${(quartzSpent * 0.4790419).toFixed(2)}
-                        </td>
-                        <td className="border border-color-sub" id="tickets">
-                           0
-                        </td>
-                        <td className="border border-color-sub" id="totalpull">
-                           {pullct}
-                        </td>
-                     </tr>
-                  </tbody>
-               </table>
-               <button onClick={() => reset()} className="w-full">
-                  Reset
-               </button>
-
-               <div className="grid grid-cols-2">
-                  <div className="pulls-parent margin-right:2%;">
-                     <div className="font-bold text-lg border-b mb-1">
-                        Notable Servants
-                     </div>
-                     <div id="servants5" className="rare-pulls-list">
-                        {notableResults
-                           .filter((res) => res.summon_availability)
-                           ?.filter((v, i, a) => a.indexOf(v) == i)
-                           ?.sort(
-                              (a, b) =>
-                                 parseInt(b.rarity.name) -
-                                 parseInt(a.rarity.name),
-                           )
-                           ?.map((s) => (
-                              <a href={`/c/servants/${s.id}`}>
-                                 <div>
-                                    <span className="text-blue-500 mr-2">
-                                       {s.rarity.name}★ {s.name}
-                                    </span>
-                                    x
-                                    {
-                                       notableResults.filter((res) => res == s)
-                                          ?.length
-                                    }
-                                 </div>
-                              </a>
-                           ))}
-                     </div>
-                  </div>
-                  <div className="pulls-parent">
-                     <div className="font-bold text-lg border-b mb-1">
-                        5★ Craft Essences
-                     </div>
-                     <div id="essences5" className="rare-pulls-list">
-                        {notableResults
-                           .filter((res) => !res.summon_availability)
-                           ?.filter((v, i, a) => a.indexOf(v) == i)
-                           ?.map((ce) => (
-                              <a href={`/c/craft-essences/${ce.id}`}>
-                                 <div>
-                                    <span className="text-blue-500 mr-2">
-                                       {ce.name}
-                                    </span>
-                                    x
-                                    {
-                                       notableResults.filter((res) => res == ce)
-                                          ?.length
-                                    }
-                                 </div>
-                              </a>
-                           ))}
-                     </div>
-                  </div>
-               </div>
+               <StatisticsTable />
+               <ResetButton />
+               <NotableResults />
             </div>
          </div>
       </>
