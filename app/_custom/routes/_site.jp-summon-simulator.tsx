@@ -50,11 +50,11 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
       ...new Set([
          // General Pool
          ...summonPools?._simulatorPools?.docs
-            ?.find((p: any) => p.id == "1")
+            ?.find((p: any) => p.id == "11")
             ?.servants?.map((a: any) => a.id.toString()),
          // Story Locked Pool
          ...summonPools?._simulatorPools?.docs
-            ?.find((p: any) => p.id == "2")
+            ?.find((p: any) => p.id == "12")
             ?.servants?.map((a: any) => a.id.toString()),
       ]),
    ] as string[];
@@ -66,11 +66,11 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
       ...new Set([
          // General Pool
          ...summonPools?._simulatorPools?.docs
-            ?.find((p: any) => p.id == "1")
+            ?.find((p: any) => p.id == "11")
             ?.craft_essences?.map((a: any) => a.id.toString()),
          // Story Locked Pool
          ...summonPools?._simulatorPools?.docs
-            ?.find((p: any) => p.id == "2")
+            ?.find((p: any) => p.id == "12")
             ?.craft_essences?.map((a: any) => a.id.toString()),
       ]),
    ] as string[];
@@ -111,7 +111,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
       ...new Set([
          // General Pool
          ...summonPools?._simulatorPools?.docs
-            ?.find((p: any) => p.id == "1")
+            ?.find((p: any) => p.id == "11")
             ?.servants?.map((a: any) => a.id.toString()),
          // Featured
          ...summonEvent?.featured_servants?.map((a: any) => a.id.toString()),
@@ -136,7 +136,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
       ...new Set([
          // General Pool
          ...summonPools?._simulatorPools?.docs
-            ?.find((p: any) => p.id == "1")
+            ?.find((p: any) => p.id == "11")
             ?.servants?.map((a: any) => a.id.toString()),
       ]),
    ] as string[];
@@ -146,7 +146,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
       ...new Set([
          // General Pool
          ...summonPools?._simulatorPools?.docs
-            ?.find((p: any) => p.id == "1")
+            ?.find((p: any) => p.id == "11")
             ?.craft_essences?.map((a: any) => a.id.toString()),
          // Featured
          ...summonEvent?.featured_essences?.map((a: any) => a.id.toString()),
@@ -164,7 +164,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
       ...new Set([
          // General Pool
          ...summonPools?._simulatorPools?.docs
-            ?.find((p: any) => p.id == "1")
+            ?.find((p: any) => p.id == "11")
             ?.craft_essences?.map((a: any) => a.id.toString()),
       ]),
    ] as string[];
@@ -601,20 +601,22 @@ const SummonSimulator = (data: any) => {
       return (
          <>
             <div className="block">
-               Note that banners starting from the 4th Anniversary (7/3/2021)
-               and onward implement a free 11-pull every 10 rolls. Banners
-               before then will not include the extra 11-pull.
-               <br />
-               <strong>
-                  The NA Sim now has a Pity system, guaranteeing the rate-up SSR
-                  Servant at 330 pulls (30x 11-pulls) starting with the
-                  Heian-kyo banner (11/21/2022). Note, however, this pity does
-                  NOT carry across rotating banners.
-               </strong>
+               <p>
+                  Both JP and NA Summon Simulators have a 0.8% rate for Rate-up
+                  SSR Servants and 11 pulls (1 free pull every 30 SQ or every 10
+                  tickets).
+                  <br />
+                  <strong>
+                     The JP Sim now has a Pity system, guaranteeing the rate-up
+                     SSR Servant at 330 pulls (30x 11-pulls) starting with the
+                     New Year's 2022 (JP) banner. Note, however, this pity does
+                     NOT carry across rotating banners.
+                  </strong>
+               </p>
             </div>
-            <a href="/jp-summon-simulator">
+            <a href="/summon-simulator">
                <div className="text-blue-500 text-center w-full p-1 my-2 border border-blue-500 hover:bg-blue-500 hover:text-white">
-                  Link to JP Summon Simulator Here
+                  Link to NA Summon Simulator Here
                </div>
             </a>
          </>
@@ -923,7 +925,7 @@ const SummonSimulator = (data: any) => {
             <SummonSimIntroduction />
             {/* Show banner selection, defaults to Story Summon if unselected. */}
 
-            <H2 text="NA Summon Simulator" />
+            <H2 text="JP Summon Simulator" />
 
             <div id="to-load" className="block">
                <SimulatorDropDownBox />
@@ -1102,7 +1104,7 @@ export default SummonSimulator;
 
 const SummonEventListQuery = `
 query{
-  SummonEvents(limit:1000, sort:"-sim_number", where:{available_in_na:{equals:true}}) {
+  SummonEvents(limit:1000, sort:"-sim_number", where:{available_in_jp:{equals:true}}) {
     docs{
       id
       title:name
