@@ -17,9 +17,15 @@ import { fetchEntry } from "~/routes/_site+/c_+/$collectionId_.$entryId/utils/fe
 
 import { AdditionalInfo } from "./components/Servants.AdditionalInfo";
 import { Main } from "./components/Servants.Main";
-import { Materials } from "./components/Servants.Materials";
+import {
+   AppendMaterials,
+   AscensionMaterials,
+   CostumeMaterials,
+   SkillMaterials,
+   TotalMaterials,
+} from "./components/Servants.Materials";
 import { NoblePhantasm } from "./components/Servants.NoblePhantasm";
-import { Skills } from "./components/Servants.Skills";
+import { AppendSkill, ClassSkill, Skills } from "./components/Servants.Skills";
 
 // Custom Component Imports
 export { entryMeta as meta };
@@ -40,15 +46,6 @@ export async function loader({
       },
    });
 
-   const fetchWriteupData = fetchEntry({
-      payload,
-      params,
-      request,
-      user,
-      gql: {
-         query: WRITEUP_QUERY,
-      },
-   });
    const fetchCEData = fetchEntry({
       payload,
       params,
@@ -68,9 +65,8 @@ export async function loader({
       },
    });
 
-   const [{ entry }, data, ce, banner] = await Promise.all([
+   const [{ entry }, ce, banner] = await Promise.all([
       fetchCharacterData,
-      fetchWriteupData,
       fetchCEData,
       fetchBannerData,
    ]);
@@ -78,7 +74,7 @@ export async function loader({
    return json({
       entry,
       servant: entry?.data?.Servant,
-      writeupData: data?.entry?.data?.Servant,
+      writeupData: entry?.data?.Servant,
       ceData: ce?.entry?.data?.CraftEssences?.docs,
       bannerData: banner?.entry?.data?.SummonEvents?.docs,
    });
@@ -89,11 +85,17 @@ const SECTIONS = {
    skills: Skills,
    noblePhantasm: NoblePhantasm,
    interludes: Interludes,
-   materials: Materials,
+   "ascension-materials": AscensionMaterials,
+   "skill-enhancement-materials": SkillMaterials,
+   "append-skill-materials": AppendMaterials,
+   "total-materials-required": TotalMaterials,
+   "costume-dress-materials": CostumeMaterials,
    additionalInfo: AdditionalInfo,
    profile: Profile,
    "craft-essence-recommendations": CERec,
    "level-up-skill-recommendations": LevelUpSkillRec,
+   "append-skills": AppendSkill,
+   "class-skills": ClassSkill,
    availability: Availability,
 };
 
@@ -421,14 +423,6 @@ const QUERY = gql`
          np_release_date
          slug
          tier_list_score
-      }
-   }
-`;
-
-// Add stats under atk_lv120 later.
-const WRITEUP_QUERY = gql`
-   query ($entryId: String!) {
-      Servant(id: $entryId) {
          writeup_overview
          writeup_gameplay_tips
          writeup_tier_list_explanation

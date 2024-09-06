@@ -46,7 +46,6 @@ export function LevelUpSkillRec({
 
    return skillLevels && skillLevels.length > 0 ? (
       <>
-         <H2Plain text="🔼 Skill Leveling Recommendation" />
          <div className="pb-3 space-y-3">
             {skillLevels?.map((skill: any, si: any) => {
                return (
@@ -87,7 +86,7 @@ export function CERec({
                               url={bc?.icon?.url ?? "no_image_42df124128"}
                               width={80}
                               height={80}
-                              className="size-10 rounded-md"
+                              className="size-9 rounded-md"
                               alt={bc?.name}
                               loading="lazy"
                            />

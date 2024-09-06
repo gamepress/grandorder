@@ -2,10 +2,8 @@ import { useState } from "react";
 
 import clsx from "clsx";
 
-import { H2Plain } from "~/components/Headers";
 import { Icon } from "~/components/Icon";
 import { Image } from "~/components/Image";
-import { SectionTitle } from "~/routes/_site+/c_+/$collectionId_.$entryId/components/SectionTitle";
 
 const tablestyling = `
    <style>
@@ -35,42 +33,18 @@ const tablestyling = `
 export function Skills({ data }: { data: any }) {
    const servant = data.servant;
    const skilllist = servant?.skills;
-   const classlist = servant?.class_skills;
-   const appendlist = servant?.append_skills;
    const classunlock = servant?.class_skill_unlock;
 
    return (
       <>
          <div>
-            {skilllist?.length > 0 ? (
-               <SectionTitle customTitle="Skills" />
-            ) : null}
-            {skilllist?.map((skill: any, si: number) => {
-               return (
-                  <SkillDisplay skill={skill} key={"skill_display_" + si} />
-               );
-            })}
-
-            <H2Plain text="Append Skills" />
-            {appendlist?.map((skill: any, ai: number) => {
-               return (
-                  <AppendSkillDisplay
-                     skill={skill}
-                     key={"append_display_" + ai}
-                  />
-               );
-            })}
-
-            <H2Plain text="Class Skills" />
-            {classlist?.map((skill: any, ci: number) => {
-               return (
-                  <ClassSkillDisplay
-                     skill={skill}
-                     key={"class_skill_display_" + ci}
-                  />
-               );
-            })}
-
+            <div className="space-y-3">
+               {skilllist?.map((skill: any, si: number) => {
+                  return (
+                     <SkillDisplay skill={skill} key={"skill_display_" + si} />
+                  );
+               })}
+            </div>
             {classunlock ? (
                <>
                   <h3>Class Skill Unlock Conditions</h3>
@@ -126,66 +100,64 @@ const SkillDisplay = ({ skill }: any) => {
    const [open, setOpen] = useState(false);
 
    return (
-      <>
-         <div className="p-3 border border-color-sub rounded-lg mb-3 shadow-1 shadow-sm bg-zinc-50 dark:bg-dark350">
-            <div className="flex items-start gap-3">
-               <Image
-                  className="size-10 mt-1"
-                  height={80}
-                  url={skill_icon}
-                  alt="SkillIcon"
+      <div className="p-3 border border-color-sub rounded-lg shadow-1 shadow-sm bg-zinc-50 dark:bg-dark350">
+         <div className="flex items-start gap-3">
+            <Image
+               className="size-10 mt-1"
+               height={80}
+               url={skill_icon}
+               alt="SkillIcon"
+            />
+            <div className="flex-grow">
+               <div className="font-bold text-sm font-mono pb-0.5">
+                  {skill_name}
+               </div>
+               <div
+                  className="text-sm whitespace-pre-wrap pb-1"
+                  dangerouslySetInnerHTML={{
+                     __html: skill_description
+                        .replace(/\<br\>/g, "")
+                        .replace(/\<p\>\r\n/g, "<p>"),
+                  }}
+               ></div>
+               <div
+                  className="text-xs text-1 italic pb-1.5"
+                  dangerouslySetInnerHTML={{ __html: unlock }}
                />
-               <div className="flex-grow">
-                  <div className="font-bold text-sm font-mono pb-0.5">
-                     {skill_name}
-                  </div>
-                  <div
-                     className="text-sm whitespace-pre-wrap pb-1"
-                     dangerouslySetInnerHTML={{
-                        __html: skill_description
-                           .replace(/\<br\>/g, "")
-                           .replace(/\<p\>\r\n/g, "<p>"),
-                     }}
-                  ></div>
-                  <div
-                     className="text-xs text-1 italic pb-1.5"
-                     dangerouslySetInnerHTML={{ __html: unlock }}
-                  />
-                  <button
-                     onClick={() => setOpen(!open)}
+               <button
+                  onClick={() => setOpen(!open)}
+                  className={clsx(
+                     open
+                        ? "bg-blue-100 text-blue-600 border-blue-300 dark:text-blue-200 dark:bg-blue-900 dark:border-blue-800"
+                        : "bg-blue-50 border-blue-200 dark:text-blue-200 text-blue-400 dark:bg-blue-950 dark:border-blue-900",
+                     "flex items-center justify-between gap-1 text-[10px]  border rounded-md pl-2 pr-1 w-full py-1 font-bold",
+                  )}
+               >
+                  <div>Show Info</div>
+                  <Icon
                      className={clsx(
                         open
-                           ? "bg-blue-100 text-blue-600 border-blue-300 dark:text-blue-200 dark:bg-blue-900 dark:border-blue-800"
-                           : "bg-blue-50 border-blue-200 dark:text-blue-200 text-blue-400 dark:bg-blue-950 dark:border-blue-900",
-                        "flex items-center justify-between gap-1 text-[10px]  border rounded-md pl-2 pr-1 w-full py-1 font-bold",
+                           ? "transform rotate-180 text-blue-500 dark:text-blue-200"
+                           : "dark:text-blue-300 ",
                      )}
-                  >
-                     <div>Show Info</div>
-                     <Icon
-                        className={clsx(
-                           open
-                              ? "transform rotate-180 text-blue-500 dark:text-blue-200"
-                              : "dark:text-blue-300 ",
-                        )}
-                        size={16}
-                        name="chevron-down"
-                     />
-                  </button>
-               </div>
+                     size={16}
+                     name="chevron-down"
+                  />
+               </button>
             </div>
-            {open ? (
-               <table
-                  className="text-xs text-center mt-3 w-full skill-table"
-                  dangerouslySetInnerHTML={{ __html: skilltablehtml }}
-               ></table>
-            ) : null}
-            {skill.upgrades
-               ? skill.upgrades.map((upg: any) => (
-                    <SkillUpgrade key={upg.id} skill={upg} />
-                 ))
-               : null}
          </div>
-      </>
+         {open ? (
+            <table
+               className="text-xs text-center mt-3 w-full skill-table"
+               dangerouslySetInnerHTML={{ __html: skilltablehtml }}
+            ></table>
+         ) : null}
+         {skill.upgrades
+            ? skill.upgrades.map((upg: any) => (
+                 <SkillUpgrade key={upg.id} skill={upg} />
+              ))
+            : null}
+      </div>
    );
 };
 
@@ -300,7 +272,23 @@ const SkillUpgrade = ({ skill }: any) => {
 // =====================================
 // 3) Append Skills
 // =====================================
-const AppendSkillDisplay = ({ skill }: any) => {
+
+export function AppendSkill({ data }: any) {
+   const appendlist = data.servant?.append_skills;
+
+   return (
+      <div className="space-y-3">
+         {appendlist?.map((skill: any, ai: number) => {
+            return (
+               <AppendSkillDisplay skill={skill} key={"append_display_" + ai} />
+            );
+         })}
+      </div>
+   );
+}
+
+function AppendSkillDisplay({ skill }: any) {
+   console.log(skill);
    const skill_name = skill?.name;
    const skill_icon = skill?.skill_image?.icon?.url;
    const skill_value_table = skill?.effect_value_table;
@@ -327,7 +315,7 @@ const AppendSkillDisplay = ({ skill }: any) => {
 
    return (
       <>
-         <div className="p-3 border border-color-sub rounded-lg mb-3 shadow-1 shadow-sm bg-zinc-50 dark:bg-dark350">
+         <div className="p-3 border border-color-sub rounded-lg shadow-1 shadow-sm bg-zinc-50 dark:bg-dark350">
             <div className="flex items-start gap-3">
                <Image
                   className="size-10 mt-1"
@@ -343,8 +331,8 @@ const AppendSkillDisplay = ({ skill }: any) => {
                      className="text-sm whitespace-pre-wrap pb-1.5"
                      dangerouslySetInnerHTML={{
                         __html: skill_description
-                           .replace(/\<br\>/g, "")
-                           .replace(/\<p\>\r\n/g, "<p>"),
+                           ?.replace(/\<br\>/g, "")
+                           ?.replace(/\<p\>\r\n/g, "<p>"),
                      }}
                   ></div>
                   <button
@@ -378,11 +366,22 @@ const AppendSkillDisplay = ({ skill }: any) => {
          </div>
       </>
    );
-};
+}
 
 // =====================================
 // 4) Class Skills
 // =====================================
+
+export function ClassSkill({ data }: any) {
+   const classlist = data?.servant?.class_skills;
+
+   return classlist?.map((skill: any, ci: number) => {
+      return (
+         <ClassSkillDisplay skill={skill} key={"class_skill_display_" + ci} />
+      );
+   });
+}
+
 const ClassSkillDisplay = ({ skill }: any) => {
    const skill_name = skill?.name;
    const skill_icon = skill?.skill_image?.icon?.url;

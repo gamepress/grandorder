@@ -7,3 +7,10 @@
 .a-card {
    @apply text-white bg-blue-600 size-3.5 flex items-center justify-center rounded-sm font-bold;
 }
+.grandorder-material-qty {
+   text-shadow:
+      1px 0 0 #000,
+      0 -1px 0 #000,
+      0 1px 0 #000,
+      -1px 0 0 #000;
+}

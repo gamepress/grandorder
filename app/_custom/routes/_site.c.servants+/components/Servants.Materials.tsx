@@ -1,4 +1,3 @@
-import { H2Plain } from "~/components/Headers";
 import { Image } from "~/components/Image";
 import {
    Table,
@@ -9,37 +8,7 @@ import {
    TableRow,
 } from "~/components/Table";
 
-const qtyformat = `
-<style>
-   .grandorder-material-qty {
-      text-shadow: 1px 0 0 #000,0 -1px 0 #000,0 1px 0 #000,-1px 0 0 #000;
-   }
-</style>
-`;
-
-export const Materials = ({ data }: { data: any }) => {
-   const servant = data.servant;
-   return (
-      <>
-         <div dangerouslySetInnerHTML={{ __html: `${qtyformat}` }}></div>
-         <H2Plain text="Ascension Materials" />
-         <AscensionMaterials character={servant} />
-
-         <H2Plain text="Skill Enhancement Materials" />
-         <SkillMaterials character={servant} />
-
-         <H2Plain text="Append Skill Materials" />
-         <AppendMaterials character={servant} />
-
-         <H2Plain text="Total Materials Required" />
-         <TotalMaterials character={servant} />
-
-         <CostumeMaterials character={servant} />
-      </>
-   );
-};
-
-const AscensionMaterials = ({ character }: any) => {
+export function AscensionMaterials({ data }: any) {
    const stages = ["2", "3", "4", "Max"];
    return (
       <>
@@ -52,7 +21,7 @@ const AscensionMaterials = ({ character }: any) => {
                </TableRow>
             </TableHead>
             <TableBody>
-               {character.ascension_materials?.map(
+               {data?.servant?.ascension_materials?.map(
                   (asc: any, index: number) => (
                      <TableRow key={index}>
                         <TableCell center>{stages[index]}</TableCell>
@@ -60,7 +29,7 @@ const AscensionMaterials = ({ character }: any) => {
                            {asc?.qp_cost?.toLocaleString()}
                         </TableCell>
                         <TableCell>
-                           {asc.materials?.map((mat, key) => (
+                           {asc.materials?.map((mat: any, key: number) => (
                               <MaterialQtyFrame
                                  materialqty={mat}
                                  key={"ascension_mats_" + key}
@@ -74,9 +43,9 @@ const AscensionMaterials = ({ character }: any) => {
          </Table>
       </>
    );
-};
+}
 
-const SkillMaterials = ({ character }: any) => {
+export function SkillMaterials({ data }: any) {
    return (
       <>
          <Table grid framed dense>
@@ -88,7 +57,7 @@ const SkillMaterials = ({ character }: any) => {
                </TableRow>
             </TableHead>
             <TableBody>
-               {character.skill_enhancements?.map((enh, index) => (
+               {data?.servant?.skill_enhancements?.map((enh, index) => (
                   <TableRow key={index}>
                      <TableCell center>
                         {index + 1} → {index + 2}
@@ -110,9 +79,9 @@ const SkillMaterials = ({ character }: any) => {
          </Table>
       </>
    );
-};
+}
 
-const AppendMaterials = ({ character }: any) => {
+export function AppendMaterials({ data }: any) {
    return (
       <>
          <Table grid framed dense>
@@ -124,7 +93,7 @@ const AppendMaterials = ({ character }: any) => {
                </TableRow>
             </TableHead>
             <TableBody>
-               {character.append_skill_enhancements?.map((enh, index) => (
+               {data?.servant?.append_skill_enhancements?.map((enh, index) => (
                   <TableRow key={index}>
                      <TableCell center>
                         {index + 1} → {index + 2}
@@ -146,9 +115,9 @@ const AppendMaterials = ({ character }: any) => {
          </Table>
       </>
    );
-};
+}
 
-const TotalMaterials = ({ character }: any) => {
+export function TotalMaterials({ data }: any) {
    // Three totals:
    // 1) Ascension total
    // 2) Skill total
@@ -158,19 +127,19 @@ const TotalMaterials = ({ character }: any) => {
 
    // 1) Calculate Ascension total
    // ======================
-   const ascData = character.ascension_materials;
+   const ascData = data?.servant?.ascension_materials;
    let ascensionTotal = CalculateTotals(ascData);
    let ascensionQP = ascData.map((a) => a.qp_cost).reduce((ps, a) => ps + a, 0);
 
    // 2) Calculate Skill total
    // ======================
-   const skillData = character.skill_enhancements;
+   const skillData = data?.servant?.skill_enhancements;
    let skillTotal = CalculateTotals(skillData);
    let skillQP = skillData.map((a) => a.qp_cost).reduce((ps, a) => ps + a, 0);
 
    // 3) Calculate Append total
    // ======================
-   const appendData = character.append_skill_enhancements;
+   const appendData = data?.servant?.append_skill_enhancements;
    let appendTotal = CalculateTotals(appendData);
    let appendQP = appendData.map((a) => a.qp_cost).reduce((ps, a) => ps + a, 0);
 
@@ -256,14 +225,13 @@ const TotalMaterials = ({ character }: any) => {
          </Table>
       </>
    );
-};
+}
 
-const CostumeMaterials = ({ character }: any) => {
+export function CostumeMaterials({ data }: any) {
    return (
       <>
-         {character.costumes?.length > 0 && (
+         {data?.servant?.costumes?.length > 0 && (
             <>
-               <H2Plain text="Costume Dress Materials" />
                <Table grid framed dense>
                   <TableHead>
                      <TableRow>
@@ -273,7 +241,7 @@ const CostumeMaterials = ({ character }: any) => {
                      </TableRow>
                   </TableHead>
                   <TableBody>
-                     {character.costumes?.map((costume, index) => (
+                     {data?.servant?.costumes?.map((costume, index) => (
                         <TableRow key={index}>
                            <TableCell>{costume?.name}</TableCell>
                            <TableCell>
@@ -299,7 +267,7 @@ const CostumeMaterials = ({ character }: any) => {
          )}
       </>
    );
-};
+}
 
 const MaterialQtyFrame = ({ materialqty }: any) => {
    const mat = materialqty?.material;
