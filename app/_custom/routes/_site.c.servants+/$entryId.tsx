@@ -36,7 +36,7 @@ export async function loader({
    params,
    request,
 }: LoaderFunctionArgs) {
-   const fetchCharacterData = fetchEntry({
+   const { entry } = await fetchEntry({
       payload,
       params,
       request,
@@ -46,37 +46,11 @@ export async function loader({
       },
    });
 
-   const fetchCEData = fetchEntry({
-      payload,
-      params,
-      request,
-      user,
-      gql: {
-         query: CE_QUERY,
-      },
-   });
-   const fetchBannerData = fetchEntry({
-      payload,
-      params,
-      request,
-      user,
-      gql: {
-         query: BANNER_QUERY,
-      },
-   });
-
-   const [{ entry }, ce, banner] = await Promise.all([
-      fetchCharacterData,
-      fetchCEData,
-      fetchBannerData,
-   ]);
-
    return json({
       entry,
       servant: entry?.data?.Servant,
-      writeupData: entry?.data?.Servant,
-      ceData: ce?.entry?.data?.CraftEssences?.docs,
-      bannerData: banner?.entry?.data?.SummonEvents?.docs,
+      ceData: entry?.data?.CraftEssences?.docs,
+      bannerData: entry?.data?.SummonEvents?.docs,
    });
 }
 
@@ -101,13 +75,12 @@ const SECTIONS = {
 
 export default function EntryPage() {
    const loaderdata = useLoaderData<typeof loader>();
-
    return <Entry customComponents={SECTIONS} customData={loaderdata} />;
 }
 
 // Add stats under atk_lv120 later.
 const QUERY = gql`
-   query ($entryId: String!) {
+   query ($entryId: String!, $jsonEntryId: JSON) {
       Servant(id: $entryId) {
          id
          name
@@ -204,7 +177,6 @@ const QUERY = gql`
          durability_rating
          utility_rating
          np_gain_rating
-
          interlude_quests {
             quest {
                id
@@ -459,12 +431,7 @@ const QUERY = gql`
          lore
          authored_by
       }
-   }
-`;
-
-const CE_QUERY = gql`
-   query ($entryId: JSON!) {
-      CraftEssences(where: { servant: { equals: $entryId } }) {
+      CraftEssences(where: { servant: { equals: $jsonEntryId } }) {
          docs {
             id
             name
@@ -478,14 +445,11 @@ const CE_QUERY = gql`
             is_bond_ce
          }
       }
-   }
-`;
-
-const BANNER_QUERY = gql`
-   query ($entryId: JSON!) {
       SummonEvents(
          where: {
-            servant_profile_future_banner__banner_servant: { equals: $entryId }
+            servant_profile_future_banner__banner_servant: {
+               equals: $jsonEntryId
+            }
          }
       ) {
          docs {

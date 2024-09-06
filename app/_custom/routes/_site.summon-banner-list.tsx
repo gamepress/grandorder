@@ -64,7 +64,7 @@ export const meta: MetaFunction = () => {
 const SummonBannerList = (data: any) => {
    //need banners, weapons, characters
    const loaderdata = useLoaderData<typeof loader>();
-   console.log(loaderdata);
+
    const bannerlist = loaderdata?.summonEventList;
 
    return (

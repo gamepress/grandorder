@@ -46,7 +46,6 @@ const SECTIONS = {
 export default function EntryPage() {
    const { entry } = useLoaderData<typeof loader>();
    const quest = entry?.data?.Quest;
-   console.log(quest);
 
    return <Entry customComponents={SECTIONS} customData={quest} />;
 }

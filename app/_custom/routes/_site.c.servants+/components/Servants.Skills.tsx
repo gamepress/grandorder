@@ -147,10 +147,12 @@ const SkillDisplay = ({ skill }: any) => {
             </div>
          </div>
          {open ? (
-            <table
-               className="text-xs text-center mt-3 w-full skill-table"
-               dangerouslySetInnerHTML={{ __html: skilltablehtml }}
-            ></table>
+            <div className="overflow-auto">
+               <table
+                  className="text-xs text-center mt-3 w-full skill-table"
+                  dangerouslySetInnerHTML={{ __html: skilltablehtml }}
+               ></table>
+            </div>
          ) : null}
          {skill.upgrades
             ? skill.upgrades.map((upg: any) => (
@@ -255,10 +257,12 @@ const SkillUpgrade = ({ skill }: any) => {
             </div>
          </div>
          {open ? (
-            <table
-               className="text-xs text-center mt-3 w-full skill-table"
-               dangerouslySetInnerHTML={{ __html: skilltablehtml }}
-            ></table>
+            <div className="overflow-auto">
+               <table
+                  className="text-xs text-center mt-3 w-full skill-table"
+                  dangerouslySetInnerHTML={{ __html: skilltablehtml }}
+               ></table>
+            </div>
          ) : null}
          {skill.upgrades
             ? skill.upgrades.map((upg: any) => (
@@ -288,7 +292,6 @@ export function AppendSkill({ data }: any) {
 }
 
 function AppendSkillDisplay({ skill }: any) {
-   console.log(skill);
    const skill_name = skill?.name;
    const skill_icon = skill?.skill_image?.icon?.url;
    const skill_value_table = skill?.effect_value_table;
@@ -358,10 +361,12 @@ function AppendSkillDisplay({ skill }: any) {
                </div>
             </div>
             {open ? (
-               <table
-                  className="text-xs text-center mt-3 w-full skill-table overflow-auto"
-                  dangerouslySetInnerHTML={{ __html: skilltablehtml }}
-               ></table>
+               <div className="overflow-auto">
+                  <table
+                     className="text-xs text-center mt-3 w-full skill-table"
+                     dangerouslySetInnerHTML={{ __html: skilltablehtml }}
+                  ></table>
+               </div>
             ) : null}
          </div>
       </>

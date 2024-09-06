@@ -42,7 +42,7 @@ export function LevelUpSkillRec({
    data: any;
    subSection: SubSectionType;
 }) {
-   const skillLevels = data?.writeupData?.writeup_skill_level_recommendation;
+   const skillLevels = data?.servant?.writeup_skill_level_recommendation;
 
    return skillLevels && skillLevels.length > 0 ? (
       <>
@@ -68,7 +68,7 @@ export function CERec({
    data: any;
    subSection: SubSectionType;
 }) {
-   const celist = data?.writeupData?.recommended_ces;
+   const celist = data?.servant?.recommended_ces;
    return (
       <>
          {celist && celist.length > 0 ? (
@@ -189,10 +189,12 @@ const SkillDisplay = ({ skill }: any) => {
                </div>
             </div>
             {open ? (
-               <table
-                  className="text-xs text-center mt-3 w-full skill-table overflow-auto"
-                  dangerouslySetInnerHTML={{ __html: skilltablehtml }}
-               ></table>
+               <div className="overflow-auto">
+                  <table
+                     className="text-xs text-center mt-3 w-full skill-table overflow-auto"
+                     dangerouslySetInnerHTML={{ __html: skilltablehtml }}
+                  ></table>
+               </div>
             ) : null}
          </div>
       </>

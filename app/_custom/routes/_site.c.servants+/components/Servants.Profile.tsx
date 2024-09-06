@@ -215,7 +215,7 @@ function ProfileEntries({ data: servant }: { data: ServantType }) {
                {profiles.map((pe: any) => {
                   return (
                      <>
-                        <h3 className="px-1 pb-1 mb-2 border-b border-color-sub">
+                        <h3 className="pb-1 pt-3.5 mb-2.5 border-b-2 border-color-sub text-lg">
                            {pe?.title}
                         </h3>
                         <div
@@ -239,37 +239,34 @@ function VoiceLines({ data: servant }: { data: ServantType }) {
          {lines && lines?.length > 0 ? (
             <>
                <H2Plain text="Voice Lines" />
-               <div className="my-1">
-                  <table className="text-sm w-full ">
-                     <tbody>
-                        {lines?.map((irow: any, ind: any) => {
-                           return (
-                              <>
-                                 {irow?.text ? (
-                                    <>
-                                       <tr key={"voice_lines_row_" + ind}>
-                                          <th
-                                             className={thformat}
-                                             key={"info_row_" + ind}
-                                          >
-                                             {irow?.title}
-                                          </th>
-                                          <td
-                                             className={tdVoiceline}
+               <Table grid framed dense>
+                  <TableBody>
+                     {lines?.map((irow: any, ind: any) => {
+                        return (
+                           <>
+                              {irow?.text ? (
+                                 <>
+                                    <TableRow key={"voice_lines_row_" + ind}>
+                                       <TableHeader key={"info_row_" + ind}>
+                                          {irow?.title}
+                                       </TableHeader>
+                                       <TableCell>
+                                          <div
                                              key={"info_value_" + ind}
+                                             className="whitespace-pre-wrap"
                                              dangerouslySetInnerHTML={{
                                                 __html: irow?.text,
                                              }}
-                                          ></td>
-                                       </tr>
-                                    </>
-                                 ) : null}
-                              </>
-                           );
-                        })}
-                     </tbody>
-                  </table>
-               </div>
+                                          />
+                                       </TableCell>
+                                    </TableRow>
+                                 </>
+                              ) : null}
+                           </>
+                        );
+                     })}
+                  </TableBody>
+               </Table>
             </>
          ) : null}
       </>
