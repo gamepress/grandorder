@@ -4,9 +4,9 @@ import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { gql } from "graphql-request";
 
-import { Effect } from "~/_custom/components/craft-essences/Effect";
-import { Main } from "~/_custom/components/craft-essences/Main";
-import { Similar } from "~/_custom/components/craft-essences/Similar";
+import { CraftEssencesEffect } from "~/_custom/routes/_site.c.craft-essences+/components/CraftEssences.Effect";
+import { CraftEssencesMain } from "~/_custom/routes/_site.c.craft-essences+/components/CraftEssences.Main";
+import { CraftEssencesSimilar } from "~/_custom/routes/_site.c.craft-essences+/components/CraftEssences.Similar";
 import type { CraftEssence as CraftEssenceType } from "~/db/payload-custom-types";
 import { Entry } from "~/routes/_site+/c_+/$collectionId_.$entryId/components/Entry";
 import { entryMeta } from "~/routes/_site+/c_+/$collectionId_.$entryId/utils/entryMeta";
@@ -14,7 +14,6 @@ import { fetchEntry } from "~/routes/_site+/c_+/$collectionId_.$entryId/utils/fe
 
 export { entryMeta as meta };
 
-// Loader definition - loads Entry data!
 export async function loader({
    context: { payload, user },
    params,
@@ -35,15 +34,14 @@ export async function loader({
 }
 
 const SECTIONS = {
-   main: Main,
-   effect: Effect,
-   similar: Similar,
+   main: CraftEssencesMain,
+   effect: CraftEssencesEffect,
+   similar: CraftEssencesSimilar,
 };
 
 export default function EntryPage() {
    const { entry } = useLoaderData<typeof loader>();
    const ce = entry?.data?.CraftEssence as CraftEssenceType;
-   // console.log(ce);
 
    return <Entry customComponents={SECTIONS} customData={ce} />;
 }

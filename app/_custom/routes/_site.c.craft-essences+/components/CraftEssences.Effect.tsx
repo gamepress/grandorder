@@ -1,8 +1,8 @@
 import type { CraftEssence as CraftEssenceType } from "payload/generated-custom-types";
-import { H2 } from "~/components/Headers";
 import { Image } from "~/components/Image";
+import { SectionTitle } from "~/routes/_site+/c_+/$collectionId_.$entryId/components/SectionTitle";
 
-export function Effect({ data: ce }: { data: CraftEssenceType }) {
+export function CraftEssencesEffect({ data: ce }: { data: CraftEssenceType }) {
    const dispData = [
       {
          header: "Effect",
@@ -33,53 +33,37 @@ export function Effect({ data: ce }: { data: CraftEssenceType }) {
 
    return (
       <>
-         <EffectSection dispData={dispData} />
-         <StatSection mainStatDisplay={mainStatDisplay} />
-      </>
-   );
-}
-
-const EffectSection = ({ dispData }: any) => {
-   return (
-      <>
          {dispData.map((data) => {
-            // console.log(data.value);
             return (
                <>
-                  <H2 text={data.header} />
-                  <div className="mx-2">
-                     {data.image ? (
-                        <div className="inline-block h-auto w-[10%] align-top mr-4">
+                  <SectionTitle customTitle={data.header} />
+                  {data?.value && (
+                     <div className="flex items-start gap-4 border border-color-sub rounded-lg shadow-1 shadow-sm bg-2-sub p-3">
+                        {data.image ? (
                            <Image
-                              options="aspect_ratio=1:1&height=80&width=80"
-                              className="object-contain"
-                              url={data.image}
+                              width={128}
+                              height={128}
+                              //@ts-ignore
+                              url={data?.image}
                               alt="skill_icon"
                               loading="lazy"
+                              className="size-12 flex-none"
                            />
+                        ) : null}
+                        <div className="flex-grow">
+                           {/* Description */}
+                           <div
+                              className="text-sm whitespace-pre-wrap"
+                              dangerouslySetInnerHTML={{
+                                 __html: data.value ?? "",
+                              }}
+                           ></div>
                         </div>
-                     ) : null}
-
-                     <div className="inline-block w-[85%] align-top">
-                        {/* Description */}
-                        <div
-                           className="text-sm whitespace-pre-wrap"
-                           dangerouslySetInnerHTML={{
-                              __html: data.value ?? "",
-                           }}
-                        ></div>
                      </div>
-                  </div>
+                  )}
                </>
             );
          })}
-      </>
-   );
-};
-
-const StatSection = ({ mainStatDisplay }: any) => {
-   return (
-      <>
          <div
             className="border border-color-sub divide-y divide-color-sub shadow-sm shadow-1 rounded-lg 
          mb-3 [&>*:nth-of-type(odd)]:bg-zinc-50 dark:[&>*:nth-of-type(odd)]:bg-dark350 overflow-hidden mt-3"
@@ -105,4 +89,4 @@ const StatSection = ({ mainStatDisplay }: any) => {
          </div>
       </>
    );
-};
+}

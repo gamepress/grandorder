@@ -7,7 +7,7 @@ import { Icon } from "~/components/Icon";
 import { Image } from "~/components/Image";
 import type { Servant } from "~/db/payload-custom-types";
 
-export function Main({ data }: { data: { servant: Servant } }) {
+export function ServantsMain({ data }: { data: { servant: Servant } }) {
    const servant = data.servant;
 
    const traitlist = servant?.traits;

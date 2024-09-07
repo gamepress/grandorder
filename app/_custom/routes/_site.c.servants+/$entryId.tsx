@@ -16,7 +16,7 @@ import { entryMeta } from "~/routes/_site+/c_+/$collectionId_.$entryId/utils/ent
 import { fetchEntry } from "~/routes/_site+/c_+/$collectionId_.$entryId/utils/fetchEntry.server";
 
 import { AdditionalInfo } from "./components/Servants.AdditionalInfo";
-import { Main } from "./components/Servants.Main";
+import { ServantsMain } from "./components/Servants.Main";
 import {
    AppendMaterials,
    AscensionMaterials,
@@ -55,7 +55,7 @@ export async function loader({
 }
 
 const SECTIONS = {
-   main: Main,
+   main: ServantsMain,
    skills: Skills,
    noblePhantasm: NoblePhantasm,
    interludes: Interludes,

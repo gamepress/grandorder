@@ -15,7 +15,7 @@ export const CraftEssences: CollectionConfig = {
    labels: { singular: "Craft Essence", plural: "Craft Essences" },
    admin: { group: "Custom", useAsTitle: "name" },
    hooks: {
-      afterChange: [afterChangeSearchSyncHook],
+      // afterChange: [afterChangeSearchSyncHook],
       afterDelete: [
          Delete_TermRelations(
             "cv", // Origin collection first level field name
