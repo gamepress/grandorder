@@ -3,6 +3,7 @@ import {
    DisclosureButton,
    DisclosurePanel,
 } from "@headlessui/react";
+import clsx from "clsx";
 
 import type { Servant as ServantType } from "payload/generated-custom-types";
 import { H2Plain } from "~/components/Headers";
@@ -125,36 +126,41 @@ function FutureBanners({ data }: { data: any }) {
                {({ open }) => (
                   <>
                      <DisclosureButton
-                        className={`font-bold text-white bg-blue-800 dark:border-zinc-600 dark:bg-zinc-800
-                 flex items-center mb-1 w-full border px-3 py-2 mt-1 rounded-md text-lg ${
-                    open
-                       ? "bg-opacity-100 dark:bg-opacity-100"
-                       : "bg-opacity-80 dark:bg-opacity-40"
-                 }`}
+                        className="my-3 flex justify-between items-center gap-4 font-bold w-full p-2 rounded-lg bg-zinc-50
+                      dark:bg-zinc-700 dark:border-zinc-600 border-zinc-300 shadow-1 shadow-sm border border-color-sub"
                      >
-                        Past Banners
                         <div
-                           className={`${
-                              open
-                                 ? "transform rotate-180 text-gray-600 font-bold "
-                                 : "text-gray-400 "
-                           } inline-block ml-auto `}
+                           className={clsx(
+                              open ? "transform rotate-180" : "",
+                              "dark:bg-zinc-600 bg-white rounded-full size-7 flex items-center justify-center",
+                           )}
                         >
-                           <Icon name="chevron-down" />
+                           <Icon size={20} name="chevron-down" />
+                        </div>
+                        <span>Past Banners</span>
+                        <div
+                           className={clsx(
+                              open ? "transform rotate-180" : "",
+                              "dark:bg-zinc-600 bg-white rounded-full size-7 flex items-center justify-center",
+                           )}
+                        >
+                           <Icon size={20} name="chevron-down" />
                         </div>
                      </DisclosureButton>
-                     <DisclosurePanel>
+                     <DisclosurePanel className="space-y-3">
                         {past_banners.map((b: any) => {
                            return (
                               <>
-                                 <div className="text-center text-sm p-2 border border-color-sub">
+                                 <div className="text-center overflow-hidden flex items-center w-full flex-col justify-center text-sm border border-color-sub rounded-lg">
                                     <Image
-                                       height={100}
+                                       height={250}
                                        url={b.icon?.url}
-                                       options="height=100"
+                                       className="h-32"
                                        alt="Banner"
                                     />
-                                    <div>{b.name}</div>
+                                    <div className="py-2 font-bold border-t border-color-sub bg-2-sub w-full">
+                                       {b.name}
+                                    </div>
                                  </div>
                               </>
                            );

@@ -46,6 +46,7 @@ export function LevelUpSkillRec({
 
    return skillLevels && skillLevels.length > 0 ? (
       <>
+         <H2Plain text="Level Up Skill Recommendations" />
          <div className="pb-3 space-y-3">
             {skillLevels?.map((skill: any, si: any) => {
                return (

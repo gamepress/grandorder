@@ -11,10 +11,6 @@ import {
    TableRow,
 } from "~/components/Table";
 
-const thformat =
-   "p-2 leading-none text-left border border-color-sub bg-zinc-50 dark:bg-zinc-800";
-const tdVoiceline = "p-2 text-left border border-color-sub";
-
 export function Profile({ data }: { data: any }) {
    const servant = data.servant;
    const ce = data.ceData;
