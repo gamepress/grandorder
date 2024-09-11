@@ -51,7 +51,7 @@ const NoblePhantasmDisplay = ({ np }: any) => {
                />
                <div className="space-y-1 flex-grow">
                   <div className="flex items-center justify-between pb-0.5">
-                     <div className="flex items-center gap-2 text-sm font-mono">
+                     <div className="flex items-center gap-2 text-base">
                         <span className="font-bold">{np_name}</span>
                         <span className="text-1">{np_rank}</span>
                      </div>

@@ -131,7 +131,7 @@ function Parameters({ data: servant }: { data: ServantType }) {
             {paramlist?.map((p: any) => {
                return (
                   <>
-                     <div className="w-full flex items-center justify-left gap-2">
+                     <div className="w-full flex justify-left gap-2">
                         <div className="flex-none w-7 font-mono font-bold">
                            {p.name}
                         </div>
@@ -157,7 +157,7 @@ function Parameters({ data: servant }: { data: ServantType }) {
                               );
                            })}
                         </div>
-                        <div className="w-6 ml-1 font-bold">{p.grade}</div>
+                        <div className="w-8 ml-1 font-bold">{p.grade}</div>
                      </div>
                   </>
                );

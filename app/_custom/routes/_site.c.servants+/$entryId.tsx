@@ -51,6 +51,7 @@ export async function loader({
       servant: entry?.data?.Servant,
       ceData: entry?.data?.CraftEssences?.docs,
       bannerData: entry?.data?.SummonEvents?.docs,
+      costumeData: entry?.data?.Costumes?.docs,
    });
 }
 
@@ -467,6 +468,15 @@ const QUERY = gql`
                   name
                }
                banner_reference
+            }
+         }
+      }
+      Costumes(where: { servant: { equals: $jsonEntryId } }) {
+         docs {
+            id
+            name
+            icon {
+               url
             }
          }
       }

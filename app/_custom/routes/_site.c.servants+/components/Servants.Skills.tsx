@@ -109,9 +109,7 @@ const SkillDisplay = ({ skill }: any) => {
                alt="SkillIcon"
             />
             <div className="flex-grow">
-               <div className="font-bold text-sm font-mono pb-0.5">
-                  {skill_name}
-               </div>
+               <div className="font-bold text-base pb-0.5">{skill_name}</div>
                <div
                   className="text-sm whitespace-pre-wrap pb-1"
                   dangerouslySetInnerHTML={{
@@ -327,9 +325,7 @@ function AppendSkillDisplay({ skill }: any) {
                   alt="SkillIcon"
                />
                <div className="flex-grow">
-                  <div className="font-bold text-sm font-mono">
-                     {skill_name}
-                  </div>
+                  <div className="font-bold text-base">{skill_name}</div>
                   <div
                      className="text-sm whitespace-pre-wrap pb-1.5"
                      dangerouslySetInnerHTML={{
@@ -403,9 +399,7 @@ const ClassSkillDisplay = ({ skill }: any) => {
                   alt="SkillIcon"
                />
                <div className="flex-grow">
-                  <div className="font-bold font-mono text-sm pb-0.5">
-                     {skill_name}
-                  </div>
+                  <div className="font-bold text-base pb-0.5">{skill_name}</div>
                   <div
                      className="text-sm whitespace-pre-wrap"
                      dangerouslySetInnerHTML={{
