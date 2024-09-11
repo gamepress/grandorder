@@ -206,31 +206,31 @@ const SkillRecCircle = ({ rec }: any) => {
       case "Higher":
          return (
             <Badge className="justify-center w-full" color="teal">
-               Best
+               Higher
             </Badge>
          );
       case "High":
          return (
             <Badge className="justify-center w-full" color="green">
-               Great
+               High
             </Badge>
          );
       case "Medium":
          return (
             <Badge className="justify-center w-full" color="lime">
-               Ok
+               Med
             </Badge>
          );
       case "Low":
          return (
             <Badge className="justify-center w-full" color="orange">
-               Decent
+               Low
             </Badge>
          );
       case "Lower":
          return (
             <Badge className="justify-center w-full" color="red">
-               Meh
+               Lower
             </Badge>
          );
       default:

@@ -187,7 +187,7 @@ export function TotalMaterials({ data }: any) {
 
    return (
       <>
-         <Table grid framed dense>
+         <Table grid framed dense className="!whitespace-normal">
             <TableBody>
                {displayTotals?.map((row, index) => (
                   <TableRow key={index}>
@@ -195,7 +195,7 @@ export function TotalMaterials({ data }: any) {
                         {row.name}
                      </TableHeader>
                      <TableCell>
-                        <div className="w-full">
+                        <div className="">
                            {row.data?.map((mat, key) => (
                               <MaterialQtyFrame
                                  materialqty={mat}

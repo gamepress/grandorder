@@ -7,8 +7,14 @@ import { Icon } from "~/components/Icon";
 import { Image } from "~/components/Image";
 import type { Servant } from "~/db/payload-custom-types";
 
-export function ServantsMain({ data }: { data: { servant: Servant } }) {
+export function ServantsMain({
+   data,
+}: {
+   data: { servant: Servant; costumeData: any };
+}) {
    const servant = data.servant;
+   const costumes = data.costumeData;
+   console.log(costumes);
 
    const traitlist = servant?.traits;
 
@@ -16,7 +22,7 @@ export function ServantsMain({ data }: { data: { servant: Servant } }) {
 
    return (
       <div>
-         <ServantImageBaseData charData={servant} />
+         <ServantImageBaseData charData={servant} costumeData={costumes} />
          {traitlist && traitlist?.length > 0 ? (
             <>
                <h3 className="flex items-center dark:text-zinc-100 max-laptop:mt-3 mt-1 gap-3 pb-1.5 font-header text-lg">
@@ -77,7 +83,13 @@ export function ServantsMain({ data }: { data: { servant: Servant } }) {
 // =====================================
 // 2) Servant Image and Base Data
 // =====================================
-function ServantImageBaseData({ charData }: { charData: Servant }) {
+function ServantImageBaseData({
+   charData,
+   costumeData,
+}: {
+   charData: Servant;
+   costumeData: any;
+}) {
    // Initialize list of selectable images for a Servant (4 stages by default; additional images can be appended to this object for costumes)
    let selectimg = [
       {
@@ -97,6 +109,14 @@ function ServantImageBaseData({ charData }: { charData: Servant }) {
          url: charData.image_stage_4?.url,
       },
    ];
+   const costumeimg = costumeData?.map((cost) => {
+      return {
+         name: cost.name,
+         url: cost.icon?.url,
+      };
+   });
+   console.log(costumeimg);
+   selectimg.push(...costumeimg);
 
    // UseState variable to track selected display image for Servant
    const [characterImage, setCharacterImage] = useState(selectimg[0]?.name);
@@ -164,6 +184,20 @@ function ServantImageBaseData({ charData }: { charData: Servant }) {
 
    return (
       <>
+         {/* Header - Class and Rarity */}
+         <div className="flex items-center shadow-sm shadow-1 border border-color-sub py-2 pl-2 pr-3 rounded-lg bg-2-sub mb-2">
+            <div className="flex-grow font-bold">
+               <div className="relative inline-block align-middle size-7">
+                  <Image width={40} height={40} url={classicon} />
+               </div>
+               <div className="relative inline-block align-middle font-bold ml-2 w-2/5">
+                  {classname}
+               </div>
+            </div>
+            <div className="flex-none">
+               <StarRarity key={id} rar={rarityno} />
+            </div>
+         </div>
          <div className="tablet:flex max-tablet:flex-col items-start gap-3 pb-4">
             <section className="space-y-0.5 max-tablet:pb-3 tablet:max-w-[340px]">
                {/* Servant Image */}
@@ -172,11 +206,11 @@ function ServantImageBaseData({ charData }: { charData: Servant }) {
                   to={imgUrl ?? ""}
                   className="relative block"
                >
-                  <div className="tablet:w-[340px]">
+                  <div className="tablet:w-[340px] min-h-[250px]">
                      <Image
                         width={680}
                         className="rounded-md max-laptop:w-full"
-                        url={imgUrl}
+                        url={imgUrl ?? ""}
                         alt={charData?.name ?? "Servant Image"}
                      />
                   </div>
@@ -193,7 +227,7 @@ function ServantImageBaseData({ charData }: { charData: Servant }) {
                   </div>
                </Link>
                {/* - Image Selection */}
-               <div className="grid grid-cols-2 laptop:grid-cols-4 gap-2 py-2">
+               <div className="grid grid-cols-2 laptop:grid-cols-2 gap-2 py-2">
                   {selectimg.map((opt: any) => {
                      return (
                         <>
@@ -212,49 +246,14 @@ function ServantImageBaseData({ charData }: { charData: Servant }) {
                      );
                   })}
                </div>
-               <div
-                  className="border border-color-sub divide-y divide-color-sub shadow-sm shadow-1 rounded-lg 
-               mb-3 overflow-hidden bg-2-sub"
-               >
-                  <div className="px-2.5 py-3 justify-between flex items-center gap-2 text-xs">
-                     <div className="flex items-center gap-2">
-                        <span className="font-semibold">Attribute</span>
-                     </div>
-                     <div className="font-semibold text-1 text-right">
-                        {attribute}
-                     </div>
-                  </div>
-                  <div className="px-2.5 py-3 justify-between flex items-center gap-2 text-xs">
-                     <div className="flex items-center gap-2">
-                        <span className="font-semibold">Alignments</span>
-                     </div>
-                     <div className="font-semibold text-1 text-right">
-                        {alignment}
-                     </div>
-                  </div>
-               </div>
             </section>
             {/* Right Data Block */}
             <div className="flex-grow space-y-3">
-               {/* Header - Class and Rarity */}
-               <div className="flex items-center shadow-sm shadow-1 border border-color-sub py-2 pl-2 pr-3 rounded-lg bg-2-sub">
-                  <div className="flex-grow font-bold">
-                     <div className="relative inline-block align-middle size-7">
-                        <Image width={40} height={40} url={classicon} />
-                     </div>
-                     <div className="relative inline-block align-middle font-bold ml-2 w-2/5">
-                        {classname}
-                     </div>
-                  </div>
-                  <div className="flex-none">
-                     <StarRarity key={id} rar={rarityno} />
-                  </div>
-               </div>
                {/* - Hit count */}
                <div className="flex items-center justify-evenly shadow-sm shadow-1 border border-color-sub py-2 rounded-lg bg-2-sub">
                   {hitcounts.map((hit: any, i: any) => (
                      <div key={hit.id} className="relative">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center align-middle gap-2">
                            <div className="h-auto w-8">
                               <Image height={64} url={hit.img} alt="CardType" />
                            </div>
@@ -264,12 +263,33 @@ function ServantImageBaseData({ charData }: { charData: Servant }) {
                                  <Image height={64} url={nptype} alt="NP" />
                               </div>
                            ) : null}
-                        </div>
-                        <div className="text-xs font-bold rounded-full dark:bg-dark500 size-4 flex items-center justify-center absolute -right-3 bottom-0">
-                           {hit.hits ?? "-"}
+                           <div className="text-xs font-bold rounded-full dark:bg-dark500 size-4 flex items-center justify-center absolute -right-4 bottom-[8px]">
+                              {hit.hits ?? "-"}
+                           </div>
                         </div>
                      </div>
                   ))}
+               </div>
+               <div
+                  className="border border-color-sub divide-y divide-color-sub shadow-sm shadow-1 rounded-lg 
+               mb-3 overflow-hidden bg-2-sub"
+               >
+                  <div className="px-2.5 py-2 justify-between flex items-center gap-2 text-xs">
+                     <div className="flex items-center gap-2">
+                        <span className="font-semibold">Attribute</span>
+                     </div>
+                     <div className="font-semibold text-1 text-right">
+                        {attribute}
+                     </div>
+                  </div>
+                  <div className="px-2.5 py-2 justify-between flex items-center gap-2 text-xs">
+                     <div className="flex items-center gap-2">
+                        <span className="font-semibold">Alignments</span>
+                     </div>
+                     <div className="font-semibold text-1 text-right">
+                        {alignment}
+                     </div>
+                  </div>
                </div>
                <TableNPGainStar data={charData} />
                <TableHPATK data={charData} />
@@ -358,9 +378,9 @@ function TableHPATK({ data: servant }: { data: Servant }) {
    return (
       <>
          <div className="space-y-3">
-            <div className="bg-2-sub shadow-sm shadow-1 border border-color-sub rounded-lg p-3">
-               <div className="font-bold text-sm flex items-center gap-2 pb-2">
-                  <span className="font-mono text-sm">Attack</span>
+            <div className="bg-2-sub shadow-sm shadow-1 border border-color-sub rounded-lg py-2 px-3">
+               <div className="font-bold text-sm flex items-center gap-2 pb-1">
+                  <span className="font-mono text-base">Attack</span>
                   <span className="flex-grow h-0.5 rounded-full dark:bg-dark450 bg-zinc-100" />
                </div>
                <div className="text-sm flex items-center justify-evenly gap-3">
@@ -405,9 +425,9 @@ function TableHPATK({ data: servant }: { data: Servant }) {
                   </div>
                </div>
             </div>
-            <div className="bg-2-sub shadow-sm shadow-1 border border-color-sub rounded-lg p-3">
-               <div className="font-bold text-sm flex items-center gap-2 pb-2">
-                  <span className="font-mono text-sm">HP</span>
+            <div className="bg-2-sub shadow-sm shadow-1 border border-color-sub rounded-lg py-2 px-3">
+               <div className="font-bold text-sm flex items-center gap-2 pb-1">
+                  <span className="font-mono text-base">HP</span>
                   <span className="flex-grow h-0.5 rounded-full dark:bg-dark450 bg-zinc-100" />
                </div>
                <div className="text-sm flex items-center justify-evenly gap-3">
@@ -513,7 +533,7 @@ function TableNPGainStar({ data: servant }: { data: Servant }) {
             className="border border-color-sub divide-y divide-color-sub shadow-sm shadow-1 rounded-lg 
                mb-3 [&>*:nth-of-type(odd)]:bg-zinc-50 dark:[&>*:nth-of-type(odd)]:bg-dark350 overflow-hidden"
          >
-            <div className="p-3 justify-between flex items-center gap-2">
+            <div className="p-2 justify-between flex items-center gap-2">
                <div className="flex items-center  gap-2">
                   <Image
                      className="size-5"
