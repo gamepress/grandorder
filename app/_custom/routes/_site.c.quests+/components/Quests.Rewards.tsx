@@ -1,27 +1,24 @@
-import type { Quest as QuestType } from "payload/generated-custom-types";
 import { H2 } from "~/components/Headers";
 import { Image } from "~/components/Image";
-import { Fragment, useState } from "react";
 import {
    Table,
    TableBody,
    TableCell,
    TableHead,
-   TableHeader,
    TableRow,
 } from "~/components/Table";
 
-export function Rewards({ data }: { data: any }) {
+export function QuestsRewards({ data }: { data: any }) {
    const quest_drops = data.quest_drops;
    const quest_rewards = data.quest_rewards;
    return (
       <>
          {/* Drops */}
-         <H2 text="Quest Drops" />
+         <H2>Quest Drops</H2>
          <RewardsTable tabledata={quest_drops} />
 
          {/* Rewards */}
-         <H2 text="Quest Rewards" />
+         <H2>Quest Rewards</H2>
          <RewardsTable tabledata={quest_rewards} />
       </>
    );
@@ -44,8 +41,6 @@ const RewardsTable = ({ tabledata }: any) => {
 };
 
 const RewardRow = ({ data, index }: any) => {
-   const tdformat = "py-2 px-3 leading-none border border-color-sub";
-
    const collection_type = data.mat?.relationTo;
    const icon = data.mat?.value?.icon?.url;
    const name = data.mat?.value?.name;
@@ -59,7 +54,7 @@ const RewardRow = ({ data, index }: any) => {
    return (
       <>
          <TableRow key={index + "rewdata"}>
-            <td className={`text-left ${tdformat}`}>
+            <TableCell>
                {name ? (
                   <>
                      <a href={`/c/${collection_type}/${slug ?? id}`}>
@@ -92,7 +87,7 @@ const RewardRow = ({ data, index }: any) => {
                      dangerouslySetInnerHTML={{ __html: desc }}
                   ></div>
                )}
-            </td>
+            </TableCell>
          </TableRow>
       </>
    );

@@ -1,23 +1,19 @@
 // Core Imports
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
 import { json } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
 import { gql } from "graphql-request";
+
 import { Entry } from "~/routes/_site+/c_+/$collectionId_.$entryId/components/Entry";
 import { entryMeta } from "~/routes/_site+/c_+/$collectionId_.$entryId/utils/entryMeta";
 import { fetchEntry } from "~/routes/_site+/c_+/$collectionId_.$entryId/utils/fetchEntry.server";
 
+import { MaterialsDropLocation } from "./components/Materials.DropLocation";
+import { MaterialsMain } from "./components/Materials.Main";
+import { MaterialsServantAscSkill } from "./components/Materials.ServantAscSkill";
+
 export { entryMeta as meta };
 
-// Custom Site / Collection Config Imports
-import type { Material as MaterialType } from "~/db/payload-custom-types";
-
-// Custom Component Imports
-import { Main } from "~/_custom/components/materials/Main";
-import { DropLocation } from "~/_custom/components/materials/DropLocation";
-import { ServantAscSkill } from "~/_custom/components/materials/ServantAscSkill";
-
-// Loader definition - loads Entry data!
 export async function loader({
    context: { payload, user },
    params,
@@ -78,9 +74,9 @@ export async function loader({
 }
 
 const SECTIONS = {
-   main: Main,
-   "drop-locations": DropLocation,
-   "servant-requirements": ServantAscSkill,
+   main: MaterialsMain,
+   "drop-locations": MaterialsDropLocation,
+   "servant-requirements": MaterialsServantAscSkill,
 };
 
 export default function EntryPage() {

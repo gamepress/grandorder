@@ -1,18 +1,16 @@
-import type { Material as MaterialType } from "payload/generated-custom-types";
 import { H2 } from "~/components/Headers";
-import { Image } from "~/components/Image";
 import {
    Table,
    TableBody,
-   TableCell,
    TableHead,
    TableHeader,
    TableRow,
 } from "~/components/Table";
+import { SectionTitle } from "~/routes/_site+/c_+/$collectionId_.$entryId/components/SectionTitle";
 
 const tdformat = "py-2 px-3 leading-none border border-color-sub";
 
-export function DropLocation({ data }: { data: any }) {
+export function MaterialsDropLocation({ data }: { data: any }) {
    const material = data?.entry?.data?.Material;
    const droplocs = material?.best_drop_locations;
 
@@ -20,7 +18,7 @@ export function DropLocation({ data }: { data: any }) {
       <>
          {droplocs?.length > 0 ? (
             <>
-               <H2 text="Best Drop Locations" />
+               <SectionTitle customTitle="Best Drop Locations" />
                <DropLocationList data={droplocs} />
                <DropNotes />
             </>

@@ -1,23 +1,19 @@
 // Core Imports
 import type { LoaderFunctionArgs } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
 import { json } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
 import { gql } from "graphql-request";
+
 import { Entry } from "~/routes/_site+/c_+/$collectionId_.$entryId/components/Entry";
 import { entryMeta } from "~/routes/_site+/c_+/$collectionId_.$entryId/utils/entryMeta";
 import { fetchEntry } from "~/routes/_site+/c_+/$collectionId_.$entryId/utils/fetchEntry.server";
 
+import { QuestsEnemies } from "./components/Quests.Enemies";
+import { QuestsMain } from "./components/Quests.Main";
+import { QuestsRewards } from "./components/Quests.Rewards";
+
 export { entryMeta as meta };
 
-// Custom Site / Collection Config Imports
-import type { Quest as QuestType } from "~/db/payload-custom-types";
-
-// Custom Component Imports
-import { Main } from "~/_custom/components/quests/Main";
-import { Enemies } from "~/_custom/components/quests/Enemies";
-import { Rewards } from "~/_custom/components/quests/Rewards";
-
-// Loader definition - loads Entry data!
 export async function loader({
    context: { payload, user },
    params,
@@ -38,9 +34,9 @@ export async function loader({
 }
 
 const SECTIONS = {
-   main: Main,
-   enemies: Enemies,
-   rewards: Rewards,
+   main: QuestsMain,
+   enemies: QuestsEnemies,
+   rewards: QuestsRewards,
 };
 
 export default function EntryPage() {

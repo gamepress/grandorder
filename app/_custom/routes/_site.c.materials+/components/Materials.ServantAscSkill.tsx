@@ -1,17 +1,17 @@
-import type { Material as MaterialType } from "payload/generated-custom-types";
+import { Fragment, useState } from "react";
+
 import { H2 } from "~/components/Headers";
 import { Image } from "~/components/Image";
-import { Fragment, useState } from "react";
 import {
    Table,
    TableBody,
-   TableCell,
    TableHead,
    TableHeader,
    TableRow,
 } from "~/components/Table";
+import { SectionTitle } from "~/routes/_site+/c_+/$collectionId_.$entryId/components/SectionTitle";
 
-export function ServantAscSkill({ data }: { data: any }) {
+export function MaterialsServantAscSkill({ data }: { data: any }) {
    const [tab, setTab] = useState(0); // 0 = Individual, 1 = Total Asc, 2 = Total Skill, 3 = Total Asc+Skill, 4 = Total Append, 5 = Total All
 
    const tab_options = [
@@ -31,10 +31,11 @@ export function ServantAscSkill({ data }: { data: any }) {
    return (
       <>
          {/* Tabs */}
-         <H2 text="Servant Ascension/Skill Requirements" />
+         <SectionTitle customTitle="Servant Ascension/Skill Requirements" />
          <div className="grid grid-cols-3 justify-between gap-y-2 gap-x-3">
             {tab_options.map((tb, ti) => (
                <div
+                  key={ti}
                   className={`border border-blue-400 dark:border-blue-900 text-center py-1 cursor-pointer ${
                      tab == ti ? "font-bold bg-blue-800 bg-opacity-20" : ""
                   }`}
@@ -148,10 +149,9 @@ const IndividualTotals = ({ data }: any) => {
             <Fragment key={index}>
                {ascindiv?.length > 0 ? (
                   <>
-                     <H2
-                        text={`${asc_text[index]} Ascension`}
-                        key={index + "asch2"}
-                     />
+                     <H2 key={index + "asch2"}>
+                        {`${asc_text[index]} Ascension`}
+                     </H2>
                      <ServantTotalTable
                         tabledata={ascindiv}
                         key={index + "asctable"}
@@ -167,9 +167,8 @@ const IndividualTotals = ({ data }: any) => {
                {ascindiv?.length > 0 ? (
                   <>
                      <H2
-                        text={`${skill_text[index]} Skill Enhancement`}
                         key={index + "skillh2"}
-                     />
+                     >{`${skill_text[index]} Skill Enhancement`}</H2>
                      <ServantTotalTable
                         tabledata={ascindiv}
                         key={index + "skilltable"}
@@ -184,10 +183,9 @@ const IndividualTotals = ({ data }: any) => {
             <Fragment key={index}>
                {ascindiv?.length > 0 ? (
                   <>
-                     <H2
-                        text={`${skill_text[index]} Append Skill Enhancement`}
-                        key={index + "appendh2"}
-                     />
+                     <H2 key={index + "appendh2"}>
+                        {`${skill_text[index]} Append Skill Enhancement`}
+                     </H2>
                      <ServantTotalTable
                         tabledata={ascindiv}
                         key={index + "appendtable"}
@@ -219,7 +217,7 @@ const AscensionTotals = ({ data }: any) => {
       <>
          {ascension?.length > 0 ? (
             <>
-               <H2 text="Total (Ascension)" />
+               <H2>Total (Ascension)</H2>
                <ServantTotalTable tabledata={ascension_totals} />
             </>
          ) : null}
@@ -250,7 +248,7 @@ const SkillTotals = ({ data }: any) => {
       <>
          {skill?.length > 0 ? (
             <>
-               <H2 text="Total (Skill)" />
+               <H2>Total (Skill)</H2>
                <ServantTotalTable tabledata={skill_final} />
             </>
          ) : null}
@@ -292,7 +290,7 @@ const AscSkillTotals = ({ data }: any) => {
       <>
          {ascension?.length > 0 ? (
             <>
-               <H2 text="Total (Asc. + Skill)" />
+               <H2>Total (Asc. + Skill)</H2>
                <ServantTotalTable tabledata={asc_skill_final} />
             </>
          ) : null}
@@ -323,7 +321,7 @@ const AppendTotals = ({ data }: any) => {
       <>
          {append?.length > 0 ? (
             <>
-               <H2 text="Total (Append)" />
+               <H2>Total (Append)</H2>
                <ServantTotalTable tabledata={append_final} />
             </>
          ) : null}
@@ -372,7 +370,7 @@ const AllTotals = ({ data }: any) => {
       <>
          {ascension?.length > 0 ? (
             <>
-               <H2 text="Total (All)" />
+               <H2>Total (All)</H2>
                <ServantTotalTable tabledata={all_final} />
             </>
          ) : null}

@@ -1,8 +1,6 @@
-import type { Material as MaterialType } from "payload/generated-custom-types";
-import { H2 } from "~/components/Headers";
 import { Image } from "~/components/Image";
 
-export function Main({ data }: { data: any }) {
+export function MaterialsMain({ data }: { data: any }) {
    const material = data?.entry?.data?.Material;
    const icon = material?.icon?.url;
    const desc = material?.description;

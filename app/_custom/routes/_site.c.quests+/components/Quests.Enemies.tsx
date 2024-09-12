@@ -1,6 +1,5 @@
-import type { Quest as QuestType } from "payload/generated-custom-types";
+import { H2, H3 } from "~/components/Headers";
 import { Image } from "~/components/Image";
-import { H2 } from "~/components/Headers";
 import {
    Table,
    TableBody,
@@ -10,75 +9,47 @@ import {
    TableRow,
 } from "~/components/Table";
 
-const thformat =
-   "p-2 leading-none text-left border border-color-sub bg-zinc-50 dark:bg-zinc-800";
-const tdformat = "p-2 leading-none border border-color-sub";
+export function QuestsEnemies({ data }: { data: any }) {
+   const quest_details = data.quest_details;
 
-export function Enemies({ data }: { data: any }) {
    return (
       <>
-         <Enemy_Details data={data} />
-      </>
-   );
-}
-
-function Enemy_Details({ data: quest }: any) {
-   const quest_details = quest.quest_details;
-   return (
-      <>
-         <H2 text="Enemy Details" />
+         {/* <H2 text="Enemy Details" /> */}
          {quest_details?.map((qd: any, qind: any) => {
             const show_part =
                qind == 0
                   ? true
                   : quest_details[qind]?.quest_parts !=
-                    quest_details[qind - 1]?.quest_parts
-                  ? true
-                  : false; // Controls whether the "Part" label should show up - Always show first
+                      quest_details[qind - 1]?.quest_parts
+                    ? true
+                    : false; // Controls whether the "Part" label should show up - Always show first
 
             return (
-               <>
-                  <Quest_Part_Header data={qd} show_part={show_part} />
-
-                  <Table grid framed>
+               <div key={qd}>
+                  <QuestPartHeader data={qd} show_part={show_part} />
+                  <Table grid framed dense>
                      <TableHead>
                         <TableRow>
-                           <TableHeader center className="w-full">
-                              <span className="font-bold text-base cursor-default">
-                                 Enemies
-                              </span>
-                           </TableHeader>
-                           <TableHeader center>
-                              <span className="font-bold text-base cursor-default">
-                                 Class
-                              </span>
-                           </TableHeader>
-                           <TableHeader center>
-                              <span className="font-bold text-base cursor-default">
-                                 HP
-                              </span>
-                           </TableHeader>
-                           <TableHeader center>
-                              <span className="font-bold text-base cursor-default">
-                                 Lvl
-                              </span>
-                           </TableHeader>
+                           <TableHeader>Enemies</TableHeader>
+                           <TableHeader center>Class</TableHeader>
+                           <TableHeader center>HP</TableHeader>
+                           <TableHeader center>Lvl</TableHeader>
                         </TableRow>
                      </TableHead>
                      <TableBody>
                         {qd.enemy_details.map((qed: any, index: any) => {
-                           return <Quest_Battle_Wave data={qed} key={index} />;
+                           return <QuestBattleWave data={qed} key={index} />;
                         })}
                      </TableBody>
                   </Table>
-               </>
+               </div>
             );
          })}
       </>
    );
 }
 
-function Quest_Part_Header({
+function QuestPartHeader({
    data,
    show_part,
 }: {
@@ -92,34 +63,31 @@ function Quest_Part_Header({
    return (
       <>
          {show_part ? (
-            <>
-               <div className="border-t border-b border-color-sub text-lg font-bold py-1 mb-3 mt-6">
-                  {part_display}
-
-                  {guest?.length > 0 ? (
-                     <>
-                        {guest.map((g: any, gi: any) => (
-                           <div className="text-xs font-normal" key={gi}>
-                              Guest Servant:{" "}
-                              <a
-                                 className="text-blue-500"
-                                 href={`/c/servants/${g.id}`}
-                              >
-                                 {g.name}
-                              </a>
-                           </div>
-                        ))}
-                     </>
-                  ) : null}
-               </div>
-            </>
+            <H2>
+               {part_display}
+               {guest?.length > 0 ? (
+                  <>
+                     {guest.map((g: any, gi: any) => (
+                        <div className="text-xs font-normal" key={gi}>
+                           Guest Servant:{" "}
+                           <a
+                              className="text-blue-500"
+                              href={`/c/servants/${g.id}`}
+                           >
+                              {g.name}
+                           </a>
+                        </div>
+                     ))}
+                  </>
+               ) : null}
+            </H2>
          ) : null}
-         <div className="text-sm mt-3">{stage_display}</div>
+         <H3>{stage_display}</H3>
       </>
    );
 }
 
-function Quest_Battle_Wave({ data }: { data: any }) {
+function QuestBattleWave({ data }: { data: any }) {
    const class_icon = data?.enemy_class
       ? data.enemy_class?.icon?.url
       : data.enemy?.value?.class_rarity?.icon?.url;
@@ -135,55 +103,58 @@ function Quest_Battle_Wave({ data }: { data: any }) {
       <>
          <TableRow>
             {/* Enemy */}
-            <td className={`text-left ${tdformat}`}>
-               <div className="inline-block align-top mr-2">
+            <TableCell>
+               <div className="flex items-start gap-3">
                   <Image
-                     options="height=30&width=30"
-                     className="object-contain inline-block"
+                     height={60}
+                     width={60}
+                     className="size-7 flex-none"
                      url={enemy_icon}
                      alt="icon"
                      loading="lazy"
                   />
+                  <div className="flex-grow">
+                     <div className="text-base">{enemy_name}</div>
+                     <div
+                        className="text-xs whitespace-normal"
+                        dangerouslySetInnerHTML={{ __html: enemy_desc }}
+                     ></div>
+                     {/* Alt Enemy */}
+                     {enemy_alt?.length > 0 ? (
+                        <>
+                           <div className="w-full border-y border-color-sub py-0.5 mt-1.5 mb-2 text-sm font-bold">
+                              Alternative Spawns
+                           </div>
+                           {enemy_alt.map((enemy: any) => (
+                              <EnemyAlternative key={enemy} data={enemy} />
+                           ))}
+                        </>
+                     ) : null}
+                  </div>
                </div>
-               <div className="inline-block align-top pt-1 w-11/12">
-                  <div className="text-base">{enemy_name}</div>
-                  <div
-                     className="text-xs whitespace-normal"
-                     dangerouslySetInnerHTML={{ __html: enemy_desc }}
-                  ></div>
-                  {/* Alt Enemy */}
-                  {enemy_alt?.length > 0 ? (
-                     <>
-                        <div className="w-full border-b border-t my-1 text-sm font-bold">
-                           Alternative Spawns
-                        </div>
-                        {enemy_alt.map((enemy: any) => (
-                           <Enemy_Alternative data={enemy} />
-                        ))}
-                     </>
-                  ) : null}
-               </div>
-            </td>
+            </TableCell>
             {/* Class Icon */}
-            <td className={`text-center ${tdformat}`}>
+            <TableCell center>
                {class_icon ? (
                   <Image
-                     options="height=24&width=24"
-                     className="object-contain inline-block"
+                     width={48}
+                     height={48}
+                     className="size-6 mx-auto"
                      url={class_icon}
                      alt="icon"
                      loading="lazy"
                   />
                ) : null}
-            </td>
+            </TableCell>
             {/* HP */}
-            <td className={`text-center ${tdformat}`}>
+            <TableCell center>
                {hp.toLocaleString()}
                {/* Break Bars */}
                {break_bars?.length > 0 ? (
                   <div>
+                     {/* @ts-ignore */}
                      {break_bars.map((bar, index) => (
-                        <div className="inline-block">
+                        <div key={index} className="inline-block">
                            <Image
                               options="height=22&width=22"
                               className="object-contain inline-block"
@@ -195,17 +166,15 @@ function Quest_Battle_Wave({ data }: { data: any }) {
                      ))}
                   </div>
                ) : null}
-            </td>
+            </TableCell>
             {/* Lvl */}
-            <td className={`text-center ${tdformat}`}>
-               {lvl.toLocaleString()}
-            </td>
+            <TableCell center>{lvl.toLocaleString()}</TableCell>
          </TableRow>
       </>
    );
 }
 
-function Enemy_Alternative({ data }: { data: any }) {
+function EnemyAlternative({ data }: { data: any }) {
    const class_icon = data?.enemy_class
       ? data.enemy_class?.icon?.url
       : data.enemy?.value?.class_rarity?.icon?.url;
@@ -216,28 +185,28 @@ function Enemy_Alternative({ data }: { data: any }) {
    const lvl = data.level;
 
    return (
-      <>
-         <div className="inline-block align-top mr-1">
+      <div className="flex items-start gap-3">
+         <div className="flex flex-col gap-2">
             <Image
-               options="height=22&width=22"
-               className="object-contain inline-block"
+               width={48}
+               height={48}
+               className="size-6"
                url={class_icon}
                alt="icon"
                loading="lazy"
             />
-         </div>
-         <div className="inline-block align-top mr-2">
             <Image
-               options="height=22&width=22"
-               className="object-contain inline-block"
+               width={48}
+               height={48}
+               className="size-6"
                url={enemy_icon}
                alt="icon"
                loading="lazy"
             />
          </div>
-         <div className="inline-block align-top pt-1">
-            <div className="text-sm">{enemy_name}</div>
-            <div className="text-sm">
+         <div className="">
+            <div className="text-sm font-bold">{enemy_name}</div>
+            <div className="text-sm text-1">
                Lvl: {lvl} HP: {hp}
             </div>
             <div
@@ -245,7 +214,7 @@ function Enemy_Alternative({ data }: { data: any }) {
                dangerouslySetInnerHTML={{ __html: enemy_desc }}
             ></div>
          </div>
-      </>
+      </div>
    );
 }
 
