@@ -66,13 +66,13 @@ export function MaterialsServantAscSkill({ data }: { data: any }) {
 
 const IndividualTotals = ({ data }: any) => {
    const material = data?.entry?.data?.Material;
-   const ascension = data?.ascension;
-   const skill = data?.skill;
-   const append = data?.append;
+   const ascension = data?.entry?.data?.ascensionData?.docs;
+   const skill = data?.entry?.data?.skillData?.docs;
+   const append = data?.entry?.data?.appendData?.docs;
 
    // Calculate Individual Ascension Values
    const asc_text = ["1st", "2nd", "3rd", "Max"];
-   var asc_individual = [];
+   let asc_individual = [];
    for (let asclv = 0; asclv < 4; asclv++) {
       let filtered_ascension_lv = ascension
          ?.map((asc: any) => {
@@ -102,7 +102,7 @@ const IndividualTotals = ({ data }: any) => {
       "8th",
       "9th",
    ];
-   var skill_individual = [];
+   let skill_individual = [];
    for (let asclv = 0; asclv < 9; asclv++) {
       let filtered_skill_lv = skill
          ?.map((asc: any) => {
@@ -199,9 +199,7 @@ const IndividualTotals = ({ data }: any) => {
 
 const AscensionTotals = ({ data }: any) => {
    const material = data?.entry?.data?.Material;
-   const ascension = data?.ascension;
-   // const skill = data?.skill;
-   // const append = data?.append;
+   const ascension = data?.entry?.data?.ascensionData?.docs;
 
    // Calculate Ascension Totals
    const ascension_totals = CalculateTotals(
@@ -226,9 +224,7 @@ const AscensionTotals = ({ data }: any) => {
 
 const SkillTotals = ({ data }: any) => {
    const material = data?.entry?.data?.Material;
-   // const ascension = data?.ascension;
-   const skill = data?.skill;
-   // const append = data?.append;
+   const skill = data?.entry?.data?.skillData?.docs;
 
    // Calculate Skill Totals
    const skill_totals = CalculateTotals(
@@ -257,9 +253,8 @@ const SkillTotals = ({ data }: any) => {
 
 const AscSkillTotals = ({ data }: any) => {
    const material = data?.entry?.data?.Material;
-   const ascension = data?.ascension;
-   const skill = data?.skill;
-   const append = data?.append;
+   const ascension = data?.entry?.data?.ascensionData?.docs;
+   const skill = data?.entry?.data?.skillData?.docs;
 
    // Calculate Ascension Totals
    const ascension_totals = CalculateTotals(
@@ -299,9 +294,7 @@ const AscSkillTotals = ({ data }: any) => {
 
 const AppendTotals = ({ data }: any) => {
    const material = data?.entry?.data?.Material;
-   // const ascension = data?.ascension;
-   // const skill = data?.skill;
-   const append = data?.append;
+   const append = data?.entry?.data?.appendData?.docs;
 
    // Calculate Append Skill Totals
    const append_totals = CalculateTotals(
@@ -330,9 +323,9 @@ const AppendTotals = ({ data }: any) => {
 
 const AllTotals = ({ data }: any) => {
    const material = data?.entry?.data?.Material;
-   const ascension = data?.ascension;
-   const skill = data?.skill;
-   const append = data?.append;
+   const ascension = data?.entry?.data?.ascensionData?.docs;
+   const skill = data?.entry?.data?.skillData?.docs;
+   const append = data?.entry?.data?.appendData?.docs;
 
    // Calculate Ascension Totals
    const ascension_totals = CalculateTotals(

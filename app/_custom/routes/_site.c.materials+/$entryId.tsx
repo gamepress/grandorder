@@ -1,4 +1,3 @@
-// Core Imports
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
@@ -19,7 +18,7 @@ export async function loader({
    params,
    request,
 }: LoaderFunctionArgs) {
-   const fetchCharacterData = fetchEntry({
+   const { entry } = await fetchEntry({
       payload,
       params,
       request,
@@ -29,47 +28,8 @@ export async function loader({
       },
    });
 
-   const fetchAscensionData = fetchEntry({
-      payload,
-      params,
-      request,
-      user,
-      gql: {
-         query: SERVANT_ASCENSION_QUERY,
-      },
-   });
-   const featchSkillData = fetchEntry({
-      payload,
-      params,
-      request,
-      user,
-      gql: {
-         query: SERVANT_SKILL_QUERY,
-      },
-   });
-   const fetchAppendData = fetchEntry({
-      payload,
-      params,
-      request,
-      user,
-      gql: {
-         query: SERVANT_APPEND_QUERY,
-      },
-   });
-
-   const [{ entry }, ascension, skill, append] = await Promise.all([
-      fetchCharacterData,
-      fetchAscensionData,
-      featchSkillData,
-      fetchAppendData,
-   ]);
-
    return json({
       entry,
-      material: entry?.data?.Servant,
-      ascension: ascension?.entry?.data?.Servants?.docs,
-      skill: skill?.entry?.data?.Servants?.docs,
-      append: append?.entry?.data?.Servants?.docs,
    });
 }
 
@@ -86,7 +46,7 @@ export default function EntryPage() {
 }
 
 const QUERY = gql`
-   query ($entryId: String!) {
+   query ($entryId: String!, $jsonEntryId: JSON) {
       Material(id: $entryId) {
          id
          name
@@ -115,14 +75,9 @@ const QUERY = gql`
             }
          }
       }
-   }
-`;
-
-const SERVANT_ASCENSION_QUERY = gql`
-   query ($entryId: JSON!) {
-      Servants(
+      ascensionData: Servants(
          where: {
-            ascension_materials__materials__material: { equals: $entryId }
+            ascension_materials__materials__material: { equals: $jsonEntryId }
          }
          sort: "library_id"
          limit: 1000
@@ -146,14 +101,9 @@ const SERVANT_ASCENSION_QUERY = gql`
             }
          }
       }
-   }
-`;
-
-const SERVANT_SKILL_QUERY = gql`
-   query ($entryId: JSON!) {
-      Servants(
+      skillData: Servants(
          where: {
-            skill_enhancements__materials__material: { equals: $entryId }
+            skill_enhancements__materials__material: { equals: $jsonEntryId }
          }
          sort: "library_id"
          limit: 1000
@@ -177,14 +127,11 @@ const SERVANT_SKILL_QUERY = gql`
             }
          }
       }
-   }
-`;
-
-const SERVANT_APPEND_QUERY = gql`
-   query ($entryId: JSON!) {
-      Servants(
+      appendData: Servants(
          where: {
-            append_skill_enhancements__materials__material: { equals: $entryId }
+            append_skill_enhancements__materials__material: {
+               equals: $jsonEntryId
+            }
          }
          sort: "library_id"
          limit: 1000
