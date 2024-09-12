@@ -1,44 +1,43 @@
-import { H2 } from "~/components/Headers";
+import { Link } from "@remix-run/react";
+
+import { Badge } from "~/components/Badge";
 import { Image } from "~/components/Image";
-import {
-   Table,
-   TableBody,
-   TableCell,
-   TableHead,
-   TableRow,
-} from "~/components/Table";
 
 export function QuestsRewards({ data }: { data: any }) {
-   const quest_drops = data.quest_drops;
    const quest_rewards = data.quest_rewards;
    return (
       <>
-         {/* Drops */}
-         <H2>Quest Drops</H2>
-         <RewardsTable tabledata={quest_drops} />
-
          {/* Rewards */}
-         <H2>Quest Rewards</H2>
-         <RewardsTable tabledata={quest_rewards} />
+         {quest_rewards && quest_rewards.length > 0 ? (
+            <div className="border border-color-sub rounded-lg divide-color-sub divide-y bg-2-sub shadow-sm shadow-1">
+               {quest_rewards?.map((row: any, index: number) => (
+                  <RewardRow data={row} index={index} key={index} />
+               ))}
+            </div>
+         ) : (
+            "No quest rewards"
+         )}
       </>
    );
 }
 
-const RewardsTable = ({ tabledata }: any) => {
+export function QuestsDrops({ data }: { data: any }) {
+   const quest_drops = data?.quest_drops;
    return (
       <>
-         <Table grid framed>
-            <TableHead></TableHead>
-            <TableBody>
-               {/* @ts-ignore */}
-               {tabledata?.map((row, index) => (
+         {/* Drops */}
+         {quest_drops && quest_drops.length > 0 ? (
+            <div className="border border-color-sub rounded-lg divide-color-sub divide-y bg-2-sub shadow-sm shadow-1">
+               {quest_drops?.map((row: any, index: number) => (
                   <RewardRow data={row} index={index} key={index} />
                ))}
-            </TableBody>
-         </Table>
+            </div>
+         ) : (
+            "No quest drops"
+         )}
       </>
    );
-};
+}
 
 const RewardRow = ({ data, index }: any) => {
    const collection_type = data.mat?.relationTo;
@@ -53,42 +52,53 @@ const RewardRow = ({ data, index }: any) => {
 
    return (
       <>
-         <TableRow key={index + "rewdata"}>
-            <TableCell>
-               {name ? (
-                  <>
-                     <a href={`/c/${collection_type}/${slug ?? id}`}>
-                        <div className="inline-block align-middle">
-                           <Image
-                              options="height=45&width=45"
-                              className="object-contain inline-block"
-                              url={icon}
-                              alt="icon"
-                              loading="lazy"
-                           />
+         <Link
+            className="block p-3 group"
+            to={`/c/${collection_type}/${slug ?? id}`}
+         >
+            {name ? (
+               <>
+                  <div className="flex items-center gap-3">
+                     <Image
+                        width={80}
+                        className="w-10 flex-none"
+                        url={icon}
+                        alt="icon"
+                        loading="lazy"
+                     />
+                     <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-2">
+                           <div
+                              className="text-base font-bold underline underline-offset-2 dark:group-hover:decoration-zinc-500 
+                              group-hover:decoration-zinc-400 decoration-zinc-200 dark:decoration-zinc-600"
+                           >
+                              {name}
+                           </div>
+                           <Badge>
+                              x{qty}
+                              {rate ? (
+                                 <>
+                                    <span className="size-1 bg-zinc-400 dark:bg-zinc-500 rounded-full" />
+                                    <span>{rate}%</span>
+                                 </>
+                              ) : null}
+                              {max_drops ? "(Max: " + max_drops + ")" : null}
+                           </Badge>
                         </div>
-                        <div className="inline-block align-middle ml-2 text-base text-blue-500">
-                           {name}
-                        </div>
-                     </a>
-                     <div className="inline-block align-middle text-base ml-2">
-                        x{qty}
-                        {rate ? <span className="mx-2">{rate}%</span> : null}
-                        {max_drops ? "(Max: " + max_drops + ")" : null}
                         <div
-                           className="inline-block whitespace-pre-line mx-2"
+                           className="whitespace-pre-line text-sm"
                            dangerouslySetInnerHTML={{ __html: desc }}
                         ></div>
                      </div>
-                  </>
-               ) : (
-                  <div
-                     className="whitespace-pre-line mt-1"
-                     dangerouslySetInnerHTML={{ __html: desc }}
-                  ></div>
-               )}
-            </TableCell>
-         </TableRow>
+                  </div>
+               </>
+            ) : (
+               <div
+                  className="whitespace-pre-line mt-1"
+                  dangerouslySetInnerHTML={{ __html: desc }}
+               ></div>
+            )}
+         </Link>
       </>
    );
 };

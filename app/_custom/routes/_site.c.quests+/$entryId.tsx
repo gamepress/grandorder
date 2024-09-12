@@ -10,7 +10,7 @@ import { fetchEntry } from "~/routes/_site+/c_+/$collectionId_.$entryId/utils/fe
 
 import { QuestsEnemies } from "./components/Quests.Enemies";
 import { QuestsMain } from "./components/Quests.Main";
-import { QuestsRewards } from "./components/Quests.Rewards";
+import { QuestsDrops, QuestsRewards } from "./components/Quests.Rewards";
 
 export { entryMeta as meta };
 
@@ -36,7 +36,8 @@ export async function loader({
 const SECTIONS = {
    main: QuestsMain,
    enemies: QuestsEnemies,
-   rewards: QuestsRewards,
+   "quest-drops": QuestsDrops,
+   "quest-rewards": QuestsRewards,
 };
 
 export default function EntryPage() {

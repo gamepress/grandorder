@@ -12,41 +12,38 @@ import {
 export function QuestsEnemies({ data }: { data: any }) {
    const quest_details = data.quest_details;
 
-   return (
-      <>
-         {/* <H2 text="Enemy Details" /> */}
-         {quest_details?.map((qd: any, qind: any) => {
-            const show_part =
-               qind == 0
-                  ? true
-                  : quest_details[qind]?.quest_parts !=
-                      quest_details[qind - 1]?.quest_parts
-                    ? true
-                    : false; // Controls whether the "Part" label should show up - Always show first
+   return quest_details && quest_details?.length > 0
+      ? quest_details?.map((qd: any, qind: any) => {
+           const show_part =
+              qind == 0
+                 ? true
+                 : quest_details[qind]?.quest_parts !=
+                     quest_details[qind - 1]?.quest_parts
+                   ? true
+                   : false; // Controls whether the "Part" label should show up - Always show first
 
-            return (
-               <div key={qd}>
-                  <QuestPartHeader data={qd} show_part={show_part} />
-                  <Table grid framed dense>
-                     <TableHead>
-                        <TableRow>
-                           <TableHeader>Enemies</TableHeader>
-                           <TableHeader center>Class</TableHeader>
-                           <TableHeader center>HP</TableHeader>
-                           <TableHeader center>Lvl</TableHeader>
-                        </TableRow>
-                     </TableHead>
-                     <TableBody>
-                        {qd.enemy_details.map((qed: any, index: any) => {
-                           return <QuestBattleWave data={qed} key={index} />;
-                        })}
-                     </TableBody>
-                  </Table>
-               </div>
-            );
-         })}
-      </>
-   );
+           return (
+              <div key={qd}>
+                 <QuestPartHeader data={qd} show_part={show_part} />
+                 <Table grid framed dense>
+                    <TableHead>
+                       <TableRow>
+                          <TableHeader>Enemies</TableHeader>
+                          <TableHeader center>Class</TableHeader>
+                          <TableHeader center>HP</TableHeader>
+                          <TableHeader center>Lvl</TableHeader>
+                       </TableRow>
+                    </TableHead>
+                    <TableBody>
+                       {qd.enemy_details.map((qed: any, index: any) => {
+                          return <QuestBattleWave data={qed} key={index} />;
+                       })}
+                    </TableBody>
+                 </Table>
+              </div>
+           );
+        })
+      : "No enemies found...";
 }
 
 function QuestPartHeader({

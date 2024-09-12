@@ -1,15 +1,18 @@
 import { Fragment, useState } from "react";
 
+import { Link } from "@remix-run/react";
+import clsx from "clsx";
+
 import { H2 } from "~/components/Headers";
 import { Image } from "~/components/Image";
 import {
    Table,
    TableBody,
+   TableCell,
    TableHead,
    TableHeader,
    TableRow,
 } from "~/components/Table";
-import { SectionTitle } from "~/routes/_site+/c_+/$collectionId_.$entryId/components/SectionTitle";
 
 export function MaterialsServantAscSkill({ data }: { data: any }) {
    const [tab, setTab] = useState(0); // 0 = Individual, 1 = Total Asc, 2 = Total Skill, 3 = Total Asc+Skill, 4 = Total Append, 5 = Total All
@@ -23,29 +26,25 @@ export function MaterialsServantAscSkill({ data }: { data: any }) {
       "Total (All)",
    ];
 
-   const material = data?.entry?.data?.Material;
-   const ascension = data?.ascension;
-   const skill = data?.skill;
-   const append = data?.append;
-
    return (
       <>
          {/* Tabs */}
-         <SectionTitle customTitle="Servant Ascension/Skill Requirements" />
-         <div className="grid grid-cols-3 justify-between gap-y-2 gap-x-3">
+         <div className="grid grid-cols-3 gap-2">
             {tab_options.map((tb, ti) => (
-               <div
+               <button
                   key={ti}
-                  className={`border border-blue-400 dark:border-blue-900 text-center py-1 cursor-pointer ${
-                     tab == ti ? "font-bold bg-blue-800 bg-opacity-20" : ""
-                  }`}
+                  className={clsx(
+                     tab == ti
+                        ? "dark:bg-dark500 dark:border-zinc-400/70 bg-blue-50 border-blue-200"
+                        : "dark:bg-dark400 bg-zinc-50 border-color-sub",
+                     "rounded-lg p-2 shadow-sm shadow-1 border  font-bold text-sm",
+                  )}
                   onClick={() => setTab(ti)}
                >
                   {tb}
-               </div>
+               </button>
             ))}
          </div>
-
          <div>
             {tab == 0 ? (
                <IndividualTotals data={data} />
@@ -74,9 +73,9 @@ const IndividualTotals = ({ data }: any) => {
    // Calculate Individual Ascension Values
    const asc_text = ["1st", "2nd", "3rd", "Max"];
    var asc_individual = [];
-   for (var asclv = 0; asclv < 4; asclv++) {
-      var filtered_ascension_lv = ascension
-         ?.map((asc) => {
+   for (let asclv = 0; asclv < 4; asclv++) {
+      let filtered_ascension_lv = ascension
+         ?.map((asc: any) => {
             return {
                ...asc,
                ascension_materials: [asc.ascension_materials[asclv]],
@@ -104,15 +103,15 @@ const IndividualTotals = ({ data }: any) => {
       "9th",
    ];
    var skill_individual = [];
-   for (var asclv = 0; asclv < 9; asclv++) {
-      var filtered_skill_lv = skill
-         ?.map((asc) => {
+   for (let asclv = 0; asclv < 9; asclv++) {
+      let filtered_skill_lv = skill
+         ?.map((asc: any) => {
             return {
                ...asc,
                skill_enhancements: [asc.skill_enhancements[asclv]],
             };
          })
-         .filter((a) => JSON.stringify(a).indexOf(material?.id) > -1);
+         .filter((a: any) => JSON.stringify(a).indexOf(material?.id) > -1);
       const skill_level_total = CalculateTotals(
          filtered_skill_lv,
          material?.id,
@@ -122,10 +121,10 @@ const IndividualTotals = ({ data }: any) => {
    }
 
    //Append Skills
-   var append_individual = [];
-   for (var asclv = 0; asclv < 9; asclv++) {
-      var filtered_append_lv = append
-         ?.map((asc) => {
+   let append_individual = [];
+   for (let asclv = 0; asclv < 9; asclv++) {
+      let filtered_append_lv = append
+         ?.map((asc: any) => {
             return {
                ...asc,
                append_skill_enhancements: [
@@ -133,7 +132,7 @@ const IndividualTotals = ({ data }: any) => {
                ],
             };
          })
-         .filter((a) => JSON.stringify(a).indexOf(material?.id) > -1);
+         .filter((a: any) => JSON.stringify(a).indexOf(material?.id) > -1);
       const append_level_total = CalculateTotals(
          filtered_append_lv,
          material?.id,
@@ -201,8 +200,8 @@ const IndividualTotals = ({ data }: any) => {
 const AscensionTotals = ({ data }: any) => {
    const material = data?.entry?.data?.Material;
    const ascension = data?.ascension;
-   const skill = data?.skill;
-   const append = data?.append;
+   // const skill = data?.skill;
+   // const append = data?.append;
 
    // Calculate Ascension Totals
    const ascension_totals = CalculateTotals(
@@ -227,9 +226,9 @@ const AscensionTotals = ({ data }: any) => {
 
 const SkillTotals = ({ data }: any) => {
    const material = data?.entry?.data?.Material;
-   const ascension = data?.ascension;
+   // const ascension = data?.ascension;
    const skill = data?.skill;
-   const append = data?.append;
+   // const append = data?.append;
 
    // Calculate Skill Totals
    const skill_totals = CalculateTotals(
@@ -300,8 +299,8 @@ const AscSkillTotals = ({ data }: any) => {
 
 const AppendTotals = ({ data }: any) => {
    const material = data?.entry?.data?.Material;
-   const ascension = data?.ascension;
-   const skill = data?.skill;
+   // const ascension = data?.ascension;
+   // const skill = data?.skill;
    const append = data?.append;
 
    // Calculate Append Skill Totals
@@ -379,7 +378,7 @@ const AllTotals = ({ data }: any) => {
 };
 
 function ConsolidateServantTotals(inputdata) {
-   var final_data = [];
+   let final_data = [];
 
    inputdata.map((idat) => {
       const sindex = final_data.findIndex(
@@ -396,8 +395,8 @@ function ConsolidateServantTotals(inputdata) {
 }
 
 function CalculateTotals(inputdata, materialid, matfieldname) {
-   var total = inputdata?.map((asc) => {
-      var final_total = 0;
+   let total = inputdata?.map((asc) => {
+      let final_total = 0;
       const asctext = JSON.stringify(asc[matfieldname]);
       const counted = asctext
          .split('material":{"id":"')
@@ -424,48 +423,38 @@ function CalculateTotals(inputdata, materialid, matfieldname) {
 }
 
 const ServantTotalTable = ({ tabledata }: any) => {
-   const tdformat = "py-2 px-3 leading-none border border-color-sub";
-
    return (
       <>
-         <Table grid framed>
+         <Table grid framed dense>
             <TableHead>
                <TableRow>
-                  <TableHeader center>
-                     <span className="font-bold text-base cursor-default">
-                        Servant
-                     </span>
-                  </TableHeader>
-                  <TableHeader center>
-                     <span className="font-bold text-base cursor-default w-1/6">
-                        Amount
-                     </span>
-                  </TableHeader>
+                  <TableHeader>Servant</TableHeader>
+                  <TableHeader center>Amount</TableHeader>
                </TableRow>
             </TableHead>
             <TableBody>
                {/* @ts-ignore */}
                {tabledata?.map((row, index) => (
                   <TableRow key={index + "tdata"}>
-                     <td className={`text-left ${tdformat}`}>
-                        <a href={`/c/servants/${row.servant?.slug}`}>
-                           <div className="inline-block align-middle">
-                              <Image
-                                 options="height=45&width=45"
-                                 className="object-contain inline-block"
-                                 url={row.servant?.icon?.url}
-                                 alt="icon"
-                                 loading="lazy"
-                              />
-                           </div>
-                           <div className="inline-block align-middle ml-3 text-base">
+                     <TableCell>
+                        <Link
+                           className="flex items-center gap-3"
+                           to={`/c/servants/${row.servant?.slug}`}
+                        >
+                           <Image
+                              height={100}
+                              width={100}
+                              className="w-10 flex-none"
+                              url={row.servant?.icon?.url}
+                              alt="icon"
+                              loading="lazy"
+                           />
+                           <div className="font-bold flex-grow">
                               {row.servant?.name}
                            </div>
-                        </a>
-                     </td>
-                     <td className={`text-center text-base ${tdformat}`}>
-                        {row.total}
-                     </td>
+                        </Link>
+                     </TableCell>
+                     <TableCell center>x{row.total}</TableCell>
                   </TableRow>
                ))}
             </TableBody>

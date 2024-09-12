@@ -1,14 +1,13 @@
-import { H2 } from "~/components/Headers";
+import { BadgeButton } from "~/components/Badge";
 import {
    Table,
    TableBody,
+   TableCell,
    TableHead,
    TableHeader,
    TableRow,
 } from "~/components/Table";
 import { SectionTitle } from "~/routes/_site+/c_+/$collectionId_.$entryId/components/SectionTitle";
-
-const tdformat = "py-2 px-3 leading-none border border-color-sub";
 
 export function MaterialsDropLocation({ data }: { data: any }) {
    const material = data?.entry?.data?.Material;
@@ -28,11 +27,9 @@ export function MaterialsDropLocation({ data }: { data: any }) {
 }
 
 const DropNotes = () => {
-   const linkcss =
-      "border border-blue-800 px-1 text-blue-800 dark:border-blue-200 dark:text-blue-200 hover:bg-blue-500 hover:bg-opacity-30";
    return (
       <>
-         <div className="py-2 mb-3 border-b border-color-sub text-center ">
+         <div className="pb-3 pt-5 mb-3 border-b border-color-sub text-center ">
             <div>
                <span className="font-bold">APD</span> = Avg AP Per Drop
             </div>
@@ -40,22 +37,23 @@ const DropNotes = () => {
                The most efficient quests to farm for the item. Lower is better.
             </div>
          </div>
-
          <div className="text-xs text-center mb-3">
             Drop rate estimates based on data collected by{" "}
-            <a
-               className={`${linkcss}`}
+            <BadgeButton
+               color="blue"
+               target="_blank"
                href="https://www.reddit.com/user/Rathus"
             >
                /u/Rathus
-            </a>{" "}
+            </BadgeButton>{" "}
             and the{" "}
-            <a
-               className={`${linkcss}`}
+            <BadgeButton
+               color="blue"
+               target="_blank"
                href="https://www.reddit.com/r/grandorder"
             >
                Grand Order Subreddit
-            </a>
+            </BadgeButton>
          </div>
       </>
    );
@@ -63,7 +61,7 @@ const DropNotes = () => {
 
 const DropLocationList = ({ data }: any) => {
    // Sort drops first!
-   var sorted = [...data];
+   let sorted = [...data];
    sorted.sort((a, b) =>
       a.ap_per_drop > b.ap_per_drop
          ? 1
@@ -74,35 +72,26 @@ const DropLocationList = ({ data }: any) => {
 
    return (
       <>
-         <Table grid framed>
+         <Table grid framed dense>
             <TableHead>
                <TableRow>
-                  <TableHeader center>
-                     <span className="font-bold text-base cursor-default">
-                        Quest
-                     </span>
-                  </TableHeader>
-                  <TableHeader center>
-                     <span className="font-bold text-base cursor-default">
-                        APD ▴
-                     </span>
-                  </TableHeader>
+                  <TableHeader>Quest</TableHeader>
+                  <TableHeader center>APD ▴</TableHeader>
                </TableRow>
             </TableHead>
             <TableBody>
-               {/* @ts-ignore */}
                {sorted?.map((loc, index) => (
                   <TableRow key={index}>
-                     <td className={`text-left ${tdformat}`}>
-                        <div>{loc?.quest_dropped_from?.name}</div>
-                        <div className="text-xs">
+                     <TableCell>
+                        <div className="font-bold">
+                           {loc?.quest_dropped_from?.name}
+                        </div>
+                        <div className="text-xs text-1">
                            {loc?.quest_dropped_from?.main_quest?.name} -{" "}
                            {loc?.quest_dropped_from?.main_quest_chapter?.name}
                         </div>
-                     </td>
-                     <td className={`text-center ${tdformat}`}>
-                        {loc?.ap_per_drop}
-                     </td>
+                     </TableCell>
+                     <TableCell center>{loc?.ap_per_drop}</TableCell>
                   </TableRow>
                ))}
             </TableBody>

@@ -7,20 +7,20 @@ export function MaterialsMain({ data }: { data: any }) {
 
    return (
       <>
-         <div className="text-center my-2 border border-color-sub rounded-md p-3">
-            <div>
-               <Image
-                  options="height=80&width=80"
-                  className="object-contain inline-block"
-                  url={icon}
-                  alt="material_icon"
-                  loading="lazy"
+         <div className="bg-2-sub border border-color-sub shadow-sm shadow-1 rounded-lg p-4 flex items-center flex-col justify-center">
+            <Image
+               height={100}
+               className="size-20 mx-auto"
+               url={icon}
+               alt="material_icon"
+               loading="lazy"
+            />
+            {desc && (
+               <div
+                  className="whitespace-pre-wrap pt-3 text-center text-sm"
+                  dangerouslySetInnerHTML={{ __html: desc }}
                />
-            </div>
-            <div
-               className="whitespace-pre-wrap mt-2"
-               dangerouslySetInnerHTML={{ __html: desc }}
-            ></div>
+            )}
          </div>
       </>
    );
