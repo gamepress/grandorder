@@ -3,13 +3,27 @@ import { useRef, useEffect, useState } from "react";
 import { Disclosure, Combobox } from "@headlessui/react";
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { useLoaderData, useNavigate } from "@remix-run/react";
+import { Link, useLoaderData, useNavigate } from "@remix-run/react";
 import { z } from "zod";
 import { zx } from "zodix";
 
-import { H2 } from "~/components/Headers";
+import { H2, H3 } from "~/components/Headers";
 import { Image } from "~/components/Image";
 import { fetchWithCache } from "~/utils/cache.server";
+import { Button } from "~/components/Button";
+import { Text, TextLink } from "~/components/Text";
+import { Select } from "~/components/Select";
+import {
+   Table,
+   TableBody,
+   TableCell,
+   TableHead,
+   TableHeader,
+   TableRow,
+} from "~/components/Table";
+import { Icon } from "~/components/Icon";
+import { Badge } from "~/components/Badge";
+import { AdUnit } from "~/routes/_site+/_components/RampUnit";
 
 async function fetchGQL(query: string, variables?: Record<string, any>) {
    const { data, errors } = await fetchWithCache(
@@ -196,12 +210,9 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
 export const meta: MetaFunction = () => {
    return [
       {
-         title: "Summon Simulator - Fate/Grand Order",
+         title: "Summon Simulator (NA) | Fate/Grand Order Wiki - GamePress",
       },
-      {
-         name: "description",
-         content: "A new kind of wiki",
-      },
+      { name: "description", content: "Fate/Grand Order Summon Simulator" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
    ];
 };
@@ -248,11 +259,11 @@ const SummonSimulator = (data: any) => {
 
    // Initialize Featured Servants / Essences each time a new banner is selected
    useEffect(() => {
-      var init_featured_servants = banner_data?.featured_servants?.map((s) =>
-         loaderdata?.servants?.find((a) => a.id == s.id),
+      var init_featured_servants = banner_data?.featured_servants?.map(
+         (s) => loaderdata?.servants?.find((a) => a.id == s.id),
       );
-      var init_featured_essences = banner_data?.featured_essences?.map((c) =>
-         loaderdata?.craft_essences?.find((a) => a.id == c.id),
+      var init_featured_essences = banner_data?.featured_essences?.map(
+         (c) => loaderdata?.craft_essences?.find((a) => a.id == c.id),
       );
 
       if (banner_options?.length > 0) {
@@ -600,32 +611,46 @@ const SummonSimulator = (data: any) => {
    const SummonSimIntroduction = () => {
       return (
          <>
-            <div className="block">
-               Note that banners starting from the 4th Anniversary (7/3/2021)
-               and onward implement a free 11-pull every 10 rolls. Banners
-               before then will not include the extra 11-pull.
-               <br />
-               <strong>
+            <h1 className="font-header font-bold text-2xl pb-2.5">
+               Summon Simulator (NA)
+            </h1>
+            <div className="space-y-4">
+               <Text>
+                  Note that banners starting from the 4th Anniversary (7/3/2021)
+                  and onward implement a free 11-pull every 10 rolls. Banners
+                  before then will not include the extra 11-pull.
+               </Text>
+               <Text>
                   The NA Sim now has a Pity system, guaranteeing the rate-up SSR
                   Servant at 330 pulls (30x 11-pulls) starting with the
                   Heian-kyo banner (11/21/2022). Note, however, this pity does
                   NOT carry across rotating banners.
-               </strong>
-            </div>
-            <a href="/jp-summon-simulator">
-               <div className="text-blue-500 text-center w-full p-1 my-2 border border-blue-500 hover:bg-blue-500 hover:text-white">
-                  Link to JP Summon Simulator Here
+               </Text>
+               <div className="grid grid-cols-2 gap-3 py-4 border-t-2 border-dotted border-color-sub">
+                  <Button
+                     className="!text-sm shadow-sm shadow-1"
+                     color="zinc"
+                     href="/summon-simulator"
+                  >
+                     Summon Simulator (NA)
+                  </Button>
+                  <Button
+                     className="!text-sm shadow-sm shadow-1"
+                     color="light"
+                     href="/jp-summon-simulator"
+                  >
+                     Summon Simulator (JP)
+                  </Button>
                </div>
-            </a>
+            </div>
          </>
       );
    };
 
    const SimulatorDropDownBox = () => {
       return (
-         <select
+         <Select
             id="sim-select"
-            className="w-full p-1 my-1 border border-color-sub bg-zinc-100 dark:bg-zinc-800"
             onChange={(e) => simChanged(e.target.value)}
             value={banner_data?.sim_number ?? ""}
          >
@@ -633,36 +658,38 @@ const SummonSimulator = (data: any) => {
             {/* Load banner list */}
             {banner_list_na?.map((banner: any) => {
                return (
-                  <option value={banner?.sim_number}>{banner?.title}</option>
+                  <option key={banner} value={banner?.sim_number}>
+                     {banner?.title}
+                  </option>
                );
             })}
-         </select>
+         </Select>
       );
    };
 
    const SummonBannerInfo = () => {
       return (
          <>
-            <div className="text-center">
-               <img
-                  className="rounded-md inline-block"
+            <div className="p-3 flex items-center justify-center bg-2-sub border border-color-sub rounded-lg mt-3 shadow-sm shadow-1">
+               <Image
+                  height={300}
+                  className="rounded-md"
                   id="banner-img"
-                  src={banner_image}
+                  url={banner_image}
                />
             </div>
             {/* If daily featured Servants present */}
             {banner_data?.info ? (
                <>
                   <div
-                     className="my-1"
+                     className="border border-color-sub p-3 rounded-lg mt-3 bg-2-sub"
                      dangerouslySetInnerHTML={{ __html: banner_info_display }}
                   ></div>
                   {/* If select options exist, create the select box */}
                   {banner_options?.length > 0 ? (
                      <>
-                        <select
-                           id="banner-rotation-select"
-                           className="w-full p-1 my-1 dark:bg-zinc-800"
+                        <Select
+                           className="mt-3"
                            onChange={(e) =>
                               toggleOptions(e.target.value, banner_function)
                            }
@@ -670,12 +697,12 @@ const SummonSimulator = (data: any) => {
                         >
                            {banner_options.map((bopt, index) => {
                               return (
-                                 <option value={bopt.value}>
+                                 <option key={bopt.value} value={bopt.value}>
                                     {bopt.label}
                                  </option>
                               );
                            })}
-                        </select>
+                        </Select>
                      </>
                   ) : null}
                </>
@@ -686,25 +713,29 @@ const SummonSimulator = (data: any) => {
                <div id="featured-lists">
                   {fServants?.length > 0 ? (
                      <>
-                        <H2 text="Featured Servants" />
-                        {fServants.map((servant, index) => (
-                           <FeaturedServantRow
-                              data={servant}
-                              key={"fservant_" + index}
-                           />
-                        ))}
+                        <H2>Featured Servants</H2>
+                        <div className="space-y-2">
+                           {fServants.map((servant, index) => (
+                              <FeaturedServantRow
+                                 data={servant}
+                                 key={"fservant_" + index}
+                              />
+                           ))}
+                        </div>
                      </>
                   ) : null}
 
                   {fEssences?.length > 0 ? (
                      <>
-                        <H2 text="Featured Essences" />
-                        {fEssences.map((ce, index) => (
-                           <FeaturedEssenceRow
-                              data={ce}
-                              key={"fessence_" + index}
-                           />
-                        ))}
+                        <H2>Featured Essences</H2>
+                        <div className="space-y-2">
+                           {fEssences.map((ce, index) => (
+                              <FeaturedEssenceRow
+                                 data={ce}
+                                 key={"fessence_" + index}
+                              />
+                           ))}
+                        </div>
                      </>
                   ) : null}
                </div>
@@ -716,43 +747,50 @@ const SummonSimulator = (data: any) => {
    const SummonButtonSelector = () => {
       return (
          <>
-            <div className="clearfix w-full flex justify-between gap-2">
-               <button
-                  className={`my-1 p-2 text-center w-full bg-opacity-50 border-2 border-[#3076b2] ${
-                     summonType == "10" ? "bg-blue-500 font-bold" : ""
-                  }`}
+            <div className="flex items-center gap-3 py-3">
+               <Button
+                  className="!text-base flex-grow"
+                  color={summonType == "10" ? "blue" : "zinc"}
                   id="summon-10-switch"
                   onClick={() => setSummonType("10")}
                >
                   10-Pull{pullEleven ? " (+1)" : ""}
-               </button>
-               <button
-                  className={`my-1 p-2 text-center w-full bg-opacity-50 border-2 border-[#3076b2] ${
-                     summonType == "single" ? "bg-blue-500 font-bold" : ""
-                  }`}
+               </Button>
+               <Button
+                  className="!text-base flex-grow"
+                  color={summonType == "single" ? "blue" : "zinc"}
                   id="summon-single-switch"
                   onClick={() => setSummonType("single")}
                >
                   Summon Tickets
-               </button>
+               </Button>
+               <Button
+                  outline
+                  className="w-24 !text-base !text-1"
+                  onClick={() => reset()}
+               >
+                  <Icon name="refresh-ccw" size={14} />
+                  Reset
+               </Button>
             </div>
 
             {summonType == "single" ? (
                <>
                   <div id="summon-single-div" className="w-full my-2">
-                     <table className="w-full text-center border border-color-sub mb-1">
-                        <thead>
-                           <tr>
-                              <th colSpan={10} className="p-1">
-                                 Summon Tickets: {ticketCount}
-                              </th>
-                           </tr>
-                        </thead>
-                        <tbody>
-                           <tr>
+                     <Table grid framed dense>
+                        <TableHead>
+                           <TableRow>
+                              <TableHeader colSpan={10}>
+                                 <span className="pr-2">Summon Tickets</span>
+                                 <Badge color="blue">{ticketCount}</Badge>
+                              </TableHeader>
+                           </TableRow>
+                        </TableHead>
+                        <TableBody>
+                           <TableRow>
                               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((t) => (
-                                 <td
-                                    className="border border-color-sub h-10"
+                                 <TableCell
+                                    center
                                     key={`tickets-${t}`}
                                     onClick={() => setTicketCount(t)}
                                  >
@@ -762,176 +800,185 @@ const SummonSimulator = (data: any) => {
                                        id={`tickets-${t}`}
                                        checked={t === ticketCount}
                                        readOnly
-                                    ></input>
-                                 </td>
+                                    />
+                                 </TableCell>
                               ))}
-                           </tr>
-                           <tr>
-                              <td
-                                 id="double-summon-cell"
-                                 colSpan={10}
-                                 className="text-center p-1"
-                              >
-                                 Double Summon in:{" "}
+                           </TableRow>
+                           <TableRow>
+                              <TableCell id="double-summon-cell" colSpan={10}>
+                                 Double Summon in{" "}
                                  <b>
                                     <span id="double-summon-counter">
-                                       {10 - (tickets % 10)}
+                                       <Badge color="violet">
+                                          {" "}
+                                          {10 - (tickets % 10)}
+                                       </Badge>
                                     </span>
                                  </b>{" "}
                                  tickets
-                              </td>
-                           </tr>
-                        </tbody>
-                     </table>
-                     <button
+                              </TableCell>
+                           </TableRow>
+                        </TableBody>
+                     </Table>
+                     <Button
+                        color="green"
+                        className="w-full mt-3 !text-base"
                         id="summon-button-singles"
                         onClick={() => simulateSingle()}
-                        className="my-2 border w-full rounded-sm cursor-pointer p-2 font-bold border-[#3076b2] text-[#3076b2] hover:bg-[#3076b2] hover:text-white"
                      >
-                        Summon
-                     </button>
+                        SUMMON
+                     </Button>
                   </div>
                </>
             ) : (
                <div id="summon-10-div">
-                  <button
+                  <Button
                      id="summon-button"
+                     color="green"
+                     className="w-full !text-base"
                      onClick={() => simulate(10, false)}
-                     className="my-2 border w-full rounded-sm cursor-pointer p-2 font-bold border-[#3076b2] text-[#3076b2] hover:bg-[#3076b2] hover:text-white"
                   >
-                     Summon
-                  </button>
+                     SUMMON
+                  </Button>
                </div>
             )}
          </>
       );
    };
 
-   const SummonResults = () => {
-      return (
-         <div id="results" className="text-center grid grid-cols-2">
-            {pullResults?.map((pr) => (
-               <PullResultDiv data={pr} />
-            ))}
-         </div>
-      );
-   };
-
    const StatisticsTable = () => {
       return (
-         <table id="quartz-table" className="w-full text-center my-2">
-            <tbody>
-               <tr>
-                  <th className="border border-color-sub">Quartz Used:</th>
-
-                  <th className="border border-color-sub">$ Spent:</th>
-
-                  <th className="border border-color-sub">Tickets Used:</th>
-                  <th className="border border-color-sub">
-                     Pity Counter (/330):
-                  </th>
-               </tr>
-               <tr>
-                  <td className="border border-color-sub" id="quartz">
+         <Table grid framed id="quartz-table">
+            <TableBody>
+               <TableRow>
+                  <TableHeader center>Quartz Used</TableHeader>
+                  <TableHeader center>$ Spent</TableHeader>
+                  <TableHeader center>Tickets Used</TableHeader>
+                  <TableHeader center>Pity Counter (/330)</TableHeader>
+               </TableRow>
+               <TableRow>
+                  <TableCell id="quartz" center>
                      {quartzSpent}
-                  </td>
-                  <td className="border border-color-sub" id="money">
+                  </TableCell>
+                  <TableCell id="money" center>
                      ${(quartzSpent * 0.4790419).toFixed(2)}
-                  </td>
-                  <td className="border border-color-sub" id="tickets">
+                  </TableCell>
+                  <TableCell id="tickets" center>
                      0
-                  </td>
-                  <td className="border border-color-sub" id="totalpull">
+                  </TableCell>
+                  <TableCell id="totalpull" center>
                      {pullct}
-                  </td>
-               </tr>
-            </tbody>
-         </table>
-      );
-   };
-
-   const ResetButton = () => {
-      return (
-         <button
-            className="my-2 border w-full rounded-sm cursor-pointer p-2 font-bold border-[#3076b2] text-[#3076b2] hover:bg-[#3076b2] hover:text-white"
-            onClick={() => reset()}
-         >
-            Reset
-         </button>
+                  </TableCell>
+               </TableRow>
+            </TableBody>
+         </Table>
       );
    };
 
    const NotableResults = () => {
       return (
-         <div className="grid grid-cols-2">
-            <div className="pulls-parent margin-right:2%;">
-               <div className="font-bold text-lg border-b mb-1">
-                  Notable Servants
-               </div>
-               <div id="servants5" className="rare-pulls-list">
-                  {notableResults
-                     .filter((res) => res.summon_availability)
-                     ?.filter((v, i, a) => a.indexOf(v) == i)
-                     ?.sort(
-                        (a, b) =>
-                           parseInt(b.rarity.name) - parseInt(a.rarity.name),
-                     )
-                     ?.map((s) => (
-                        <a href={`/c/servants/${s.id}`}>
-                           <div>
-                              <span className="text-blue-500 mr-2">
+         <div className="grid laptop:grid-cols-2 gap-3">
+            {notableResults.length > 0 && (
+               <div className="pulls-parent">
+                  <H3>Notable Servants</H3>
+                  <div
+                     id="servants5"
+                     className="rare-pulls-list divide-y divide-color-sub border border-color-sub shadow-sm shadow-1 rounded-md bg-3-sub"
+                  >
+                     {notableResults
+                        .filter((res) => res.summon_availability)
+                        ?.filter((v, i, a) => a.indexOf(v) == i)
+                        ?.sort(
+                           (a, b) =>
+                              parseInt(b.rarity.name) - parseInt(a.rarity.name),
+                        )
+                        ?.map((s) => (
+                           <TextLink
+                              className="py-2 px-3 flex items-center justify-between text-sm"
+                              key={s.id}
+                              href={`/c/servants/${s.slug}`}
+                           >
+                              <span>
                                  {s.rarity.name}★ {s.name}
                               </span>
-                              x
-                              {notableResults.filter((res) => res == s)?.length}
-                           </div>
-                        </a>
-                     ))}
-               </div>
-            </div>
-            <div className="pulls-parent">
-               <div className="font-bold text-lg border-b mb-1">
-                  5★ Craft Essences
-               </div>
-               <div id="essences5" className="rare-pulls-list">
-                  {notableResults
-                     .filter((res) => !res.summon_availability)
-                     ?.filter((v, i, a) => a.indexOf(v) == i)
-                     ?.map((ce) => (
-                        <a href={`/c/craft-essences/${ce.id}`}>
-                           <div>
-                              <span className="text-blue-500 mr-2">
-                                 {ce.name}
+                              <span className="text-1">
+                                 x
+                                 {
+                                    notableResults.filter((res) => res == s)
+                                       ?.length
+                                 }
                               </span>
-                              x
-                              {
-                                 notableResults.filter((res) => res == ce)
-                                    ?.length
-                              }
-                           </div>
-                        </a>
-                     ))}
+                           </TextLink>
+                        ))}
+                  </div>
                </div>
-            </div>
+            )}
+            {notableResults.length > 0 && (
+               <div className="pulls-parent">
+                  <H3>5★ Craft Essences</H3>
+                  <div
+                     id="essences5"
+                     className="rare-pulls-list divide-y divide-color-sub border border-color-sub shadow-sm shadow-1 rounded-md bg-3-sub"
+                  >
+                     {notableResults
+                        .filter((res) => !res.summon_availability)
+                        ?.filter((v, i, a) => a.indexOf(v) == i)
+                        ?.map((ce) => (
+                           <TextLink
+                              className="py-2 px-3 flex items-center justify-between text-sm"
+                              key={ce.id}
+                              href={`/c/craft-essences/${ce.slug}`}
+                           >
+                              <span>{ce.name}</span>
+                              <span className="text-1">
+                                 x
+                                 {
+                                    notableResults.filter((res) => res == ce)
+                                       ?.length
+                                 }
+                              </span>
+                           </TextLink>
+                        ))}
+                  </div>
+               </div>
+            )}
          </div>
       );
    };
 
    return (
       <>
-         <div className="relative z-20 mx-auto max-w-[728px] justify-center px-3 pb-36 pt-24">
+         <div className="relative z-20 mx-auto max-w-[728px] justify-center px-3 tablet:pb-36 py-6">
             <SummonSimIntroduction />
             {/* Show banner selection, defaults to Story Summon if unselected. */}
-
-            <H2 text="NA Summon Simulator" />
-
             <div id="to-load" className="block">
                <SimulatorDropDownBox />
                <SummonBannerInfo />
+               <AdUnit
+                  enableAds={true}
+                  adType={{
+                     desktop: "leaderboard_atf",
+                     tablet: "leaderboard_atf",
+                     mobile: "med_rect_atf",
+                  }}
+                  className="my-8 mx-auto flex items-center justify-center"
+                  selectorId="summonSimDesktopLeaderATF"
+               />
+               <div className="h-1 w-full rounded-full bg-zinc-200 dark:bg-dark500 mt-8 mb-1" />
                <SummonButtonSelector />
-               <SummonResults />
+               {/* Summon Results */}
+               {pullResults?.length > 0 && (
+                  <div
+                     id="results"
+                     className="text-center grid grid-cols-4 gap-2 pt-3"
+                  >
+                     {pullResults?.map((pr) => (
+                        <PullResultDiv key={pr} data={pr} />
+                     ))}
+                  </div>
+               )}
+               <div className="h-1 w-full rounded-full bg-zinc-200 dark:bg-dark500 my-4" />
                <StatisticsTable />
-               <ResetButton />
                <NotableResults />
             </div>
          </div>
@@ -939,7 +986,7 @@ const SummonSimulator = (data: any) => {
    );
 };
 
-function FeaturedServantRow({ data }: any) {
+export function FeaturedServantRow({ data }: any) {
    const icon = data?.icon?.url;
    const url = data?.slug ?? data?.id;
    const name = data?.name;
@@ -947,41 +994,33 @@ function FeaturedServantRow({ data }: any) {
    const rarity = parseInt(data?.rarity?.name);
 
    return (
-      <>
-         <div className="border border-color-sub my-1 px-3 py-1 rounded-sm flex justify-between items-center">
-            <div>
-               <a href={`/c/servants/${url}`}>
-                  <div className="inline-block align-middle">
-                     <Image
-                        options="aspect_ratio=1:1&height=45&width=45"
-                        alt={name}
-                        url={icon}
-                        className="object-contain"
-                     />
-                  </div>
-                  <div className="inline-block align-middle text-blue-400 ml-2">
-                     {name}
-                  </div>
-               </a>
-            </div>
-            <div>
-               {Array(rarity)
-                  .fill(0)
-                  .map((x) => (
-                     <Image
-                        options="aspect_ratio=1:1&height=16&width=16"
-                        alt={rarity.toString()}
-                        url={star}
-                        className="object-contain inline-block"
-                     />
-                  ))}
-            </div>
+      <Link
+         className="border border-color-sub bg-2-sub shadow-sm shadow-1 x-3 p-2 pr-4 rounded-lg flex justify-between items-center"
+         to={`/c/servants/${url}`}
+      >
+         <div className="flex items-center gap-3">
+            <Image width={80} alt={name} url={icon} className="w-8" />
+            <div className="font-semibold text-sm">{name}</div>
          </div>
-      </>
+         <div className="flex items-center gap-1">
+            {Array(rarity)
+               .fill(0)
+               .map((x) => (
+                  <Image
+                     className="size-4"
+                     key={x}
+                     width={40}
+                     height={40}
+                     alt={rarity.toString()}
+                     url={star}
+                  />
+               ))}
+         </div>
+      </Link>
    );
 }
 
-function FeaturedEssenceRow({ data }: any) {
+export function FeaturedEssenceRow({ data }: any) {
    const icon = data?.icon?.url;
    const url = data?.slug ?? data?.id;
    const name = data?.name;
@@ -990,47 +1029,46 @@ function FeaturedEssenceRow({ data }: any) {
    const frame = data?.rarity?.icon_frame?.url;
 
    return (
-      <>
-         <div className="border border-color-sub my-1 px-3 py-1 rounded-sm flex justify-between items-center">
-            <div>
-               <a href={`/c/craft-essences/${url}`}>
-                  <div className="inline-flex align-middle items-top justify-center">
-                     <Image
-                        options="height=49&width=45"
-                        alt={name}
-                        url={frame}
-                        className="object-contain z-10"
-                     />
-                     <Image
-                        options="aspect_ratio=1:1&height=45&width=45"
-                        alt={name}
-                        url={icon}
-                        className="object-contain rounded-t-md absolute"
-                     />
-                  </div>
-                  <div className="inline-block align-middle text-blue-400 ml-2">
-                     {name}
-                  </div>
-               </a>
+      <Link
+         className="border border-color-sub bg-2-sub shadow-sm shadow-1 x-3 p-2 pr-4 rounded-lg flex justify-between items-center"
+         to={`/c/craft-essences/${url}`}
+      >
+         <div className="flex items-center gap-3">
+            <div className="inline-flex align-middle items-top justify-center">
+               <Image
+                  width={80}
+                  alt={name}
+                  url={frame}
+                  className="object-contain w-8 z-10"
+               />
+               <Image
+                  width={80}
+                  alt={name}
+                  url={icon}
+                  className="object-contain w-8 rounded-t-md absolute"
+               />
             </div>
-            <div>
-               {Array(rarity)
-                  .fill(0)
-                  .map((x) => (
-                     <Image
-                        options="aspect_ratio=1:1&height=16&width=16"
-                        alt={rarity.toString()}
-                        url={star}
-                        className="object-contain inline-block"
-                     />
-                  ))}
-            </div>
+            <div className="font-semibold text-sm">{name}</div>
          </div>
-      </>
+         <div className="flex items-center gap-1">
+            {Array(rarity)
+               .fill(0)
+               .map((x) => (
+                  <Image
+                     className="size-4"
+                     key={x}
+                     width={40}
+                     height={40}
+                     alt={rarity.toString()}
+                     url={star}
+                  />
+               ))}
+         </div>
+      </Link>
    );
 }
 
-function PullResultDiv({ data }: any) {
+export function PullResultDiv({ data }: any) {
    const icon = data?.icon?.url;
    const url = data?.slug ?? data?.id;
    const name = data?.name;
@@ -1039,7 +1077,7 @@ function PullResultDiv({ data }: any) {
    const frame = data?.rarity?.icon_frame?.url;
    const type = frame ? "craft-essences" : "servants";
    const availability = data?.summon_availability?.name;
-   var cellcolor = "";
+   let cellcolor = "";
    switch (availability) {
       case "Limited":
          if (rarity == 5) cellcolor = "bg-red-600 bg-opacity-90";
@@ -1053,48 +1091,43 @@ function PullResultDiv({ data }: any) {
    }
 
    return (
-      <>
-         <div
-            className={`border border-color-sub py-1 text-center leading-none ${
-               cellcolor ?? ""
-            }`}
-         >
-            <a href={`/c/${type}/${url}`}>
-               <div>
-                  <div className="inline-flex mb-1.5 h-[44px]">
-                     {frame ? (
-                        <Image
-                           options="height=45&width=40"
-                           alt={name}
-                           url={frame}
-                           className="object-contain z-10 absolute mt-[1.5px]"
-                        />
-                     ) : null}
-
-                     <Image
-                        options=""
-                        alt={name}
-                        url={icon}
-                        className="object-contain rounded-t-md w-[40px]"
-                     />
-                  </div>
-               </div>
-               <div className="text-blue-400 text-xs leading-none">{name}</div>
-               <div>
-                  {Array(rarity)
-                     .fill(0)
-                     .map((x) => (
-                        <Image
-                           options="aspect_ratio=1:1&height=8&width=8"
-                           alt={rarity.toString()}
-                           url={star}
-                           className="object-contain inline-block"
-                        />
-                     ))}
-               </div>
-            </a>
+      <Link
+         className={`flex items-center justify-center flex-col gap-1 border bg-3-sub border-color-sub rounded-lg p-3 shadow-sm shadow-1 ${
+            cellcolor ?? ""
+         }`}
+         to={`/c/${type}/${url}`}
+      >
+         <div className="flex mb-0.5 h-[44px]">
+            {frame ? (
+               <Image
+                  options="height=45&width=40"
+                  alt={name}
+                  url={frame}
+                  className="object-contain z-10 absolute mt-[1.5px]"
+               />
+            ) : null}
+            <Image
+               width={80}
+               alt={name}
+               url={icon}
+               className="object-contain rounded-t-md w-[40px]"
+            />
          </div>
-      </>
+         <div className="text-blue-400 text-xs font-semibold">{name}</div>
+         <div className="flex items-center gap-1">
+            {Array(rarity)
+               .fill(0)
+               .map((x) => (
+                  <Image
+                     key={x}
+                     width={80}
+                     alt={rarity.toString()}
+                     url={star}
+                     className="object-contain size-3"
+                  />
+               ))}
+         </div>
+      </Link>
    );
 }
 
