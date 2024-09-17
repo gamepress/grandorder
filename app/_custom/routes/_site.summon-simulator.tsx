@@ -946,27 +946,29 @@ const SummonSimulator = (data: any) => {
                   NOT carry across rotating banners.
                </Text>
             </div>
+            <AdUnit
+               enableAds={true}
+               adType={{
+                  desktop: "leaderboard_atf",
+                  tablet: "leaderboard_atf",
+                  mobile: "med_rect_atf",
+               }}
+               className="my-8 mx-auto flex items-center justify-center"
+               selectorId="summonSimDesktopLeaderATF"
+            />
+            <H2>Select a Banner</H2>
             {/* Show banner selection, defaults to Story Summon if unselected. */}
             <div id="to-load" className="block">
                <SimulatorDropDownBox />
                <SummonBannerInfo />
-               <AdUnit
-                  enableAds={true}
-                  adType={{
-                     desktop: "leaderboard_atf",
-                     tablet: "leaderboard_atf",
-                     mobile: "med_rect_atf",
-                  }}
-                  className="my-8 mx-auto flex items-center justify-center"
-                  selectorId="summonSimDesktopLeaderATF"
-               />
+
                <div className="h-1 w-full rounded-full bg-zinc-200 dark:bg-dark500 mt-8 mb-1" />
                <SummonButtonSelector />
                {/* Summon Results */}
                {pullResults?.length > 0 && (
                   <div
                      id="results"
-                     className="text-center grid grid-cols-2 tablet:grid-cols-4 gap-2 p-3"
+                     className="text-center grid grid-cols-2 tablet:grid-cols-3 gap-2 pt-3"
                   >
                      {pullResults?.map((pr) => (
                         <PullResultDiv key={pr} data={pr} />
@@ -1017,21 +1019,39 @@ export function FeaturedServantRow({ data }: any) {
 
 export function SummonNavigation() {
    return (
-      <div className="grid grid-cols-3 gap-4 py-4 border-b-2 border-dotted border-color-sub mb-4">
+      <div className="grid tablet:grid-cols-3 gap-3 tablet:gap-4 py-4 border-b-2 border-dotted border-color-sub mb-4">
          <NavLink
             className={({ isActive }) =>
                clsx(
                   isActive
                      ? "bg-zinc-100 border-zinc-400/50 dark:bg-dark450 dark:border-zinc-500/50"
                      : "bg-2-sub hover:border-zinc-300 dark:hover:border-zinc-600",
-                  "flex items-center justify-center flex-col p-3 rounded-lg font-bold border border-color-sub shadow-sm shadow-1 text-sm gap-2",
+                  "flex items-center tablet:justify-center tablet:flex-col p-3 rounded-lg font-bold border border-color-sub shadow-sm shadow-1 text-sm gap-2",
+               )
+            }
+            color="zinc"
+            to="/summon-banner-list"
+         >
+            <Avatar
+               className="size-7 tablet:size-9"
+               src="https://static.mana.wiki/FGO%20Center%20Banner%20Summon%20Banner%20List.png?aspect_ratio=1%3A1&height=120&width=120"
+            />
+            Summon Banner List
+         </NavLink>
+         <NavLink
+            className={({ isActive }) =>
+               clsx(
+                  isActive
+                     ? "bg-zinc-100 border-zinc-400/50 dark:bg-dark450 dark:border-zinc-500/50"
+                     : "bg-2-sub hover:border-zinc-300 dark:hover:border-zinc-600",
+                  "flex items-center tablet:justify-center tablet:flex-col p-3 rounded-lg font-bold border border-color-sub shadow-sm shadow-1 text-sm gap-2",
                )
             }
             color="light"
             to="/summon-simulator"
          >
             <Avatar
-               className="size-9"
+               className="size-7 tablet:size-9"
                src="https://static.mana.wiki/summon-sim-usa.png"
             />
             Summon Simulator (NA)
@@ -1042,35 +1062,17 @@ export function SummonNavigation() {
                   isActive
                      ? "bg-zinc-100 border-zinc-400/50 dark:bg-dark450 dark:border-zinc-500/50"
                      : "bg-2-sub hover:border-zinc-300 dark:hover:border-zinc-600",
-                  "flex items-center justify-center flex-col p-3 rounded-lg font-bold border border-color-sub shadow-sm shadow-1 text-sm gap-2",
+                  "flex items-center tablet:justify-center tablet:flex-col p-3 rounded-lg font-bold border border-color-sub shadow-sm shadow-1 text-sm gap-2",
                )
             }
             color="zinc"
             to="/jp-summon-simulator"
          >
             <Avatar
-               className="size-9"
+               className="size-7 tablet:size-9"
                src="https://static.mana.wiki/summon-sim-japan.png"
             />
             Summon Simulator (JP)
-         </NavLink>
-         <NavLink
-            className={({ isActive }) =>
-               clsx(
-                  isActive
-                     ? "bg-zinc-100 border-zinc-400/50 dark:bg-dark450 dark:border-zinc-500/50"
-                     : "bg-2-sub hover:border-zinc-300 dark:hover:border-zinc-600",
-                  "flex items-center justify-center flex-col p-3 rounded-lg font-bold border border-color-sub shadow-sm shadow-1 text-sm gap-2",
-               )
-            }
-            color="zinc"
-            to="/summon-banner-list"
-         >
-            <Avatar
-               className="size-9"
-               src="https://static.mana.wiki/FGO%20Center%20Banner%20Summon%20Banner%20List.png?aspect_ratio=1%3A1&height=120&width=120"
-            />
-            Summon Banner List
          </NavLink>
       </div>
    );

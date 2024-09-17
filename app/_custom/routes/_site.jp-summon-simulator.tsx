@@ -950,20 +950,22 @@ const SummonSimulator = (data: any) => {
                   carry across rotating banners.
                </Text>
             </div>
+            <AdUnit
+               enableAds={true}
+               adType={{
+                  desktop: "leaderboard_atf",
+                  tablet: "leaderboard_atf",
+                  mobile: "med_rect_atf",
+               }}
+               className="my-8 mx-auto flex items-center justify-center"
+               selectorId="summonSimJPDesktopLeaderATF"
+            />
+            <H2>Select a Banner</H2>
             {/* Show banner selection, defaults to Story Summon if unselected. */}
             <div id="to-load" className="block">
                <SimulatorDropDownBox />
                <SummonBannerInfo />
-               <AdUnit
-                  enableAds={true}
-                  adType={{
-                     desktop: "leaderboard_atf",
-                     tablet: "leaderboard_atf",
-                     mobile: "med_rect_atf",
-                  }}
-                  className="my-8 mx-auto flex items-center justify-center"
-                  selectorId="summonSimJPDesktopLeaderATF"
-               />
+
                <div className="h-1 w-full rounded-full bg-zinc-200 dark:bg-dark500 mt-8 mb-1" />
                <SummonButtonSelector />
                {/* Summon Results */}

@@ -35,7 +35,7 @@ export function CraftEssencesMain({ data: ce }: { data: CraftEssenceType }) {
 
    return (
       <div className="tablet:flex max-tablet:flex-col items-start gap-3 pb-4">
-         <div className="tablet:w-[340px]">
+         <div className="tablet:w-[340px] max-tablet:mb-3">
             <Image
                width={680}
                className="rounded-md max-laptop:w-full"
