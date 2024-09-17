@@ -8,6 +8,7 @@ import { zx } from "zodix";
 
 import { Badge } from "~/components/Badge";
 import { Button } from "~/components/Button";
+import { CustomPageHeader } from "~/components/CustomPageHeader";
 import { H2, H3 } from "~/components/Headers";
 import { Icon } from "~/components/Icon";
 import { Image } from "~/components/Image";
@@ -21,6 +22,7 @@ import {
    TableRow,
 } from "~/components/Table";
 import { Text, TextLink } from "~/components/Text";
+import { AdUnit } from "~/routes/_site+/_components/RampUnit";
 import { fetchWithCache } from "~/utils/cache.server";
 
 import {
@@ -28,7 +30,6 @@ import {
    FeaturedServantRow,
    PullResultDiv,
 } from "./_site.summon-simulator";
-import { AdUnit } from "~/routes/_site+/_components/RampUnit";
 
 async function fetchGQL(query: string, variables?: Record<string, any>) {
    const { data, errors } = await fetchWithCache(
@@ -327,7 +328,7 @@ const SummonSimulator = (data: any) => {
    // ===========================
 
    function simChanged(selectbox) {
-      navigate(`/summon-simulator?simid=${selectbox}`);
+      navigate(`/jp-summon-simulator?simid=${selectbox}`);
       setPullct(0);
    }
    function toggleOptions(rateups, type) {
@@ -616,45 +617,6 @@ const SummonSimulator = (data: any) => {
       setPullct(0);
    }
 
-   const SummonSimIntroduction = () => {
-      return (
-         <>
-            <h1 className="font-header font-bold text-2xl pb-2.5">
-               Summon Simulator (JP)
-            </h1>
-            <div className="space-y-4">
-               <Text>
-                  Both JP and NA Summon Simulators have a 0.8% rate for Rate-up
-                  SSR Servants and 11 pulls (1 free pull every 30 SQ or every 10
-                  tickets).
-               </Text>
-               <Text>
-                  The JP Sim now has a Pity system, guaranteeing the rate-up SSR
-                  Servant at 330 pulls (30x 11-pulls) starting with the New
-                  Year's 2022 (JP) banner. Note, however, this pity does NOT
-                  carry across rotating banners.
-               </Text>
-               <div className="grid grid-cols-2 gap-3 py-4 border-t-2 border-dotted border-color-sub">
-                  <Button
-                     className="!text-sm shadow-sm shadow-1"
-                     color="light"
-                     href="/summon-simulator"
-                  >
-                     Summon Simulator (NA)
-                  </Button>
-                  <Button
-                     className="!text-sm shadow-sm shadow-1"
-                     color="zinc"
-                     href="/jp-summon-simulator"
-                  >
-                     Summon Simulator (JP)
-                  </Button>
-               </div>
-            </div>
-         </>
-      );
-   };
-
    const SimulatorDropDownBox = () => {
       return (
          <Select
@@ -754,28 +716,20 @@ const SummonSimulator = (data: any) => {
          <>
             <div className="flex items-center gap-3 py-3">
                <Button
-                  className="!text-base flex-grow"
-                  color={summonType == "10" ? "blue" : "zinc"}
+                  className="!text-base flex-grow shadow-sm shadow-1"
+                  color={summonType == "10" ? "zinc" : "light"}
                   id="summon-10-switch"
                   onClick={() => setSummonType("10")}
                >
                   10-Pull{pullEleven ? " (+1)" : ""}
                </Button>
                <Button
-                  className="!text-base flex-grow"
-                  color={summonType == "single" ? "blue" : "zinc"}
+                  className="!text-base flex-grow shadow-sm shadow-1"
+                  color={summonType == "single" ? "zinc" : "light"}
                   id="summon-single-switch"
                   onClick={() => setSummonType("single")}
                >
                   Summon Tickets
-               </Button>
-               <Button
-                  outline
-                  className="w-24 !text-base !text-1"
-                  onClick={() => reset()}
-               >
-                  <Icon name="refresh-ccw" size={14} />
-                  Reset
                </Button>
             </div>
             {summonType == "single" ? (
@@ -832,6 +786,14 @@ const SummonSimulator = (data: any) => {
                      >
                         SUMMON
                      </Button>
+                     <Button
+                        outline
+                        className="w-full mt-3 !text-base !text-1 shadow-sm shadow-1"
+                        onClick={() => reset()}
+                     >
+                        <Icon name="refresh-ccw" size={14} />
+                        Reset
+                     </Button>
                   </div>
                </>
             ) : (
@@ -844,6 +806,14 @@ const SummonSimulator = (data: any) => {
                   >
                      SUMMON
                   </Button>
+                  <Button
+                     outline
+                     className="w-full mt-3 !text-base !text-1 shadow-sm shadow-1"
+                     onClick={() => reset()}
+                  >
+                     <Icon name="refresh-ccw" size={14} />
+                     Reset
+                  </Button>
                </div>
             )}
          </>
@@ -855,10 +825,18 @@ const SummonSimulator = (data: any) => {
          <Table grid framed id="quartz-table">
             <TableBody>
                <TableRow>
-                  <TableHeader center>Quartz Used</TableHeader>
-                  <TableHeader center>$ Spent</TableHeader>
-                  <TableHeader center>Tickets Used</TableHeader>
-                  <TableHeader center>Pity Counter (/330)</TableHeader>
+                  <TableHeader className="w-1/4" center>
+                     Quartz Used
+                  </TableHeader>
+                  <TableHeader className="w-1/4" center>
+                     $ Spent
+                  </TableHeader>
+                  <TableHeader className="w-1/4" center>
+                     Tickets Used
+                  </TableHeader>
+                  <TableHeader className="w-1/4" center>
+                     Pity Counter (/330)
+                  </TableHeader>
                </TableRow>
                <TableRow>
                   <TableCell id="quartz" center>
@@ -952,10 +930,41 @@ const SummonSimulator = (data: any) => {
 
    return (
       <>
-         <div className="relative z-20 mx-auto max-w-[728px] justify-center px-3 tablet:pb-36 py-6">
-            <SummonSimIntroduction />
+         <CustomPageHeader
+            name="Summon Simulator (JP)"
+            iconUrl="https://static.mana.wiki/summon-sim-japan.png"
+         />
+         <div className="relative z-20 mx-auto max-w-[728px] justify-center max-tablet:px-3 tablet:pb-36 py-5">
+            <div className="space-y-4">
+               <Text>
+                  Both JP and NA Summon Simulators have a 0.8% rate for Rate-up
+                  SSR Servants and 11 pulls (1 free pull every 30 SQ or every 10
+                  tickets).
+               </Text>
+               <Text>
+                  The JP Sim now has a Pity system, guaranteeing the rate-up SSR
+                  Servant at 330 pulls (30x 11-pulls) starting with the New
+                  Year's 2022 (JP) banner. Note, however, this pity does NOT
+                  carry across rotating banners.
+               </Text>
+               <div className="grid grid-cols-2 gap-3 py-4 border-t-2 border-dotted border-color-sub">
+                  <Button
+                     className="!text-sm shadow-sm shadow-1"
+                     color="light"
+                     href="/summon-simulator"
+                  >
+                     Summon Simulator (NA)
+                  </Button>
+                  <Button
+                     className="!text-sm shadow-sm shadow-1"
+                     color="zinc"
+                     href="/jp-summon-simulator"
+                  >
+                     Summon Simulator (JP)
+                  </Button>
+               </div>
+            </div>
             {/* Show banner selection, defaults to Story Summon if unselected. */}
-
             <div id="to-load" className="block">
                <SimulatorDropDownBox />
                <SummonBannerInfo />

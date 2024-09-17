@@ -249,7 +249,6 @@ function VoiceLines({ data: servant }: { data: ServantType }) {
                                        <TableCell>
                                           <div
                                              key={"info_value_" + ind}
-                                             className="whitespace-pre-wrap"
                                              dangerouslySetInnerHTML={{
                                                 __html: irow?.text,
                                              }}
