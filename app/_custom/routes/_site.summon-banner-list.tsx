@@ -19,6 +19,8 @@ import { ListTable } from "~/routes/_site+/c_+/_components/ListTable";
 import { gqlRequestWithCache } from "~/utils/cache.server";
 import { gqlEndpoint } from "~/utils/fetchers.server";
 
+import { SummonNavigation } from "./_site.summon-simulator";
+
 export async function loader({ params, request }: LoaderFunctionArgs) {
    const summonEventList = await gqlRequestWithCache(
       gqlEndpoint({ siteSlug: "grandorder-gamepress" }),
@@ -198,7 +200,8 @@ export default function SummonBannerList(data: any) {
             name="Summon Banner List"
             iconUrl="https://static.mana.wiki/FGO%20Center%20Banner%20Summon%20Banner%20List.png"
          />
-         <div className="relative z-20 mx-auto max-w-[728px] justify-center max-tablet:px-3 tablet:pb-36 py-5">
+         <div className="relative z-20 mx-auto max-w-[728px] justify-center max-tablet:px-3 tablet:pb-36">
+            <SummonNavigation />
             <div className="mb-6">
                <div className="pb-3 text-sm">
                   Below is a historical list of Summon Events and which Servants

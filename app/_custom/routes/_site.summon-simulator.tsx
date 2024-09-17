@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Link, useLoaderData, useNavigate } from "@remix-run/react";
+import { Link, NavLink, useLoaderData, useNavigate } from "@remix-run/react";
+import clsx from "clsx";
 import { z } from "zod";
 import { zx } from "zodix";
 
+import { Avatar } from "~/components/Avatar";
 import { Badge } from "~/components/Badge";
 import { Button } from "~/components/Button";
 import { CustomPageHeader } from "~/components/CustomPageHeader";
@@ -608,42 +610,6 @@ const SummonSimulator = (data: any) => {
       setPullct(0);
    }
 
-   const SummonSimIntroduction = () => {
-      return (
-         <>
-            <div className="space-y-4">
-               <Text>
-                  Note that banners starting from the 4th Anniversary (7/3/2021)
-                  and onward implement a free 11-pull every 10 rolls. Banners
-                  before then will not include the extra 11-pull.
-               </Text>
-               <Text>
-                  The NA Sim now has a Pity system, guaranteeing the rate-up SSR
-                  Servant at 330 pulls (30x 11-pulls) starting with the
-                  Heian-kyo banner (11/21/2022). Note, however, this pity does
-                  NOT carry across rotating banners.
-               </Text>
-               <div className="grid grid-cols-2 gap-3 py-4 border-t-2 border-dotted border-color-sub">
-                  <Button
-                     className="!text-sm shadow-sm shadow-1"
-                     color="zinc"
-                     href="/summon-simulator"
-                  >
-                     Summon Simulator (NA)
-                  </Button>
-                  <Button
-                     className="!text-sm shadow-sm shadow-1"
-                     color="light"
-                     href="/jp-summon-simulator"
-                  >
-                     Summon Simulator (JP)
-                  </Button>
-               </div>
-            </div>
-         </>
-      );
-   };
-
    const SimulatorDropDownBox = () => {
       return (
          <Select
@@ -670,7 +636,7 @@ const SummonSimulator = (data: any) => {
             <div className="p-3 flex items-center justify-center bg-2-sub border border-color-sub rounded-lg mt-3 shadow-sm shadow-1">
                <Image
                   height={300}
-                  className="rounded-md"
+                  className="rounded-md h-60 object-contain"
                   id="banner-img"
                   url={banner_image}
                />
@@ -853,7 +819,7 @@ const SummonSimulator = (data: any) => {
 
    const StatisticsTable = () => {
       return (
-         <Table grid framed id="quartz-table">
+         <Table grid framed id="quartz-table" className="mt-4">
             <TableBody>
                <TableRow>
                   <TableHeader className="w-1/4" center>
@@ -965,8 +931,21 @@ const SummonSimulator = (data: any) => {
             name="Summon Simulator (NA)"
             iconUrl="https://static.mana.wiki/summon-sim-usa.png"
          />
-         <div className="relative z-20 mx-auto max-w-[728px] justify-center max-tablet:px-3 tablet:pb-36 py-5">
-            <SummonSimIntroduction />
+         <div className="relative z-20 mx-auto max-w-[728px] justify-center max-tablet:px-3 tablet:pb-36">
+            <SummonNavigation />
+            <div className="space-y-4 pb-4">
+               <Text>
+                  Note that banners starting from the 4th Anniversary (7/3/2021)
+                  and onward implement a free 11-pull every 10 rolls. Banners
+                  before then will not include the extra 11-pull.
+               </Text>
+               <Text>
+                  The NA Sim now has a Pity system, guaranteeing the rate-up SSR
+                  Servant at 330 pulls (30x 11-pulls) starting with the
+                  Heian-kyo banner (11/21/2022). Note, however, this pity does
+                  NOT carry across rotating banners.
+               </Text>
+            </div>
             {/* Show banner selection, defaults to Story Summon if unselected. */}
             <div id="to-load" className="block">
                <SimulatorDropDownBox />
@@ -987,14 +966,13 @@ const SummonSimulator = (data: any) => {
                {pullResults?.length > 0 && (
                   <div
                      id="results"
-                     className="text-center grid grid-cols-4 gap-2 pt-3"
+                     className="text-center grid grid-cols-2 tablet:grid-cols-4 gap-2 p-3"
                   >
                      {pullResults?.map((pr) => (
                         <PullResultDiv key={pr} data={pr} />
                      ))}
                   </div>
                )}
-               <div className="h-1 w-full rounded-full bg-zinc-200 dark:bg-dark500 my-4" />
                <StatisticsTable />
                <NotableResults />
             </div>
@@ -1034,6 +1012,67 @@ export function FeaturedServantRow({ data }: any) {
                ))}
          </div>
       </Link>
+   );
+}
+
+export function SummonNavigation() {
+   return (
+      <div className="grid grid-cols-3 gap-4 py-4 border-b-2 border-dotted border-color-sub mb-4">
+         <NavLink
+            className={({ isActive }) =>
+               clsx(
+                  isActive
+                     ? "bg-zinc-100 border-zinc-400/50 dark:bg-dark450 dark:border-zinc-500/50"
+                     : "bg-2-sub hover:border-zinc-300 dark:hover:border-zinc-600",
+                  "flex items-center justify-center flex-col p-3 rounded-lg font-bold border border-color-sub shadow-sm shadow-1 text-sm gap-2",
+               )
+            }
+            color="light"
+            to="/summon-simulator"
+         >
+            <Avatar
+               className="size-9"
+               src="https://static.mana.wiki/summon-sim-usa.png"
+            />
+            Summon Simulator (NA)
+         </NavLink>
+         <NavLink
+            className={({ isActive }) =>
+               clsx(
+                  isActive
+                     ? "bg-zinc-100 border-zinc-400/50 dark:bg-dark450 dark:border-zinc-500/50"
+                     : "bg-2-sub hover:border-zinc-300 dark:hover:border-zinc-600",
+                  "flex items-center justify-center flex-col p-3 rounded-lg font-bold border border-color-sub shadow-sm shadow-1 text-sm gap-2",
+               )
+            }
+            color="zinc"
+            to="/jp-summon-simulator"
+         >
+            <Avatar
+               className="size-9"
+               src="https://static.mana.wiki/summon-sim-japan.png"
+            />
+            Summon Simulator (JP)
+         </NavLink>
+         <NavLink
+            className={({ isActive }) =>
+               clsx(
+                  isActive
+                     ? "bg-zinc-100 border-zinc-400/50 dark:bg-dark450 dark:border-zinc-500/50"
+                     : "bg-2-sub hover:border-zinc-300 dark:hover:border-zinc-600",
+                  "flex items-center justify-center flex-col p-3 rounded-lg font-bold border border-color-sub shadow-sm shadow-1 text-sm gap-2",
+               )
+            }
+            color="zinc"
+            to="/summon-banner-list"
+         >
+            <Avatar
+               className="size-9"
+               src="https://static.mana.wiki/FGO%20Center%20Banner%20Summon%20Banner%20List.png?aspect_ratio=1%3A1&height=120&width=120"
+            />
+            Summon Banner List
+         </NavLink>
+      </div>
    );
 }
 
@@ -1097,27 +1136,38 @@ export function PullResultDiv({ data }: any) {
    let cellcolor = "";
    switch (availability) {
       case "Limited":
-         if (rarity == 5) cellcolor = "bg-red-600 bg-opacity-90";
-         if (rarity == 4) cellcolor = "bg-red-400 bg-opacity-30";
+         if (rarity == 5)
+            cellcolor =
+               "bg-red-600 border-red-300 dark:border-red-400 dark:border-red-600 bg-opacity-10 dark:bg-opacity-50";
+         if (rarity == 4)
+            cellcolor =
+               "bg-orange-600 border-orange-300 dark:border-orange-400 dark:border-orange-600 bg-opacity-10 dark:bg-opacity-50";
          break;
       case "Story-locked":
-         if (rarity == 5) cellcolor = "bg-blue-600 bg-opacity-90";
-         if (rarity == 4) cellcolor = "bg-blue-400 bg-opacity-30";
+         if (rarity == 5)
+            cellcolor =
+               "bg-violet-600 border-violet-300 dark:border-violet-400 dark:border-violet-600 bg-opacity-10 dark:bg-opacity-50";
+         if (rarity == 4)
+            cellcolor =
+               "bg-blue-600 border-blue-300 dark:border-blue-400 dark:border-blue-600 bg-opacity-10 dark:bg-opacity-50";
          break;
       default:
    }
 
    return (
       <Link
-         className={`flex items-center justify-center flex-col gap-1 border bg-3-sub border-color-sub rounded-lg p-3 shadow-sm shadow-1 ${
-            cellcolor ?? ""
-         }`}
+         className={`flex items-center gap-2 
+            border  rounded-lg p-2 shadow-sm shadow-1 ${
+               cellcolor
+                  ? cellcolor
+                  : "border-zinc-200 bg-2-sub hover:border-zinc-300 dark:border-zinc-600/50 "
+            }`}
          to={`/c/${type}/${url}`}
       >
-         <div className="flex mb-0.5 h-[44px]">
+         <div className="flex-none h-[34px]">
             {frame ? (
                <Image
-                  options="height=45&width=40"
+                  options="height=35&width=30"
                   alt={name}
                   url={frame}
                   className="object-contain z-10 absolute mt-[1.5px]"
@@ -1127,22 +1177,24 @@ export function PullResultDiv({ data }: any) {
                width={80}
                alt={name}
                url={icon}
-               className="object-contain rounded-t-md w-[40px]"
+               className="object-contain rounded-t-md w-[30px]"
             />
          </div>
-         <div className="text-blue-400 text-xs font-semibold">{name}</div>
-         <div className="flex items-center gap-1">
-            {Array(rarity)
-               .fill(0)
-               .map((x) => (
-                  <Image
-                     key={x}
-                     width={80}
-                     alt={rarity.toString()}
-                     url={star}
-                     className="object-contain size-3"
-                  />
-               ))}
+         <div className="space-y-1">
+            <div className="text-xs font-bold text-left">{name}</div>
+            <div className="flex items-center gap-0.5">
+               {Array(rarity)
+                  .fill(0)
+                  .map((x) => (
+                     <Image
+                        key={x}
+                        width={80}
+                        alt={rarity.toString()}
+                        url={star}
+                        className="object-contain size-3"
+                     />
+                  ))}
+            </div>
          </div>
       </Link>
    );

@@ -29,6 +29,7 @@ import {
    FeaturedEssenceRow,
    FeaturedServantRow,
    PullResultDiv,
+   SummonNavigation,
 } from "./_site.summon-simulator";
 
 async function fetchGQL(query: string, variables?: Record<string, any>) {
@@ -643,7 +644,7 @@ const SummonSimulator = (data: any) => {
             <div className="p-3 flex items-center justify-center bg-2-sub border border-color-sub rounded-lg mt-3 shadow-sm shadow-1">
                <Image
                   height={300}
-                  className="rounded-md"
+                  className="rounded-md h-60"
                   id="banner-img"
                   url={banner_image}
                />
@@ -822,7 +823,7 @@ const SummonSimulator = (data: any) => {
 
    const StatisticsTable = () => {
       return (
-         <Table grid framed id="quartz-table">
+         <Table grid framed id="quartz-table" className="mt-4">
             <TableBody>
                <TableRow>
                   <TableHeader className="w-1/4" center>
@@ -934,8 +935,9 @@ const SummonSimulator = (data: any) => {
             name="Summon Simulator (JP)"
             iconUrl="https://static.mana.wiki/summon-sim-japan.png"
          />
-         <div className="relative z-20 mx-auto max-w-[728px] justify-center max-tablet:px-3 tablet:pb-36 py-5">
-            <div className="space-y-4">
+         <div className="relative z-20 mx-auto max-w-[728px] justify-center max-tablet:px-3 tablet:pb-36">
+            <SummonNavigation />
+            <div className="space-y-4 pb-4">
                <Text>
                   Both JP and NA Summon Simulators have a 0.8% rate for Rate-up
                   SSR Servants and 11 pulls (1 free pull every 30 SQ or every 10
@@ -947,22 +949,6 @@ const SummonSimulator = (data: any) => {
                   Year's 2022 (JP) banner. Note, however, this pity does NOT
                   carry across rotating banners.
                </Text>
-               <div className="grid grid-cols-2 gap-3 py-4 border-t-2 border-dotted border-color-sub">
-                  <Button
-                     className="!text-sm shadow-sm shadow-1"
-                     color="light"
-                     href="/summon-simulator"
-                  >
-                     Summon Simulator (NA)
-                  </Button>
-                  <Button
-                     className="!text-sm shadow-sm shadow-1"
-                     color="zinc"
-                     href="/jp-summon-simulator"
-                  >
-                     Summon Simulator (JP)
-                  </Button>
-               </div>
             </div>
             {/* Show banner selection, defaults to Story Summon if unselected. */}
             <div id="to-load" className="block">
@@ -984,14 +970,13 @@ const SummonSimulator = (data: any) => {
                {pullResults?.length > 0 && (
                   <div
                      id="results"
-                     className="text-center grid grid-cols-4 gap-2 pt-3"
+                     className="text-center grid grid-cols-2 tablet:grid-cols-3 gap-2 pt-3"
                   >
                      {pullResults?.map((pr) => (
                         <PullResultDiv key={pr} data={pr} />
                      ))}
                   </div>
                )}
-               <div className="h-1 w-full rounded-full bg-zinc-200 dark:bg-dark500 my-4" />
                <StatisticsTable />
                <NotableResults />
             </div>
