@@ -16,16 +16,20 @@ import {
 import { AdUnit } from "~/routes/_site+/_components/RampUnit";
 import { fuzzyFilter } from "~/routes/_site+/c_+/_components/fuzzyFilter";
 import { ListTable } from "~/routes/_site+/c_+/_components/ListTable";
-import { gqlRequestWithCache } from "~/utils/cache.server";
-import { gqlEndpoint } from "~/utils/fetchers.server";
+import { gqlFetch } from "~/utils/fetchers.server";
 
 import { SummonNavigation } from "./_site.summon-simulator";
 
-export async function loader({ params, request }: LoaderFunctionArgs) {
-   const summonEventList = await gqlRequestWithCache(
-      gqlEndpoint({ siteSlug: "grandorder-gamepress" }),
-      SummonEventListQuery,
-   );
+export async function loader({
+   context: { payload, user },
+   request,
+}: LoaderFunctionArgs) {
+   const summonEventList = await gqlFetch({
+      isCustomDB: true,
+      isCached: true,
+      query: SummonEventListQuery,
+      request,
+   });
 
    return json({
       //@ts-ignore
@@ -84,8 +88,8 @@ const columns = [
          </div>
       ),
    }),
-   columnHelper.accessor("servants", {
-      header: "Servants",
+   columnHelper.accessor("details", {
+      header: "Details",
       cell: (info) => (
          <div className="p-2">
             <div className="border-b border-color-sub pb-2">
