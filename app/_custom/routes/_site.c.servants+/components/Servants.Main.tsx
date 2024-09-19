@@ -201,11 +201,7 @@ function ServantImageBaseData({
          <div className="tablet:flex max-tablet:flex-col items-start gap-3 pb-4">
             <section className="space-y-0.5 max-tablet:pb-3 tablet:max-w-[340px]">
                {/* Servant Image */}
-               <Link
-                  prefetch="intent"
-                  to={imgUrl ?? ""}
-                  className="relative block"
-               >
+               <Link to={imgUrl ?? ""} className="relative block">
                   <div className="tablet:w-[340px] min-h-[250px]">
                      <Image
                         width={680}
