@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import {
    Disclosure,
    DisclosureButton,
@@ -9,7 +11,9 @@ import { createColumnHelper } from "@tanstack/react-table";
 import clsx from "clsx";
 import { gql } from "graphql-request";
 
+import { Button } from "~/components/Button";
 import { CustomPageHeader } from "~/components/CustomPageHeader";
+import { Dialog } from "~/components/Dialog";
 import { Icon } from "~/components/Icon";
 import { Image } from "~/components/Image";
 import {
@@ -51,7 +55,7 @@ export default function ServantTierList() {
       <>
          <CustomPageHeader
             name="Servant Tier List"
-            iconUrl="https://static.mana.wiki/FGO%20Center%20Banner%20Summon%20Banner%20List.png"
+            iconUrl="https://static.mana.wiki/grandorder/servant-tier-list-icon.png"
          />
          <div className="relative z-20 mx-auto max-w-[728px] justify-center max-tablet:px-3 tablet:pb-36 pt-4">
             <div className="space-y-3">
@@ -487,53 +491,106 @@ const columnHelper = createColumnHelper<Servant>();
 
 const gridView = columnHelper.accessor("name", {
    filterFn: fuzzyFilter,
-   cell: (info) => (
-      <Link
-         className={clsx(
-            info.row.original.np_card_type?.name &&
-               info.row.original.np_card_type?.name == "Arts" &&
-               "bg-blue-50 border-blue-200 dark:bg-blue-950/50 dark:border-blue-900/70",
-            info.row.original.np_card_type?.name &&
-               info.row.original.np_card_type?.name == "Quick" &&
-               "bg-green-50 border-green-300 dark:bg-green-950/50 dark:border-green-900/70",
-            info.row.original.np_card_type?.name &&
-               info.row.original.np_card_type?.name == "Buster" &&
-               "bg-red-50 border-red-200 dark:bg-red-950/50 dark:border-red-900/70",
-            "relative flex items-center gap-2 group h-full border border-color rounded-lg p-2 shadow-sm shadow-1",
-         )}
-         to={`/c/servants/${info.row.original.slug}`}
-      >
-         <Image
-            width={80}
-            className="w-10 flex-none"
-            loading="lazy"
-            url={info.row.original.icon?.url}
-         />
-         <div className="space-y-0.5 whitespace-normal">
-            <div
-               className="text-xs font-bold line-clamp-2
-                group-hover:underline decoration-zinc-400 underline-offset-2"
+   cell: (info) => {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const [isOpen, setIsOpen] = useState(false);
+
+      return (
+         <div
+            className={clsx(
+               info.row.original.np_card_type?.name &&
+                  info.row.original.np_card_type?.name == "Arts" &&
+                  "bg-blue-50 border-blue-200 dark:bg-blue-950/50 dark:border-blue-900/70",
+               info.row.original.np_card_type?.name &&
+                  info.row.original.np_card_type?.name == "Quick" &&
+                  "bg-green-50 border-green-300 dark:bg-green-950/50 dark:border-green-900/70",
+               info.row.original.np_card_type?.name &&
+                  info.row.original.np_card_type?.name == "Buster" &&
+                  "bg-red-50 border-red-200 dark:bg-red-950/50 dark:border-red-900/70",
+               "relative flex flex-col gap-2 group h-full border border-color rounded-lg p-2 shadow-sm shadow-1",
+            )}
+         >
+            <div className="flex items-start gap-2">
+               <Link to={`/c/servants/${info.row.original.slug}`}>
+                  <Image
+                     width={100}
+                     className="w-12 flex-none"
+                     loading="lazy"
+                     url={info.row.original.icon?.url}
+                  />
+               </Link>
+               <div className="whitespace-normal flex-grow">
+                  <Link
+                     className="text-xs font-bold line-clamp-1
+                     group-hover:underline decoration-zinc-400 underline-offset-2"
+                     to={`/c/servants/${info.row.original.slug}`}
+                  >
+                     {info.getValue()}
+                  </Link>
+                  <Link
+                     to={`/c/servants/${info.row.original.slug}`}
+                     className="uppercase text-[9px] block font-bold pt-0.5 text-1"
+                  >
+                     {info.row.original.np_target_type}
+                  </Link>
+                  <div className="flex items-center justify-between gap-2">
+                     <Link
+                        to={`/c/servants/${info.row.original.slug}`}
+                        className="flex items-center gap-0.5"
+                     >
+                        {Array(
+                           parseInt(info.row.original.star_rarity?.name as any),
+                        )
+                           .fill(0)
+                           .map((x) => (
+                              <Image
+                                 key={x}
+                                 width={80}
+                                 url={info.row.original.star_rarity?.icon?.url}
+                                 className="object-contain size-2.5"
+                              />
+                           ))}
+                     </Link>
+                     <div className="flex items-center gap-2">
+                        <Image
+                           width={40}
+                           height={40}
+                           className="size-5 flex-none"
+                           loading="lazy"
+                           url={info.row.original.class?.icon?.url}
+                        />
+                        {info.row.original.writeup_tier_list_explanation ? (
+                           <Button
+                              color="light/zinc"
+                              className="!text-[10px] !text-1 w-9 !p-0"
+                              onClick={() => setIsOpen(true)}
+                           >
+                              Info
+                           </Button>
+                        ) : null}
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            <Dialog
+               size="3xl"
+               onClose={() => {
+                  setIsOpen(false);
+               }}
+               open={isOpen}
             >
-               {info.getValue()}
-            </div>
-            <div className="uppercase text-[9px] font-bold text-1">
-               {info.row.original.np_target_type}
-            </div>
-            <div className="flex items-center gap-0.5">
-               {Array(parseInt(info.row.original.star_rarity?.name as any))
-                  .fill(0)
-                  .map((x) => (
-                     <Image
-                        key={x}
-                        width={80}
-                        url={info.row.original.star_rarity?.icon?.url}
-                        className="object-contain size-2.5"
-                     />
-                  ))}
-            </div>
+               <div
+                  className="whitespace-normal"
+                  dangerouslySetInnerHTML={{
+                     //@ts-ignore
+                     __html: info.row.original.writeup_tier_list_explanation,
+                  }}
+               ></div>
+            </Dialog>
          </div>
-      </Link>
-   ),
+      );
+   },
 });
 
 const columns = [
@@ -749,6 +806,7 @@ const QUERY = gql`
             name
             np_target_type
             tier_arrow
+            writeup_tier_list_explanation
             np_card_type {
                name
             }
@@ -782,6 +840,7 @@ const QUERY = gql`
             name
             np_target_type
             tier_arrow
+            writeup_tier_list_explanation
             np_card_type {
                name
             }
@@ -815,6 +874,7 @@ const QUERY = gql`
             name
             np_target_type
             tier_arrow
+            writeup_tier_list_explanation
             np_card_type {
                name
             }
@@ -848,6 +908,7 @@ const QUERY = gql`
             name
             np_target_type
             tier_arrow
+            writeup_tier_list_explanation
             np_card_type {
                name
             }
@@ -881,6 +942,7 @@ const QUERY = gql`
             name
             np_target_type
             tier_arrow
+            writeup_tier_list_explanation
             np_card_type {
                name
             }
@@ -914,6 +976,7 @@ const QUERY = gql`
             name
             np_target_type
             tier_arrow
+            writeup_tier_list_explanation
             np_card_type {
                name
             }
@@ -947,6 +1010,7 @@ const QUERY = gql`
             name
             np_target_type
             tier_arrow
+            writeup_tier_list_explanation
             np_card_type {
                name
             }
@@ -980,6 +1044,7 @@ const QUERY = gql`
             name
             np_target_type
             tier_arrow
+            writeup_tier_list_explanation
             np_card_type {
                name
             }
@@ -1013,6 +1078,7 @@ const QUERY = gql`
             name
             np_target_type
             tier_arrow
+            writeup_tier_list_explanation
             np_card_type {
                name
             }
@@ -1046,6 +1112,7 @@ const QUERY = gql`
             name
             np_target_type
             tier_arrow
+            writeup_tier_list_explanation
             np_card_type {
                name
             }
@@ -1079,6 +1146,7 @@ const QUERY = gql`
             name
             np_target_type
             tier_arrow
+            writeup_tier_list_explanation
             np_card_type {
                name
             }
