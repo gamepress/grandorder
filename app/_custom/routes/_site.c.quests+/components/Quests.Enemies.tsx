@@ -18,9 +18,9 @@ export function QuestsEnemies({ data }: { data: any }) {
               qind == 0
                  ? true
                  : quest_details[qind]?.quest_parts !=
-                     quest_details[qind - 1]?.quest_parts
-                   ? true
-                   : false; // Controls whether the "Part" label should show up - Always show first
+                   quest_details[qind - 1]?.quest_parts
+                 ? true
+                 : false; // Controls whether the "Part" label should show up - Always show first
 
            return (
               <div key={qd}>
@@ -188,7 +188,7 @@ function EnemyAlternative({ data }: { data: any }) {
                width={48}
                height={48}
                className="size-6"
-               url={class_icon}
+               url={enemy_icon}
                alt="icon"
                loading="lazy"
             />
@@ -196,7 +196,7 @@ function EnemyAlternative({ data }: { data: any }) {
                width={48}
                height={48}
                className="size-6"
-               url={enemy_icon}
+               url={class_icon}
                alt="icon"
                loading="lazy"
             />
