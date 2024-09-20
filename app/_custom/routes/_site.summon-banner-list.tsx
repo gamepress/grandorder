@@ -17,6 +17,8 @@ import { AdUnit } from "~/routes/_site+/_components/RampUnit";
 import { fuzzyFilter } from "~/routes/_site+/c_+/_components/fuzzyFilter";
 import { ListTable } from "~/routes/_site+/c_+/_components/ListTable";
 import { gqlFetch } from "~/utils/fetchers.server";
+import { rankItem } from "@tanstack/match-sorter-utils";
+import type { FilterFn } from "@tanstack/react-table";
 
 import { SummonNavigation } from "./_site.summon-simulator";
 
@@ -53,8 +55,27 @@ export const meta: MetaFunction = () => {
 
 const columnHelper = createColumnHelper<any>();
 
+const servantFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
+   // Get array of Servant information
+   const servant_list = row.original?.servant_profile_future_banner
+      ?.filter(
+         //@ts-ignore
+         (a) =>
+            a.banner_reference == "single" || a.banner_reference == "shared",
+      )
+      //@ts-ignore
+      ?.map((a) => a.banner_servant?.name)
+      ?.toString();
+
+   const servant_found =
+      servant_list.toLowerCase()?.indexOf(value?.toLowerCase()) > -1;
+
+   // Return if the item should be filtered in/out
+   return servant_found;
+};
+
 const gridView = columnHelper.accessor("name", {
-   filterFn: fuzzyFilter,
+   filterFn: servantFilter,
    cell: (info) => (
       <div className="block relative">
          <Image
@@ -74,19 +95,23 @@ const gridView = columnHelper.accessor("name", {
 
 const columns = [
    columnHelper.accessor("name", {
+      filterFn: servantFilter,
       header: "Name",
-      cell: (info) => (
-         <div className="flex flex-col gap-2 group py-0.5 w-72  whitespace-normal">
-            <Image
-               width={480}
-               className="flex-none"
-               url={info.row.original.icon?.url}
-            />
-            <span className="font-semibold text-xs group-hover:underline decoration-zinc-400 underline-offset-2">
-               {info.getValue()}
-            </span>
-         </div>
-      ),
+      cell: (info) => {
+         return (
+            <div className="flex flex-col gap-2 group py-0.5 w-72  whitespace-normal">
+               <Image
+                  width={480}
+                  height={173}
+                  className="flex-none"
+                  url={info.row.original.icon?.url}
+               />
+               <span className="font-semibold text-xs group-hover:underline decoration-zinc-400 underline-offset-2">
+                  {info.getValue()}
+               </span>
+            </div>
+         );
+      },
    }),
    columnHelper.accessor("details", {
       header: "Details",
@@ -137,7 +162,7 @@ const columns = [
                               )
                               // @ts-ignore
                               ?.map((s, si, sf) => (
-                                 <span key={s}>
+                                 <span key={s.banner_servant?.name + "_" + si}>
                                     <Link
                                        className="text-blue-500 hover:underline"
                                        to={`/c/servants/${s.banner_servant?.slug}`}
@@ -248,6 +273,8 @@ export default function SummonBannerList(data: any) {
                gridView={gridView}
                data={{ listData: { docs: bannerlist } }}
                columns={columns}
+               pageSize={1000}
+               globalFilterFn={servantFilter}
             />
          </div>
       </>
