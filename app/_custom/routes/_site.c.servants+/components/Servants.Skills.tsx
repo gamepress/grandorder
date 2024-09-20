@@ -119,7 +119,7 @@ const SkillDisplay = ({ skill }: any) => {
                   }}
                ></div>
                <div
-                  className="text-xs text-1 italic pb-1.5"
+                  className="border-t text-xs border-color-sub py-2 mt-2"
                   dangerouslySetInnerHTML={{ __html: unlock }}
                />
                <button
@@ -215,9 +215,9 @@ const SkillUpgrade = ({ skill }: any) => {
                alt="SkillIcon"
             />
             <div className="flex-grow">
-               <div className="font-bold font-mono text-sm">{skill_name}</div>
+               <div className="font-bold text-base pb-0.5">{skill_name}</div>
                <div
-                  className="text-xs whitespace-pre-wrap"
+                  className="text-sm whitespace-pre-wrap"
                   dangerouslySetInnerHTML={{
                      __html: skill_description
                         .replace(

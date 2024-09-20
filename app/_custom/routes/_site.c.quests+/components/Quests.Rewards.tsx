@@ -74,11 +74,10 @@ const RewardRow = ({ data, index }: any) => {
                            >
                               {name}
                            </div>
+                           <Badge className="!text-sm">x{qty}</Badge>
                            <Badge>
-                              x{qty}
                               {rate ? (
                                  <>
-                                    <span className="size-1 bg-zinc-400 dark:bg-zinc-500 rounded-full" />
                                     <span>{rate}%</span>
                                  </>
                               ) : null}
