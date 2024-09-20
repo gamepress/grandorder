@@ -55,7 +55,7 @@ export default function ServantTierList() {
       <>
          <CustomPageHeader
             name="Servant Tier List"
-            iconUrl="https://static.mana.wiki/grandorder/servant-tier-list-icon.png"
+            iconUrl="https://static.mana.wiki/servant-tier-list-icon.png"
          />
          <div className="relative z-20 mx-auto max-w-[728px] justify-center max-tablet:px-3 tablet:pb-36 pt-4">
             <div className="space-y-3">
