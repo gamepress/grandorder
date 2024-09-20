@@ -14,6 +14,7 @@ import { gql } from "graphql-request";
 import { Button } from "~/components/Button";
 import { CustomPageHeader } from "~/components/CustomPageHeader";
 import { Dialog } from "~/components/Dialog";
+import { H2 } from "~/components/Headers";
 import { Icon } from "~/components/Icon";
 import { Image } from "~/components/Image";
 import {
@@ -23,6 +24,7 @@ import {
    TableHeader,
    TableRow,
 } from "~/components/Table";
+import { TableOfContentsTemplate } from "~/components/TableOfContentsTemplate";
 import { Text } from "~/components/Text";
 import type { Servant } from "~/db/payload-custom-types";
 import { AdUnit } from "~/routes/_site+/_components/RampUnit";
@@ -57,8 +59,22 @@ export default function ServantTierList() {
             name="Servant Tier List"
             iconUrl="https://static.mana.wiki/servant-tier-list-icon.png"
          />
-         <div className="relative z-20 mx-auto max-w-[728px] justify-center max-tablet:px-3 tablet:pb-36 pt-4">
-            <div className="space-y-3">
+         <div className="relative z-20 mx-auto max-w-[728px] justify-center pt-4">
+            <TableOfContentsTemplate sections={sections} />
+            <AdUnit
+               enableAds={true}
+               adType={{
+                  desktop: "leaderboard_atf",
+                  tablet: "leaderboard_atf",
+                  mobile: "med_rect_atf",
+               }}
+               className="my-8 mx-auto flex items-center justify-center"
+               selectorId="tier-list-1"
+            />
+         </div>
+         <div className="relative z-20 mx-auto max-w-[728px] justify-center max-tablet:px-3 tablet:pb-36">
+            <H2>Tier List Overview</H2>
+            <div className="space-y-3 mt-4">
                <Text>
                   <b>5* Assumptions:</b> SSR Servants are assumed to be at NP1,
                   10/10/10 Skills. Double Servant compositions are considered.
@@ -244,17 +260,8 @@ export default function ServantTierList() {
                   </>
                )}
             </Disclosure>
-            <AdUnit
-               enableAds={true}
-               adType={{
-                  desktop: "leaderboard_atf",
-                  tablet: "leaderboard_atf",
-                  mobile: "med_rect_atf",
-               }}
-               className="my-8 mx-auto flex items-center justify-center"
-               selectorId="tier-list-1"
-            />
-            <SectionTitle customTitle="EX Tier" />
+
+            <SectionTitle customSlug="ex-tier" customTitle="EX Tier" />
             <Text>
                The best of the best, these Servants can be put into any team and
                will vastly improve team performance by a significant margin.
@@ -273,7 +280,7 @@ export default function ServantTierList() {
                gridCellClassNames=" "
                gridContainerClassNames="grid grid-cols-2 tablet:grid-cols-3 gap-2"
             />
-            <SectionTitle customTitle="EX- Tier" />
+            <SectionTitle customSlug="ex-minus-tier" customTitle="EX- Tier" />
             <Text>
                Servants in this tier are extremely enabling and drastically
                improve the performance for many teams, although their usage is
@@ -302,7 +309,7 @@ export default function ServantTierList() {
                className="my-8 mx-auto flex items-center justify-center"
                selectorId="tier-list-2"
             />
-            <SectionTitle customTitle="A+ Tier" />
+            <SectionTitle customSlug="a-plus-tier" customTitle="A+ Tier" />
             <Text>
                These Servants are among the best at their role. They either
                perform well in any team, or have access to a powerful
@@ -330,7 +337,7 @@ export default function ServantTierList() {
                className="my-8 mx-auto flex items-center justify-center"
                selectorId="tier-list-3"
             />
-            <SectionTitle customTitle="A Tier" />
+            <SectionTitle customSlug="a-tier" customTitle="A Tier" />
             <Text>
                Powerful Servants that are among the top in performing their role
                in the current state of the game. They are often self-sufficient,
@@ -359,7 +366,7 @@ export default function ServantTierList() {
                className="my-8 mx-auto flex items-center justify-center"
                selectorId="tier-list-4"
             />
-            <SectionTitle customTitle="B+ Tier" />
+            <SectionTitle customSlug="b-plus-tier" customTitle="B+ Tier" />
             <Text>
                Servants that are a solid asset to the roster. These Servants
                often have a single very powerful role for which they excel,
@@ -387,7 +394,7 @@ export default function ServantTierList() {
                className="my-8 mx-auto flex items-center justify-center"
                selectorId="tier-list-5"
             />
-            <SectionTitle customTitle="B Tier" />
+            <SectionTitle customSlug="b-tier" customTitle="B Tier" />
             <Text>
                Strong Servants with great potential. Typically they have some
                weaknesses that can be readily compensated for by supports.
@@ -416,7 +423,7 @@ export default function ServantTierList() {
                className="my-8 mx-auto flex items-center justify-center"
                selectorId="tier-list-6"
             />
-            <SectionTitle customTitle="C+ Tier" />
+            <SectionTitle customSlug="c-plus-tier" customTitle="C+ Tier" />
             <Text>
                These Servants provide very good performance in their ideal
                encounters. Generally, their specializations may be more rare, or
@@ -445,7 +452,7 @@ export default function ServantTierList() {
                className="my-8 mx-auto flex items-center justify-center"
                selectorId="tier-list-7"
             />
-            <SectionTitle customTitle="C Tier" />
+            <SectionTitle customSlug="c-tier" customTitle="C Tier" />
             <Text>
                The workhorses, Servants with good performance who will shine
                with the right team and against the right opponents. They
@@ -464,7 +471,7 @@ export default function ServantTierList() {
                gridCellClassNames=" "
                gridContainerClassNames="grid grid-cols-2 tablet:grid-cols-3 gap-2"
             />
-            <SectionTitle customTitle="D+ Tier" />
+            <SectionTitle customSlug="d-plus-tier" customTitle="D+ Tier" />
             <Text>
                Servants with decent performance that are somewhat less
                self-sufficient. They may also be extremely competent in a niche
@@ -511,10 +518,13 @@ const gridView = columnHelper.accessor("name", {
             )}
          >
             <div className="flex items-start gap-2">
-               <Link to={`/c/servants/${info.row.original.slug}`}>
+               <Link
+                  className="flex-none"
+                  to={`/c/servants/${info.row.original.slug}`}
+               >
                   <Image
                      width={100}
-                     className="w-12 flex-none"
+                     className="w-12"
                      loading="lazy"
                      url={info.row.original.icon?.url}
                   />
@@ -572,7 +582,6 @@ const gridView = columnHelper.accessor("name", {
                   </div>
                </div>
             </div>
-
             <Dialog
                size="3xl"
                onClose={() => {
@@ -614,24 +623,32 @@ const columns = [
       ),
    }),
    columnHelper.accessor("class", {
+      header: "Class",
       filterFn: (row, columnId, filterValue) => {
          return filterValue.includes(row.original.class?.name);
       },
+      cell: (info) => info.getValue()?.name,
    }),
    columnHelper.accessor("star_rarity", {
+      header: "Rarity",
       filterFn: (row, columnId, filterValue) => {
          return filterValue.includes(row.original.star_rarity?.name);
       },
+      cell: (info) => info.getValue()?.name,
    }),
    columnHelper.accessor("np_target_type", {
+      header: "Target",
       filterFn: (row, columnId, filterValue) => {
          return filterValue.includes(row.original.np_target_type);
       },
+      cell: (info) => info.getValue(),
    }),
    columnHelper.accessor("np_card_type", {
+      header: "Card",
       filterFn: (row, columnId, filterValue) => {
          return filterValue.includes(row.original.np_card_type?.name);
       },
+      cell: (info) => info.getValue()?.name,
    }),
 ];
 const filters = [
@@ -1170,3 +1187,51 @@ const QUERY = gql`
       }
    }
 `;
+
+const sections = [
+   {
+      id: "ex-tier",
+      slug: "ex-tier",
+      name: "EX Tier",
+   },
+   {
+      id: "ex-minus-tier",
+      slug: "ex-minus-tier",
+      name: "EX- Tier",
+   },
+   {
+      id: "a-plus-tier",
+      slug: "a-plus-tier",
+      name: "A+ Tier",
+   },
+   {
+      id: "a-tier",
+      slug: "a-tier",
+      name: "A Tier",
+   },
+   {
+      id: "b-plus-tier",
+      slug: "b-plus-tier",
+      name: "B+ Tier",
+   },
+   {
+      id: "b-tier",
+      slug: "b-tier",
+      name: "B Tier",
+   },
+   {
+      id: "c-plus-tier",
+      slug: "c-plus-tier",
+      name: "C+ Tier",
+   },
+   {
+      id: "c-tier",
+      slug: "c-tier",
+      name: "C Tier",
+   },
+   {
+      id: "d-plus-tier",
+      slug: "d-plus-tier",
+      name: "D+ Tier",
+   },
+];
