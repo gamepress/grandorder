@@ -54,7 +54,6 @@ const gridView = columnHelper.accessor("name", {
    cell: (info) => (
       <Link
          className="block relative"
-         prefetch="intent"
          to={`/c/pokemon/${info.row.original.slug}`}
       >
          <Image
@@ -88,7 +87,6 @@ const columns = [
       cell: (info) => {
          return (
             <Link
-               prefetch="intent"
                to={`/c/servants/${info.row.original.slug}`}
                className="flex items-center gap-3 group py-0.5"
             >
