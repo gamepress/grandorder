@@ -50,7 +50,7 @@ export const Materials: CollectionConfig = {
       },
       {
          name: "description",
-         type: "text",
+         type: "textarea",
       },
       {
          name: "path",
