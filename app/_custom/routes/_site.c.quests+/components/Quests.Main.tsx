@@ -35,8 +35,14 @@ export function QuestsMain({ data }: { data: any }) {
       },
    ];
 
+   // For proper formatting of inline ul elements in description!
+   const formatting = `<style>
+   ul {list-style-type: disc;margin: 0 0 .75em 25px;}
+   </style>`;
+
    return (
       <>
+         <div dangerouslySetInnerHTML={{ __html: formatting }}></div>
          <Table grid framed dense>
             <TableBody>
                {info?.map((irow: any, ind: any) => {
