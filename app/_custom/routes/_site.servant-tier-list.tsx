@@ -641,7 +641,10 @@ const columns = [
       filterFn: (row, columnId, filterValue) => {
          return filterValue.includes(row.original.np_target_type);
       },
-      cell: (info) => info.getValue(),
+      cell: (info) =>
+         info.getValue() === "support"
+            ? "Support"
+            : info.getValue().toUpperCase(),
    }),
    columnHelper.accessor("np_card_type", {
       header: "Card",
