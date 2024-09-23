@@ -261,11 +261,11 @@ const SummonSimulator = (data: any) => {
 
    // Initialize Featured Servants / Essences each time a new banner is selected
    useEffect(() => {
-      var init_featured_servants = banner_data?.featured_servants?.map(
-         (s) => loaderdata?.servants?.find((a) => a.id == s.id),
+      var init_featured_servants = banner_data?.featured_servants?.map((s) =>
+         loaderdata?.servants?.find((a) => a.id == s.id),
       );
-      var init_featured_essences = banner_data?.featured_essences?.map(
-         (c) => loaderdata?.craft_essences?.find((a) => a.id == c.id),
+      var init_featured_essences = banner_data?.featured_essences?.map((c) =>
+         loaderdata?.craft_essences?.find((a) => a.id == c.id),
       );
 
       if (banner_options?.length > 0) {
@@ -293,6 +293,7 @@ const SummonSimulator = (data: any) => {
       );
       setFServants(init_featured_servants);
       setFEssences(init_featured_essences);
+      setPity330(bannerpity330);
    }, [loaderdata]);
 
    const is_guaranteed = banner_data?.guaranteed;
@@ -355,6 +356,7 @@ const SummonSimulator = (data: any) => {
    function simulateSingle() {
       simulate(ticketCount, true);
    }
+
    function simulate(num, isTicket) {
       // Set 11-pull if a 10-pull is attempted on an 11-pull enabled banner
       if (num == 10 && pullEleven) {
@@ -372,13 +374,18 @@ const SummonSimulator = (data: any) => {
             pulledBonus = true;
          }
       }
-      var currPullCounter = pullct;
+
       for (var i = 0; i < num; i++) {
          var rarityNum = Math.floor(Math.random() * 100) + 1;
          // NOTE: You cannot just use setXXX(XXX + 1), you MUST use function call (XXX) => XXX+1
+         // Additionally, since useState calls are asynchronous, a separate internal variable must be used to track pity progress within the for loop.
+         var pitypull;
+         if (i == 0) pitypull = pullct;
+         pitypull = (pitypull ?? 0) + 1;
          setPullct((pullct) => pullct + 1);
-         if (pullct > 329 && pity330) {
+         if (pitypull > 329 && pity330) {
             // Pity at 330 pulls.
+            pitypull = 0;
             pullServant("guaranteed");
             continue;
          }
@@ -525,11 +532,11 @@ const SummonSimulator = (data: any) => {
          servant = pullFeaturedObj(pullFeatured, currFeatured5S, currFiveStars);
          setNotableResults((notableResults) => [...notableResults, servant]);
          // Reset pity counter to 0 if the pulled Servant was featured.
+
          if (pity330 && currFeatured5S.indexOf(servant) > -1) {
             setPullct((pullct) => 0);
          }
       }
-
       setPullResults((pullResults) => [...pullResults, servant]);
    }
 

@@ -75,14 +75,12 @@ const RewardRow = ({ data, index }: any) => {
                               {name}
                            </div>
                            <Badge className="!text-sm">x{qty}</Badge>
-                           <Badge>
-                              {rate ? (
-                                 <>
-                                    <span>{rate}%</span>
-                                 </>
-                              ) : null}
-                              {max_drops ? "(Max: " + max_drops + ")" : null}
-                           </Badge>
+                           {rate ? (
+                              <Badge>
+                                 <span>{rate}%</span>
+                                 {max_drops ? "(Max: " + max_drops + ")" : null}
+                              </Badge>
+                           ) : null}
                         </div>
                         <div
                            className="whitespace-pre-line text-sm"
