@@ -7,7 +7,7 @@ import {
 } from "@headlessui/react";
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { json, Link, useLoaderData } from "@remix-run/react";
-import { createColumnHelper } from "@tanstack/react-table";
+import { ColumnFiltersState, createColumnHelper } from "@tanstack/react-table";
 import clsx from "clsx";
 import { gql } from "graphql-request";
 
@@ -28,10 +28,10 @@ import { TableOfContentsTemplate } from "~/components/TableOfContentsTemplate";
 import { Text } from "~/components/Text";
 import type { Servant } from "~/db/payload-custom-types";
 import { AdUnit } from "~/routes/_site+/_components/RampUnit";
-import { SectionTitle } from "~/routes/_site+/c_+/$collectionId_.$entryId/components/SectionTitle";
 import { fuzzyFilter } from "~/routes/_site+/c_+/_components/fuzzyFilter";
 import { ListTable } from "~/routes/_site+/c_+/_components/ListTable";
 import { gqlFetch } from "~/utils/fetchers.server";
+import ListTableContainer from "~/routes/_site+/c_+/_components/ListTableContainer";
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
    const servantTierList = await gqlFetch({
@@ -53,28 +53,19 @@ export const meta: MetaFunction = () => {
 
 export default function ServantTierList() {
    const data = useLoaderData<typeof loader>();
+
+   const gridContainerClassNames =
+      "grid grid-cols-5 tablet:grid-cols-8 gap-2 p-3 w-full";
+
    return (
       <>
          <CustomPageHeader
             name="Servant Tier List"
             iconUrl="https://static.mana.wiki/servant-tier-list-icon.png"
          />
-         <div className="relative z-20 mx-auto max-w-[728px] justify-center pt-4">
-            <TableOfContentsTemplate sections={sections} />
-            <AdUnit
-               enableAds={true}
-               adType={{
-                  desktop: "leaderboard_atf",
-                  tablet: "leaderboard_atf",
-                  mobile: "med_rect_atf",
-               }}
-               className="my-8 mx-auto flex items-center justify-center"
-               selectorId="tier-list-1"
-            />
-         </div>
+
          <div className="relative z-20 mx-auto max-w-[728px] justify-center max-tablet:px-3 tablet:pb-36">
-            <H2>Tier List Overview</H2>
-            <div className="space-y-3 mt-4">
+            <div className="space-y-3 pt-4">
                <Text>
                   <b>5* Assumptions:</b> SSR Servants are assumed to be at NP1,
                   10/10/10 Skills. Double Servant compositions are considered.
@@ -260,235 +251,231 @@ export default function ServantTierList() {
                   </>
                )}
             </Disclosure>
-
-            <SectionTitle customSlug="ex-tier" customTitle="EX Tier" />
-            <Text>
-               The best of the best, these Servants can be put into any team and
-               will vastly improve team performance by a significant margin.
-               Their team support is so powerful that the most powerful teams
-               revolve around them.
-            </Text>
-            <ListTable
-               gridView={gridView}
-               searchPlaceholder="Filter by Servant name..."
-               defaultViewType="grid"
-               //@ts-ignore
-               data={{ listData: { docs: data.exTier.docs } }}
-               columns={columns}
-               columnViewability={{ type: false }}
+            <div className="relative z-20 mx-auto max-w-[728px] justify-center pt-4">
+               <AdUnit
+                  enableAds={true}
+                  adType={{
+                     desktop: "leaderboard_atf",
+                     tablet: "leaderboard_atf",
+                     mobile: "med_rect_atf",
+                  }}
+                  className="my-8 mx-auto flex items-center justify-center"
+                  selectorId="tier-list-1"
+               />
+            </div>
+            <ListTableContainer
+               className="border border-color-sub rounded-lg divide-y divide-color-sub overflow-hidden"
+               /* @ts-ignore */
                filters={filters}
-               gridCellClassNames=" "
-               gridContainerClassNames="grid grid-cols-2 tablet:grid-cols-3 gap-2"
-            />
-            <SectionTitle customSlug="ex-minus-tier" customTitle="EX- Tier" />
-            <Text>
-               Servants in this tier are extremely enabling and drastically
-               improve the performance for many teams, although their usage is
-               slightly more restricted and less widely applicable, being
-               slightly more specialized than those in EX tier.
-            </Text>
-            <ListTable
-               gridView={gridView}
-               searchPlaceholder="Filter by Servant name..."
-               defaultViewType="grid"
-               //@ts-ignore
-               data={{ listData: { docs: data.exMinusTier.docs } }}
-               columns={columns}
-               columnViewability={{ type: false }}
-               filters={filters}
-               gridCellClassNames=" "
-               gridContainerClassNames="grid grid-cols-2 tablet:grid-cols-3 gap-2"
-            />
-            <AdUnit
-               enableAds={true}
-               adType={{
-                  desktop: "leaderboard_btf",
-                  tablet: "leaderboard_btf",
-                  mobile: "med_rect_btf",
-               }}
-               className="my-8 mx-auto flex items-center justify-center"
-               selectorId="tier-list-2"
-            />
-            <SectionTitle customSlug="a-plus-tier" customTitle="A+ Tier" />
-            <Text>
-               These Servants are among the best at their role. They either
-               perform well in any team, or have access to a powerful
-               specialization for the current state of the game.
-            </Text>
-            <ListTable
-               gridView={gridView}
-               searchPlaceholder="Filter by Servant name..."
-               defaultViewType="grid"
-               //@ts-ignore
-               data={{ listData: { docs: data.aPlusTier.docs } }}
-               columns={columns}
-               columnViewability={{ star_rarity: false }}
-               filters={filters}
-               gridCellClassNames=" "
-               gridContainerClassNames="grid grid-cols-2 tablet:grid-cols-3 gap-2"
-            />
-            <AdUnit
-               enableAds={true}
-               adType={{
-                  desktop: "leaderboard_btf",
-                  tablet: "leaderboard_btf",
-                  mobile: "med_rect_btf",
-               }}
-               className="my-8 mx-auto flex items-center justify-center"
-               selectorId="tier-list-3"
-            />
-            <SectionTitle customSlug="a-tier" customTitle="A Tier" />
-            <Text>
-               Powerful Servants that are among the top in performing their role
-               in the current state of the game. They are often self-sufficient,
-               or their outstanding performance in specific setups lends them
-               high desirability.
-            </Text>
-            <ListTable
-               gridView={gridView}
-               searchPlaceholder="Filter by Servant name..."
-               defaultViewType="grid"
-               //@ts-ignore
-               data={{ listData: { docs: data.aTier.docs } }}
-               columns={columns}
-               columnViewability={{ star_rarity: false }}
-               filters={filters}
-               gridCellClassNames=" "
-               gridContainerClassNames="grid grid-cols-2 tablet:grid-cols-3 gap-2"
-            />
-            <AdUnit
-               enableAds={true}
-               adType={{
-                  desktop: "leaderboard_btf",
-                  tablet: "leaderboard_btf",
-                  mobile: "med_rect_btf",
-               }}
-               className="my-8 mx-auto flex items-center justify-center"
-               selectorId="tier-list-4"
-            />
-            <SectionTitle customSlug="b-plus-tier" customTitle="B+ Tier" />
-            <Text>
-               Servants that are a solid asset to the roster. These Servants
-               often have a single very powerful role for which they excel,
-               while still performing decently outside of that role.
-            </Text>
-            <ListTable
-               gridView={gridView}
-               searchPlaceholder="Filter by Servant name..."
-               defaultViewType="grid"
-               //@ts-ignore
-               data={{ listData: { docs: data.bPlusTier.docs } }}
-               columns={columns}
-               columnViewability={{ star_rarity: false }}
-               filters={filters}
-               gridCellClassNames=" "
-               gridContainerClassNames="grid grid-cols-2 tablet:grid-cols-3 gap-2"
-            />
-            <AdUnit
-               enableAds={true}
-               adType={{
-                  desktop: "leaderboard_btf",
-                  tablet: "leaderboard_btf",
-                  mobile: "med_rect_btf",
-               }}
-               className="my-8 mx-auto flex items-center justify-center"
-               selectorId="tier-list-5"
-            />
-            <SectionTitle customSlug="b-tier" customTitle="B Tier" />
-            <Text>
-               Strong Servants with great potential. Typically they have some
-               weaknesses that can be readily compensated for by supports.
-               Against the right opponents or with the right composition, their
-               specializations will outperform higher tier Servants.
-            </Text>
-            <ListTable
-               gridView={gridView}
-               searchPlaceholder="Filter by Servant name..."
-               defaultViewType="grid"
-               //@ts-ignore
-               data={{ listData: { docs: data.bTier.docs } }}
-               columns={columns}
-               columnViewability={{ star_rarity: false }}
-               filters={filters}
-               gridCellClassNames=" "
-               gridContainerClassNames="grid grid-cols-2 tablet:grid-cols-3 gap-2"
-            />
-            <AdUnit
-               enableAds={true}
-               adType={{
-                  desktop: "leaderboard_btf",
-                  tablet: "leaderboard_btf",
-                  mobile: "med_rect_btf",
-               }}
-               className="my-8 mx-auto flex items-center justify-center"
-               selectorId="tier-list-6"
-            />
-            <SectionTitle customSlug="c-plus-tier" customTitle="C+ Tier" />
-            <Text>
-               These Servants provide very good performance in their ideal
-               encounters. Generally, their specializations may be more rare, or
-               they may not necessarily be a choice pick in all occasions, but
-               still find value outside their niche.
-            </Text>
-            <ListTable
-               gridView={gridView}
-               searchPlaceholder="Filter by Servant name..."
-               defaultViewType="grid"
-               //@ts-ignore
-               data={{ listData: { docs: data.cPlusTier.docs } }}
-               columns={columns}
-               columnViewability={{ star_rarity: false }}
-               filters={filters}
-               gridCellClassNames=" "
-               gridContainerClassNames="grid grid-cols-2 tablet:grid-cols-3 gap-2"
-            />
-            <AdUnit
-               enableAds={true}
-               adType={{
-                  desktop: "leaderboard_btf",
-                  tablet: "leaderboard_btf",
-                  mobile: "med_rect_btf",
-               }}
-               className="my-8 mx-auto flex items-center justify-center"
-               selectorId="tier-list-7"
-            />
-            <SectionTitle customSlug="c-tier" customTitle="C Tier" />
-            <Text>
-               The workhorses, Servants with good performance who will shine
-               with the right team and against the right opponents. They
-               typically have a solid niche of their own and can carry a team to
-               victory even against the most difficult opponents.
-            </Text>
-            <ListTable
-               gridView={gridView}
-               searchPlaceholder="Filter by Servant name..."
-               defaultViewType="grid"
-               //@ts-ignore
-               data={{ listData: { docs: data.cTier.docs } }}
-               columns={columns}
-               columnViewability={{ star_rarity: false }}
-               filters={filters}
-               gridCellClassNames=" "
-               gridContainerClassNames="grid grid-cols-2 tablet:grid-cols-3 gap-2"
-            />
-            <SectionTitle customSlug="d-plus-tier" customTitle="D+ Tier" />
-            <Text>
-               Servants with decent performance that are somewhat less
-               self-sufficient. They may also be extremely competent in a niche
-               that is somewhat less commonly encountered.
-            </Text>
-            <ListTable
-               gridView={gridView}
-               searchPlaceholder="Filter by Servant name..."
-               defaultViewType="grid"
-               //@ts-ignore
-               data={{ listData: { docs: data.dPlusTier.docs } }}
-               columns={columns}
-               columnViewability={{ star_rarity: false }}
-               filters={filters}
-               gridCellClassNames=" "
-               gridContainerClassNames="grid grid-cols-2 tablet:grid-cols-3 gap-2"
-            />
+            >
+               <div className="flex items-stretch max-tablet:flex-col max-tablet:divide-y tablet:divide-x divide-color-sub">
+                  <div className="p-3 w-full tablet:w-16 mx-auto flex tablet:items-start tablet:justify-center bg-2-sub">
+                     <div
+                        className="bg-white shadow-sm shadow-1 border border-zinc-300 
+                        dark:bg-dark400 dark:border-zinc-600 text-sm px-2  tablet:w-20
+                        rounded-lg p-1 flex items-center justify-center font-bold"
+                     >
+                        EX
+                     </div>
+                  </div>
+                  <ListTable
+                     pager={false}
+                     gridView={gridView}
+                     searchPlaceholder="Filter by Servant name..."
+                     defaultViewType="grid"
+                     //@ts-ignore
+                     data={{ listData: { docs: data.exTier.docs } }}
+                     columns={columns}
+                     columnViewability={{ star_rarity: false }}
+                     gridCellClassNames=" "
+                     gridContainerClassNames={gridContainerClassNames}
+                  />
+               </div>
+               <div className="flex items-stretch max-tablet:flex-col max-tablet:divide-y tablet:divide-x divide-color-sub">
+                  <div className="p-3 w-full tablet:w-16 mx-auto flex tablet:items-start tablet:justify-center bg-2-sub">
+                     <div
+                        className="bg-white shadow-sm shadow-1 border border-zinc-300 
+                        dark:bg-dark400 dark:border-zinc-600 text-sm px-2  tablet:w-20
+                        rounded-lg p-1 flex items-center justify-center font-bold"
+                     >
+                        EX-
+                     </div>
+                  </div>
+                  <ListTable
+                     pager={false}
+                     gridView={gridView}
+                     searchPlaceholder="Filter by Servant name..."
+                     defaultViewType="grid"
+                     //@ts-ignore
+                     data={{ listData: { docs: data.exMinusTier.docs } }}
+                     columns={columns}
+                     columnViewability={{ star_rarity: false }}
+                     gridCellClassNames=" "
+                     gridContainerClassNames={gridContainerClassNames}
+                  />
+               </div>
+               <div className="flex items-stretch max-tablet:flex-col max-tablet:divide-y tablet:divide-x divide-color-sub">
+                  <div className="p-3 w-full tablet:w-16 mx-auto flex tablet:items-start tablet:justify-center bg-2-sub">
+                     <div
+                        className="bg-white shadow-sm shadow-1 border border-zinc-300 
+                        dark:bg-dark400 dark:border-zinc-600 text-sm px-2  tablet:w-20
+                        rounded-lg p-1 flex items-center justify-center font-bold"
+                     >
+                        A+
+                     </div>
+                  </div>
+                  <ListTable
+                     pager={false}
+                     gridView={gridView}
+                     searchPlaceholder="Filter by Servant name..."
+                     defaultViewType="grid"
+                     //@ts-ignore
+                     data={{ listData: { docs: data.aPlusTier.docs } }}
+                     columns={columns}
+                     columnViewability={{ star_rarity: false }}
+                     gridCellClassNames=" "
+                     gridContainerClassNames={gridContainerClassNames}
+                  />
+               </div>
+               <div className="flex items-stretch max-tablet:flex-col max-tablet:divide-y tablet:divide-x divide-color-sub">
+                  <div className="p-3 w-full tablet:w-16 mx-auto flex tablet:items-start tablet:justify-center bg-2-sub">
+                     <div
+                        className="bg-white shadow-sm shadow-1 border border-zinc-300 
+                      dark:bg-dark400 dark:border-zinc-600 text-sm px-2  tablet:w-20
+                      rounded-lg p-1 flex items-center justify-center font-bold"
+                     >
+                        A
+                     </div>
+                  </div>
+                  <ListTable
+                     pager={false}
+                     gridView={gridView}
+                     searchPlaceholder="Filter by Servant name..."
+                     defaultViewType="grid"
+                     //@ts-ignore
+                     data={{ listData: { docs: data.aTier.docs } }}
+                     columns={columns}
+                     columnViewability={{ star_rarity: false }}
+                     gridCellClassNames=" "
+                     gridContainerClassNames={gridContainerClassNames}
+                  />
+               </div>
+               <div className="flex items-stretch max-tablet:flex-col max-tablet:divide-y tablet:divide-x divide-color-sub">
+                  <div className="p-3 w-full tablet:w-16 mx-auto flex tablet:items-start tablet:justify-center bg-2-sub">
+                     <div
+                        className="bg-white shadow-sm shadow-1 border border-zinc-300 
+                        dark:bg-dark400 dark:border-zinc-600 text-sm px-2  tablet:w-20
+                        rounded-lg p-1 flex items-center justify-center font-bold"
+                     >
+                        B+
+                     </div>
+                  </div>
+                  <ListTable
+                     gridView={gridView}
+                     searchPlaceholder="Filter by Servant name..."
+                     defaultViewType="grid"
+                     //@ts-ignore
+                     data={{ listData: { docs: data.bPlusTier.docs } }}
+                     columns={columns}
+                     pager={false}
+                     columnViewability={{ star_rarity: false }}
+                     gridCellClassNames=" "
+                     gridContainerClassNames={gridContainerClassNames}
+                  />
+               </div>
+               <div className="flex items-stretch max-tablet:flex-col max-tablet:divide-y tablet:divide-x divide-color-sub">
+                  <div className="p-3 w-full tablet:w-16 mx-auto flex tablet:items-start tablet:justify-center bg-2-sub">
+                     <div
+                        className="bg-white shadow-sm shadow-1 border border-zinc-300 
+                        dark:bg-dark400 dark:border-zinc-600 text-sm px-2  tablet:w-20
+                        rounded-lg p-1 flex items-center justify-center font-bold"
+                     >
+                        B
+                     </div>
+                  </div>
+                  <ListTable
+                     gridView={gridView}
+                     searchPlaceholder="Filter by Servant name..."
+                     defaultViewType="grid"
+                     //@ts-ignore
+                     data={{ listData: { docs: data.bTier.docs } }}
+                     columns={columns}
+                     pager={false}
+                     columnViewability={{ star_rarity: false }}
+                     gridCellClassNames=" "
+                     gridContainerClassNames={gridContainerClassNames}
+                  />
+               </div>
+               <div className="flex items-stretch max-tablet:flex-col max-tablet:divide-y tablet:divide-x divide-color-sub">
+                  <div className="p-3 w-full tablet:w-16 mx-auto flex tablet:items-start tablet:justify-center bg-2-sub">
+                     <div
+                        className="bg-white shadow-sm shadow-1 border border-zinc-300 
+                        dark:bg-dark400 dark:border-zinc-600 text-sm px-2  tablet:w-20
+                        rounded-lg p-1 flex items-center justify-center font-bold"
+                     >
+                        C+
+                     </div>
+                  </div>
+                  <ListTable
+                     gridView={gridView}
+                     searchPlaceholder="Filter by Servant name..."
+                     defaultViewType="grid"
+                     //@ts-ignore
+                     data={{ listData: { docs: data.cPlusTier.docs } }}
+                     columns={columns}
+                     pager={false}
+                     columnViewability={{ star_rarity: false }}
+                     gridCellClassNames=" "
+                     gridContainerClassNames={gridContainerClassNames}
+                  />
+               </div>
+               <div className="flex items-stretch max-tablet:flex-col max-tablet:divide-y tablet:divide-x divide-color-sub">
+                  <div className="p-3 w-full tablet:w-16 mx-auto flex tablet:items-start tablet:justify-center bg-2-sub">
+                     <div
+                        className="bg-white shadow-sm shadow-1 border border-zinc-300 
+                        dark:bg-dark400 dark:border-zinc-600 text-sm px-2  tablet:w-20
+                        rounded-lg p-1 flex items-center justify-center font-bold"
+                     >
+                        C
+                     </div>
+                  </div>
+                  <ListTable
+                     gridView={gridView}
+                     searchPlaceholder="Filter by Servant name..."
+                     defaultViewType="grid"
+                     //@ts-ignore
+                     data={{ listData: { docs: data.cTier.docs } }}
+                     columns={columns}
+                     pager={false}
+                     columnViewability={{ star_rarity: false }}
+                     gridCellClassNames=" "
+                     gridContainerClassNames={gridContainerClassNames}
+                  />
+               </div>
+               <div className="flex items-stretch max-tablet:flex-col max-tablet:divide-y tablet:divide-x divide-color-sub">
+                  <div className="p-3 w-full tablet:w-16 mx-auto flex tablet:items-start tablet:justify-center bg-2-sub">
+                     <div
+                        className="bg-white shadow-sm shadow-1 border border-zinc-300 
+                        dark:bg-dark400 dark:border-zinc-600 text-sm px-2  tablet:w-20
+                        rounded-lg p-1 flex items-center justify-center font-bold"
+                     >
+                        D+
+                     </div>
+                  </div>
+                  <ListTable
+                     gridView={gridView}
+                     searchPlaceholder="Filter by Servant name..."
+                     defaultViewType="grid"
+                     //@ts-ignore
+                     data={{ listData: { docs: data.dPlusTier.docs } }}
+                     columns={columns}
+                     columnViewability={{ star_rarity: false }}
+                     pager={false}
+                     gridCellClassNames=" "
+                     gridContainerClassNames={gridContainerClassNames}
+                  />
+               </div>
+            </ListTableContainer>
          </div>
       </>
    );
@@ -503,84 +490,58 @@ const gridView = columnHelper.accessor("name", {
       const [isOpen, setIsOpen] = useState(false);
 
       return (
-         <div
-            className={clsx(
-               info.row.original.np_card_type?.name &&
-                  info.row.original.np_card_type?.name == "Arts" &&
-                  "bg-blue-50 border-blue-200 dark:bg-blue-950/50 dark:border-blue-900/70",
-               info.row.original.np_card_type?.name &&
-                  info.row.original.np_card_type?.name == "Quick" &&
-                  "bg-green-50 border-green-300 dark:bg-green-950/50 dark:border-green-900/70",
-               info.row.original.np_card_type?.name &&
-                  info.row.original.np_card_type?.name == "Buster" &&
-                  "bg-red-50 border-red-200 dark:bg-red-950/50 dark:border-red-900/70",
-               "relative flex flex-col gap-2 group h-full border border-color rounded-lg p-2 shadow-sm shadow-1",
-            )}
-         >
-            <div className="flex items-start gap-2">
-               <Link
-                  className="flex-none"
-                  to={`/c/servants/${info.row.original.slug}`}
-               >
-                  <Image
-                     width={100}
-                     className="w-12"
-                     loading="lazy"
-                     url={info.row.original.icon?.url}
-                  />
-               </Link>
-               <div className="whitespace-normal flex-grow">
-                  <Link
-                     className="text-xs font-bold line-clamp-1
-                     group-hover:underline decoration-zinc-400 underline-offset-2"
-                     to={`/c/servants/${info.row.original.slug}`}
-                  >
-                     {info.getValue()}
-                  </Link>
-                  <Link
-                     to={`/c/servants/${info.row.original.slug}`}
-                     className="uppercase text-[9px] block font-bold pt-0.5 text-1"
-                  >
-                     {info.row.original.np_target_type}
-                  </Link>
-                  <div className="flex items-center justify-between gap-2">
-                     <Link
-                        to={`/c/servants/${info.row.original.slug}`}
-                        className="flex items-center gap-0.5"
-                     >
-                        {Array(
-                           parseInt(info.row.original.star_rarity?.name as any),
-                        )
-                           .fill(0)
-                           .map((x) => (
-                              <Image
-                                 key={x}
-                                 width={80}
-                                 url={info.row.original.star_rarity?.icon?.url}
-                                 className="object-contain size-2.5"
-                              />
-                           ))}
-                     </Link>
-                     <div className="flex items-center gap-2">
+         <div>
+            <Link
+               to={`/c/servants/${info.row.original.slug}`}
+               className={clsx(
+                  info.row.original.np_card_type?.name &&
+                     info.row.original.np_card_type?.name == "Arts" &&
+                     "bg-blue-100 border-blue-300 dark:bg-blue-950/50 dark:border-blue-900/70",
+                  info.row.original.np_card_type?.name &&
+                     info.row.original.np_card_type?.name == "Quick" &&
+                     "bg-green-100 border-green-300 dark:bg-green-950/50 dark:border-green-900/70",
+                  info.row.original.np_card_type?.name &&
+                     info.row.original.np_card_type?.name == "Buster" &&
+                     "bg-red-100 border-red-300/80 dark:bg-red-950/50 dark:border-red-900/70",
+                  "relative flex flex-col group h-full border border-color mb-1 rounded-lg p-1 shadow-sm shadow-1",
+               )}
+            >
+               <Image
+                  width={160}
+                  className="w-20 mx-auto"
+                  loading="lazy"
+                  url={info.row.original.icon?.url}
+               />
+               <div className="flex items-center gap-0.5 justify-center pt-1">
+                  {Array(parseInt(info.row.original.star_rarity?.name as any))
+                     .fill(0)
+                     .map((x) => (
                         <Image
-                           width={40}
-                           height={40}
-                           className="size-5 flex-none"
-                           loading="lazy"
-                           url={info.row.original.class?.icon?.url}
+                           key={x}
+                           width={80}
+                           url={info.row.original.star_rarity?.icon?.url}
+                           className="object-contain size-2.5"
                         />
-                        {info.row.original.writeup_tier_list_explanation ? (
-                           <Button
-                              color="light/zinc"
-                              className="!text-[10px] !text-1 w-9 !p-0"
-                              onClick={() => setIsOpen(true)}
-                           >
-                              Info
-                           </Button>
-                        ) : null}
-                     </div>
-                  </div>
+                     ))}
                </div>
+               <div className="uppercase text-[9px] block font-bold pt-0.5 text-1 text-center">
+                  {info.row.original.np_target_type}
+               </div>
+            </Link>
+            {info.row.original.writeup_tier_list_explanation ? (
+               <Button
+                  color="light/zinc"
+                  className="!text-[10px] !text-1 w-full !p-0"
+                  onClick={() => setIsOpen(true)}
+               >
+                  Info
+               </Button>
+            ) : null}
+            <div
+               className="text-[10px] font-bold text-center pt-1
+                     group-hover:underline decoration-zinc-400 underline-offset-2"
+            >
+               {info.getValue()}
             </div>
             <Dialog
                size="3xl"
@@ -644,7 +605,7 @@ const columns = [
       cell: (info) =>
          info.getValue() === "support"
             ? "Support"
-            : info.getValue().toUpperCase(),
+            : info.getValue()?.toUpperCase(),
    }),
    columnHelper.accessor("np_card_type", {
       header: "Card",

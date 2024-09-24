@@ -2,6 +2,7 @@ import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { createColumnHelper } from "@tanstack/react-table";
+import type { FilterFn } from "@tanstack/react-table";
 
 import { Badge } from "~/components/Badge";
 import { CustomPageHeader } from "~/components/CustomPageHeader";
@@ -14,11 +15,8 @@ import {
    TableRow,
 } from "~/components/Table";
 import { AdUnit } from "~/routes/_site+/_components/RampUnit";
-import { fuzzyFilter } from "~/routes/_site+/c_+/_components/fuzzyFilter";
 import { ListTable } from "~/routes/_site+/c_+/_components/ListTable";
 import { gqlFetch } from "~/utils/fetchers.server";
-import { rankItem } from "@tanstack/match-sorter-utils";
-import type { FilterFn } from "@tanstack/react-table";
 
 import { SummonNavigation } from "./_site.summon-simulator";
 
