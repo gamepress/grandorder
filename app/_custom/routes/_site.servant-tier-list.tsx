@@ -23,7 +23,7 @@ import {
    TableHeader,
    TableRow,
 } from "~/components/Table";
-import { Text } from "~/components/Text";
+import { Text, TextLink } from "~/components/Text";
 import type { Servant } from "~/db/payload-custom-types";
 import { AdUnit } from "~/routes/_site+/_components/RampUnit";
 import { fuzzyFilter } from "~/routes/_site+/c_+/_components/fuzzyFilter";
@@ -65,32 +65,51 @@ export default function ServantTierList() {
          <div className="relative z-20 mx-auto max-w-[728px] justify-center max-tablet:px-3 tablet:pb-36">
             <div className="space-y-3 pt-4">
                <Text>
-                  <b>5* Assumptions:</b> SSR Servants are assumed to be at NP1,
-                  10/10/10 Skills. Double Servant compositions are considered.
-                  All 5* Servants are excellent! Their performance often vastly
-                  outpaces those of lower rarities and each of them is worth
-                  investing in. The tier list is therefore just a comparison
-                  tool to judge these Servants by their relative performance.
-                  The tier placement is primarily based on a Servant’s current
-                  performance, and their placement will often shift with future
-                  Interludes and Rank Ups, new competition, and the changing
-                  state of the game.
+                  <p className="pb-1 font-bold">5★ Assumptions</p>
+                  <p>
+                     SSR Servants are assumed to be at NP1, 10/10/10 Skills.
+                     Double Servant compositions are considered. All 5* Servants
+                     are excellent! Their performance often vastly outpaces
+                     those of lower rarities and each of them is worth investing
+                     in. The tier list is therefore just a comparison tool to
+                     judge these Servants by their relative performance. The
+                     tier placement is primarily based on a Servant’s current
+                     performance, and their placement will often shift with
+                     future Interludes and Rank Ups, new competition, and the
+                     changing state of the game.
+                  </p>
                </Text>
                <Text>
-                  <b>4* Assumptions:</b> Non-Welfare SR Servants are assumed to
-                  be at NP1, 10/10/10 Skills. Welfare SR Servants are assumed to
-                  be at NP5, 10/10/10 Skills. Double Servant compositions are
-                  considered.
+                  <p className="pb-1 font-bold">4★ Assumptions</p>
+                  <p>
+                     Non-Welfare SR Servants are assumed to be at NP1, 10/10/10
+                     Skills. Welfare SR Servants are assumed to be at NP5,
+                     10/10/10 Skills. Double Servant compositions are
+                     considered.
+                  </p>
                </Text>
                <Text>
-                  <b>1-3* Assumptions:</b> Non-Story Locked Servants are assumed
-                  to be at NP5, 10/10/10 Skills. Story-Locked (generally 3 star)
-                  Servants are assumed to be at NP1, 10/10/10 Skills. Double
-                  Servant compositions are considered.
+                  <p className="pb-1 font-bold">1-3★ Assumptions</p>
+                  <p>
+                     Non-Story Locked Servants are assumed to be at NP5,
+                     10/10/10 Skills. Story-Locked (generally 3 star) Servants
+                     are assumed to be at NP1, 10/10/10 Skills. Double Servant
+                     compositions are considered.
+                  </p>
                </Text>
                <Text>
-                  * Servants in the same tier are listed in descending rarity,
+                  *Servants in the same tier are listed in descending rarity,
                   and aside from this are in no particular order.
+               </Text>
+               <Text>
+                  Check out the full{" "}
+                  <TextLink
+                     target="_blank"
+                     href="https://fgo.gamepress.gg/tier-list-change-log-history"
+                  >
+                     change log{" "}
+                  </TextLink>{" "}
+                  for details on tier list changes
                </Text>
             </div>
             <Disclosure>
