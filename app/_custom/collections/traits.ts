@@ -33,6 +33,11 @@ export const Traits: CollectionConfig = {
          type: "text",
       },
       {
+         name: "icon",
+         type: "upload",
+         relationTo: "images",
+      },
+      {
          name: "slug",
          type: "text",
       },

@@ -47,6 +47,11 @@ export const Illustrators: CollectionConfig = {
          },
       },
       {
+         name: "icon",
+         type: "upload",
+         relationTo: "images",
+      },
+      {
          name: "slug",
          type: "text",
       },
