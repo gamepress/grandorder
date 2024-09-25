@@ -2,9 +2,9 @@ import type { CollectionConfig } from "payload/types";
 
 import { isStaff } from "../../db/collections/users/users.access";
 
-export const _Tags: CollectionConfig = {
-   slug: "_tags",
-   labels: { singular: "_Tag", plural: "_Tags" },
+export const Cvs: CollectionConfig = {
+   slug: "cvs",
+   labels: { singular: "Cv", plural: "Cvs" },
    admin: {
       group: "Custom",
       useAsTitle: "name",
@@ -21,7 +21,7 @@ export const _Tags: CollectionConfig = {
          type: "text",
       },
       {
-         name: "drupal_tid",
+         name: "data_key",
          type: "text",
       },
       {
@@ -29,13 +29,13 @@ export const _Tags: CollectionConfig = {
          type: "text",
       },
       {
-         name: "description",
-         type: "text",
-      },
-      {
-         name: "icon",
-         type: "upload",
-         relationTo: "images",
+         name: "ce_With_CV",
+         type: "relationship",
+         relationTo: "craft-essences",
+         hasMany: true,
+         admin: {
+            readOnly: true,
+         },
       },
       {
          name: "slug",

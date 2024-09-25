@@ -19,13 +19,13 @@ export const CommandCodes: CollectionConfig = {
       afterDelete: [
          Delete_TermRelations(
             "illustrator", // Origin collection first level field name
-            "_illustrators", // Target collection to update
+            "illustrators", // Target collection to update
             "cc_With_Illustrator", // Target collection field to update
          ),
          Delete_TermRelationsOneDeep(
             "effect_list", // Origin collection first level field name
             "effect", // Origin collection second level field name
-            "_craft-essence-type-specifics", // Target collection to update
+            "craft-essence-effects", // Target collection to update
             "cc_With_Effect", // Target collection field to update
          ),
          afterDeleteSearchSyncHook,
@@ -97,12 +97,12 @@ export const CommandCodes: CollectionConfig = {
                      Update_TermRelationsOneDeep(
                         "effect_list", // Origin collection first level field name
                         "effect", // Origin collection second level field name
-                        "_craft-essence-type-specifics", // Target collection to update
+                        "craft-essence-effects", // Target collection to update
                         "cc_With_Effect", // Target collection field to update
                      ),
                   ],
                },
-               relationTo: "_craft-essence-type-specifics",
+               relationTo: "craft-essence-effects",
                hasMany: false,
             },
             {
@@ -141,16 +141,16 @@ export const CommandCodes: CollectionConfig = {
                type: "relationship",
                relationTo: [
                   "_alignments",
-                  "_attributes",
+                  "attributes",
                   "_buff-categories",
                   "_classes",
                   "_command-cards",
-                  "_craft-essence-type-specifics",
+                  "craft-essence-effects",
                   "_enemy-traits",
                   "_field-types",
                   "_status-effects",
                   "_targets",
-                  "_traits",
+                  "traits",
                ],
                hasMany: true,
             },
@@ -163,12 +163,12 @@ export const CommandCodes: CollectionConfig = {
             afterChange: [
                Update_TermRelations(
                   "illustrator", // Origin collection first level field name
-                  "_illustrators", // Target collection to update
+                  "illustrators", // Target collection to update
                   "cc_With_Illustrator", // Target collection field to update
                ),
             ],
          },
-         relationTo: "_illustrators",
+         relationTo: "illustrators",
          hasMany: false,
       },
       {

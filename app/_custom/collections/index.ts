@@ -1,4 +1,5 @@
 import { _Alignments } from "./_alignments";
+import { Attributes } from "./attributes";
 import { _Attributes } from "./_attributes";
 import { _Availabilities } from "./_availabilities";
 import { _BreakBars } from "./_break-bars";
@@ -10,7 +11,9 @@ import { _ClassRarities } from "./_class-rarities";
 import { _Classes } from "./_classes";
 import { _ClassSkillTypes } from "./_class-skill-types";
 import { _CommandCards } from "./_command-cards";
+import { CraftEssenceEffects } from "./craft-essence-effects";
 import { _CraftEssenceTypeSpecifics } from "./_craft-essence-type-specifics";
+import { Cvs } from "./cvs";
 import { _Cvs } from "./_cvs";
 import { _DeckLayouts } from "./_deck-layouts";
 import { _EnemyTraits } from "./_enemy-traits";
@@ -18,6 +21,7 @@ import { _EnemyTypes } from "./_enemy-types";
 import { _FieldTypes } from "./_field-types";
 import { _Genders } from "./_genders";
 import { _GrowthCurves } from "./_growth-curves";
+import { Illustrators } from "./illustrators";
 import { _Illustrators } from "./_illustrators";
 import { _InterludeQuestRewards } from "./_interlude-quest-rewards";
 import { _ItemTypes } from "./_item-types";
@@ -34,9 +38,9 @@ import { _SkillClassificationSpecifics } from "./_skill-classification-specifics
 import { _SkillImages } from "./_skill-images";
 import { _StarRarities } from "./_star-rarities";
 import { _StatusEffects } from "./_status-effects";
-import { _Tags } from "./_tags";
 import { Tags } from "./tags";
 import { _Targets } from "./_targets";
+import { Traits } from "./traits";
 import { _Traits } from "./_traits";
 import { AppendSkills } from "./append-skills";
 import { ClassSkills } from "./class-skills";
@@ -75,6 +79,7 @@ export const CustomCollections = [
    SummonEvents,
    ServantRedirects,
    _Alignments,
+   Attributes,
    _Attributes,
    _Availabilities,
    _BreakBars,
@@ -86,7 +91,9 @@ export const CustomCollections = [
    _Classes,
    _ClassSkillTypes,
    _CommandCards,
+   CraftEssenceEffects,
    _CraftEssenceTypeSpecifics,
+   Cvs,
    _Cvs,
    _DeckLayouts,
    _EnemyTraits,
@@ -94,6 +101,7 @@ export const CustomCollections = [
    _FieldTypes,
    _Genders,
    _GrowthCurves,
+   Illustrators,
    _Illustrators,
    _InterludeQuestRewards,
    _ItemTypes,
@@ -111,7 +119,7 @@ export const CustomCollections = [
    _StarRarities,
    _StatusEffects,
    Tags,
-   _Tags,
    _Targets,
+   Traits,
    _Traits,
 ];

@@ -438,7 +438,7 @@ export const Servants: CollectionConfig = {
             {
                name: "attribute",
                type: "relationship",
-               relationTo: "_attributes",
+               relationTo: "attributes",
                hasMany: false,
             },
             {
@@ -474,13 +474,13 @@ export const Servants: CollectionConfig = {
             {
                name: "illustrator",
                type: "relationship",
-               relationTo: "_illustrators",
+               relationTo: "illustrators",
                hasMany: false,
             },
             {
                name: "cv",
                type: "relationship",
-               relationTo: "_cvs",
+               relationTo: "cvs",
                hasMany: false,
             },
             {
@@ -523,7 +523,7 @@ export const Servants: CollectionConfig = {
             {
                name: "traits",
                type: "relationship",
-               relationTo: "_traits",
+               relationTo: "traits",
                hasMany: true,
             },
          ],
