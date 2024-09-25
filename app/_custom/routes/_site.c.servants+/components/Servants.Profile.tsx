@@ -34,6 +34,7 @@ function TableInfo({ data: servant }: { data: ServantType }) {
       {
          name: "Seiyuu (CV)",
          value: servant?.cv?.name,
+         url: "/c/cvs/" + servant?.cv?.id,
       },
       {
          name: "AKA/Alias/Nicknames",
@@ -73,7 +74,16 @@ function TableInfo({ data: servant }: { data: ServantType }) {
                                  {irow?.name}
                               </TableHeader>
                               <TableCell key={"info_value_" + ind}>
-                                 {irow?.value}
+                                 {irow?.url ? (
+                                    <Link
+                                       to={`${irow?.url}`}
+                                       className="text-blue-500 hover:underline"
+                                    >
+                                       {irow.value}
+                                    </Link>
+                                 ) : (
+                                    irow.value
+                                 )}
                               </TableCell>
                            </TableRow>
                         </>
