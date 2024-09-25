@@ -35,6 +35,7 @@ import { _SkillImages } from "./_skill-images";
 import { _StarRarities } from "./_star-rarities";
 import { _StatusEffects } from "./_status-effects";
 import { _Tags } from "./_tags";
+import { Tags } from "./tags";
 import { _Targets } from "./_targets";
 import { _Traits } from "./_traits";
 import { AppendSkills } from "./append-skills";
@@ -109,6 +110,7 @@ export const CustomCollections = [
    _SkillImages,
    _StarRarities,
    _StatusEffects,
+   Tags,
    _Tags,
    _Targets,
    _Traits,

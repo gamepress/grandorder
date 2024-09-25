@@ -47,7 +47,7 @@ export const Servants: CollectionConfig = {
             {
                name: "tags",
                type: "relationship",
-               relationTo: "_tags",
+               relationTo: "tags",
                hasMany: true,
             },
          ],
