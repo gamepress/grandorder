@@ -7,14 +7,13 @@ import {
 } from "@headlessui/react";
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { json, Link, useLoaderData } from "@remix-run/react";
-import { ColumnFiltersState, createColumnHelper } from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 import clsx from "clsx";
 import { gql } from "graphql-request";
 
 import { Button } from "~/components/Button";
 import { CustomPageHeader } from "~/components/CustomPageHeader";
 import { Dialog } from "~/components/Dialog";
-import { H2 } from "~/components/Headers";
 import { Icon } from "~/components/Icon";
 import { Image } from "~/components/Image";
 import {
@@ -24,14 +23,13 @@ import {
    TableHeader,
    TableRow,
 } from "~/components/Table";
-import { TableOfContentsTemplate } from "~/components/TableOfContentsTemplate";
 import { Text } from "~/components/Text";
 import type { Servant } from "~/db/payload-custom-types";
 import { AdUnit } from "~/routes/_site+/_components/RampUnit";
 import { fuzzyFilter } from "~/routes/_site+/c_+/_components/fuzzyFilter";
 import { ListTable } from "~/routes/_site+/c_+/_components/ListTable";
-import { gqlFetch } from "~/utils/fetchers.server";
 import ListTableContainer from "~/routes/_site+/c_+/_components/ListTableContainer";
+import { gqlFetch } from "~/utils/fetchers.server";
 
 export async function loader({ params, request }: LoaderFunctionArgs) {
    const servantTierList = await gqlFetch({
@@ -272,7 +270,7 @@ export default function ServantTierList() {
                   <div className="p-3 w-full tablet:w-16 mx-auto flex tablet:items-start tablet:justify-center bg-2-sub">
                      <div
                         className="bg-white shadow-sm shadow-1 border border-zinc-300 
-                        dark:bg-dark400 dark:border-zinc-600 text-sm px-2  tablet:w-20
+                        dark:bg-dark450 dark:border-zinc-600 text-sm px-2  tablet:w-20
                         rounded-lg p-1 flex items-center justify-center font-bold"
                      >
                         EX
@@ -295,7 +293,7 @@ export default function ServantTierList() {
                   <div className="p-3 w-full tablet:w-16 mx-auto flex tablet:items-start tablet:justify-center bg-2-sub">
                      <div
                         className="bg-white shadow-sm shadow-1 border border-zinc-300 
-                        dark:bg-dark400 dark:border-zinc-600 text-sm px-2  tablet:w-20
+                        dark:bg-dark450 dark:border-zinc-600 text-sm px-2  tablet:w-20
                         rounded-lg p-1 flex items-center justify-center font-bold"
                      >
                         EX-
@@ -318,7 +316,7 @@ export default function ServantTierList() {
                   <div className="p-3 w-full tablet:w-16 mx-auto flex tablet:items-start tablet:justify-center bg-2-sub">
                      <div
                         className="bg-white shadow-sm shadow-1 border border-zinc-300 
-                        dark:bg-dark400 dark:border-zinc-600 text-sm px-2  tablet:w-20
+                        dark:bg-dark450 dark:border-zinc-600 text-sm px-2  tablet:w-20
                         rounded-lg p-1 flex items-center justify-center font-bold"
                      >
                         A+
@@ -341,7 +339,7 @@ export default function ServantTierList() {
                   <div className="p-3 w-full tablet:w-16 mx-auto flex tablet:items-start tablet:justify-center bg-2-sub">
                      <div
                         className="bg-white shadow-sm shadow-1 border border-zinc-300 
-                      dark:bg-dark400 dark:border-zinc-600 text-sm px-2  tablet:w-20
+                      dark:bg-dark450 dark:border-zinc-600 text-sm px-2  tablet:w-20
                       rounded-lg p-1 flex items-center justify-center font-bold"
                      >
                         A
@@ -364,7 +362,7 @@ export default function ServantTierList() {
                   <div className="p-3 w-full tablet:w-16 mx-auto flex tablet:items-start tablet:justify-center bg-2-sub">
                      <div
                         className="bg-white shadow-sm shadow-1 border border-zinc-300 
-                        dark:bg-dark400 dark:border-zinc-600 text-sm px-2  tablet:w-20
+                        dark:bg-dark450 dark:border-zinc-600 text-sm px-2  tablet:w-20
                         rounded-lg p-1 flex items-center justify-center font-bold"
                      >
                         B+
@@ -387,7 +385,7 @@ export default function ServantTierList() {
                   <div className="p-3 w-full tablet:w-16 mx-auto flex tablet:items-start tablet:justify-center bg-2-sub">
                      <div
                         className="bg-white shadow-sm shadow-1 border border-zinc-300 
-                        dark:bg-dark400 dark:border-zinc-600 text-sm px-2  tablet:w-20
+                        dark:bg-dark450 dark:border-zinc-600 text-sm px-2  tablet:w-20
                         rounded-lg p-1 flex items-center justify-center font-bold"
                      >
                         B
@@ -433,7 +431,7 @@ export default function ServantTierList() {
                   <div className="p-3 w-full tablet:w-16 mx-auto flex tablet:items-start tablet:justify-center bg-2-sub">
                      <div
                         className="bg-white shadow-sm shadow-1 border border-zinc-300 
-                        dark:bg-dark400 dark:border-zinc-600 text-sm px-2  tablet:w-20
+                        dark:bg-dark450 dark:border-zinc-600 text-sm px-2  tablet:w-20
                         rounded-lg p-1 flex items-center justify-center font-bold"
                      >
                         C
@@ -452,11 +450,12 @@ export default function ServantTierList() {
                      gridContainerClassNames={gridContainerClassNames}
                   />
                </div>
+
                <div className="flex items-stretch max-tablet:flex-col max-tablet:divide-y tablet:divide-x divide-color-sub">
                   <div className="p-3 w-full tablet:w-16 mx-auto flex tablet:items-start tablet:justify-center bg-2-sub">
                      <div
                         className="bg-white shadow-sm shadow-1 border border-zinc-300 
-                        dark:bg-dark400 dark:border-zinc-600 text-sm px-2  tablet:w-20
+                        dark:bg-dark450 dark:border-zinc-600 text-sm px-2  tablet:w-20
                         rounded-lg p-1 flex items-center justify-center font-bold"
                      >
                         D+
@@ -468,6 +467,52 @@ export default function ServantTierList() {
                      defaultViewType="grid"
                      //@ts-ignore
                      data={{ listData: { docs: data.dPlusTier.docs } }}
+                     columns={columns}
+                     columnViewability={{ star_rarity: false }}
+                     pager={false}
+                     gridCellClassNames=" "
+                     gridContainerClassNames={gridContainerClassNames}
+                  />
+               </div>
+               <div className="flex items-stretch max-tablet:flex-col max-tablet:divide-y tablet:divide-x divide-color-sub">
+                  <div className="p-3 w-full tablet:w-16 mx-auto flex tablet:items-start tablet:justify-center bg-2-sub">
+                     <div
+                        className="bg-white shadow-sm shadow-1 border border-zinc-300 
+                        dark:bg-dark450 dark:border-zinc-600 text-sm px-2  tablet:w-20
+                        rounded-lg p-1 flex items-center justify-center font-bold"
+                     >
+                        D
+                     </div>
+                  </div>
+                  <ListTable
+                     gridView={gridView}
+                     searchPlaceholder="Filter by Servant name..."
+                     defaultViewType="grid"
+                     //@ts-ignore
+                     data={{ listData: { docs: data.dTier.docs } }}
+                     columns={columns}
+                     columnViewability={{ star_rarity: false }}
+                     pager={false}
+                     gridCellClassNames=" "
+                     gridContainerClassNames={gridContainerClassNames}
+                  />
+               </div>
+               <div className="flex items-stretch max-tablet:flex-col max-tablet:divide-y tablet:divide-x divide-color-sub">
+                  <div className="p-3 w-full tablet:w-16 mx-auto flex tablet:items-start tablet:justify-center bg-2-sub">
+                     <div
+                        className="bg-white shadow-sm shadow-1 border border-zinc-300 
+                        dark:bg-dark450 dark:border-zinc-600 text-sm px-2  tablet:w-20
+                        rounded-lg p-1 flex items-center justify-center font-bold"
+                     >
+                        E
+                     </div>
+                  </div>
+                  <ListTable
+                     gridView={gridView}
+                     searchPlaceholder="Filter by Servant name..."
+                     defaultViewType="grid"
+                     //@ts-ignore
+                     data={{ listData: { docs: data.eTier.docs } }}
                      columns={columns}
                      columnViewability={{ star_rarity: false }}
                      pager={false}
@@ -1047,6 +1092,40 @@ const QUERY = gql`
             }
          }
       }
+      dTier: Servants(
+         where: { tier_list_score: { equals: 60 } }
+         limit: 100
+         sort: "name"
+      ) {
+         totalDocs
+         docs {
+            id
+            slug
+            name
+            np_target_type
+            tier_arrow
+            writeup_tier_list_explanation
+            np_card_type {
+               name
+            }
+            class {
+               name
+               icon {
+                  url
+               }
+            }
+            star_rarity {
+               name
+               icon {
+                  url
+               }
+            }
+            icon {
+               id
+               url
+            }
+         }
+      }
       dPlusTier: Servants(
          where: { tier_list_score: { equals: 61 } }
          limit: 100
@@ -1151,51 +1230,3 @@ const QUERY = gql`
       }
    }
 `;
-
-const sections = [
-   {
-      id: "ex-tier",
-      slug: "ex-tier",
-      name: "EX Tier",
-   },
-   {
-      id: "ex-minus-tier",
-      slug: "ex-minus-tier",
-      name: "EX- Tier",
-   },
-   {
-      id: "a-plus-tier",
-      slug: "a-plus-tier",
-      name: "A+ Tier",
-   },
-   {
-      id: "a-tier",
-      slug: "a-tier",
-      name: "A Tier",
-   },
-   {
-      id: "b-plus-tier",
-      slug: "b-plus-tier",
-      name: "B+ Tier",
-   },
-   {
-      id: "b-tier",
-      slug: "b-tier",
-      name: "B Tier",
-   },
-   {
-      id: "c-plus-tier",
-      slug: "c-plus-tier",
-      name: "C+ Tier",
-   },
-   {
-      id: "c-tier",
-      slug: "c-tier",
-      name: "C Tier",
-   },
-   {
-      id: "d-plus-tier",
-      slug: "d-plus-tier",
-      name: "D+ Tier",
-   },
-];
