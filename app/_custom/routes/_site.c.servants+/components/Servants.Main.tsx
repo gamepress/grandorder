@@ -68,7 +68,7 @@ export function ServantsMain({
                                     />
                                  </div>
                               ) : null}
-                              <span className="align-middle text-sm font-semibold">
+                              <span className="align-middle text-sm font-semibold hover:underline">
                                  {tag.name}
                               </span>
                            </div>
@@ -175,6 +175,7 @@ function ServantImageBaseData({
 
    // Attribute and Alignment
    const attribute = charData?.attribute?.name;
+   const attributeid = charData?.attribute?.id;
    const alignment = charData?.alignment?.name;
    const id = charData?.library_id;
 
@@ -277,7 +278,12 @@ function ServantImageBaseData({
                         <span className="font-semibold">Attribute</span>
                      </div>
                      <div className="font-semibold text-1 text-right">
-                        {attribute}
+                        <Link
+                           to={`/c/attributes/${attributeid}`}
+                           className="text-blue-500 hover:underline"
+                        >
+                           {attribute}
+                        </Link>
                      </div>
                   </div>
                   <div className="px-2.5 py-2 justify-between flex items-center gap-2 text-xs">

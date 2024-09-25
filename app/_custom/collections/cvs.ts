@@ -38,6 +38,11 @@ export const Cvs: CollectionConfig = {
          },
       },
       {
+         name: "icon",
+         type: "upload",
+         relationTo: "images",
+      },
+      {
          name: "slug",
          type: "text",
       },
