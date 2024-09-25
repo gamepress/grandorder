@@ -53,24 +53,26 @@ export function ServantsMain({
                {taglist.map((tag: any, tkey) => {
                   return (
                      <>
-                        <div
-                           className="inline-block bg-2-sub gap-1 mr-2 pr-2.5 rounded-md p-1.5 mb-2 border-color-sub border shadow-sm shadow-1"
-                           key={"tag_list_" + tkey}
-                        >
-                           {/* Show tag icon if applicable */}
-                           {tag.icon ? (
-                              <div className="inline-block h-5 w-5 relative align-middle mr-1">
-                                 <Image
-                                    alt="Tag Icon"
-                                    className="object-contain w-full h-full"
-                                    url={tag.icon?.url}
-                                 />
-                              </div>
-                           ) : null}
-                           <span className="align-middle text-sm font-semibold">
-                              {tag.name}
-                           </span>
-                        </div>
+                        <Link to={`/c/tags/${tag.id}`}>
+                           <div
+                              className="inline-block bg-2-sub gap-1 mr-2 pr-2.5 rounded-md p-1.5 mb-2 border-color-sub border shadow-sm shadow-1"
+                              key={"tag_list_" + tkey}
+                           >
+                              {/* Show tag icon if applicable */}
+                              {tag.icon ? (
+                                 <div className="inline-block h-5 w-5 relative align-middle mr-1">
+                                    <Image
+                                       alt="Tag Icon"
+                                       className="object-contain w-full h-full"
+                                       url={tag.icon?.url}
+                                    />
+                                 </div>
+                              ) : null}
+                              <span className="align-middle text-sm font-semibold">
+                                 {tag.name}
+                              </span>
+                           </div>
+                        </Link>
                      </>
                   );
                })}

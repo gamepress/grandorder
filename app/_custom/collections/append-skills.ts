@@ -84,7 +84,7 @@ export const AppendSkills: CollectionConfig = {
             {
                name: "effect_condition",
                type: "relationship",
-               relationTo: ["_alignments","_attributes","_buff-categories","_classes","_command-cards","_enemy-traits","_field-types","_status-effects","_traits"],
+               relationTo: ["_alignments","attributes","_buff-categories","_classes","_command-cards","_enemy-traits","_field-types","_status-effects","traits"],
                hasMany: true,
             },
             {

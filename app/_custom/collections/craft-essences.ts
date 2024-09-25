@@ -19,18 +19,18 @@ export const CraftEssences: CollectionConfig = {
       afterDelete: [
          Delete_TermRelations(
             "cv", // Origin collection first level field name
-            "_cvs", // Target collection to update
+            "cvs", // Target collection to update
             "ce_With_CV", // Target collection field to update
          ),
          Delete_TermRelations(
             "illustrator", // Origin collection first level field name
-            "_illustrators", // Target collection to update
+            "illustrators", // Target collection to update
             "ce_With_Illustrator", // Target collection field to update
          ),
          Delete_TermRelationsOneDeep(
             "effect_list", // Origin collection first level field name
             "effect", // Origin collection second level field name
-            "_craft-essence-type-specifics", // Target collection to update
+            "_craft-essence-effects", // Target collection to update
             "ce_With_Effect", // Target collection field to update
          ),
          Delete_TermRelationsOneDeep(
@@ -130,12 +130,12 @@ export const CraftEssences: CollectionConfig = {
             afterChange: [
                Update_TermRelations(
                   "illustrator", // Origin collection first level field name
-                  "_illustrators", // Target collection to update
+                  "illustrators", // Target collection to update
                   "ce_With_Illustrator", // Target collection field to update
                ),
             ],
          },
-         relationTo: "_illustrators",
+         relationTo: "illustrators",
          hasMany: false,
       },
       {
@@ -145,12 +145,12 @@ export const CraftEssences: CollectionConfig = {
             afterChange: [
                Update_TermRelations(
                   "cv", // Origin collection first level field name
-                  "_cvs", // Target collection to update
+                  "cvs", // Target collection to update
                   "ce_With_CV", // Target collection field to update
                ),
             ],
          },
-         relationTo: "_cvs",
+         relationTo: "cvs",
          hasMany: false,
       },
       {
@@ -187,12 +187,12 @@ export const CraftEssences: CollectionConfig = {
                      Update_TermRelationsOneDeep(
                         "effect_list", // Origin collection first level field name
                         "effect", // Origin collection second level field name
-                        "_craft-essence-type-specifics", // Target collection to update
+                        "craft-essence-effects", // Target collection to update
                         "ce_With_Effect", // Target collection field to update
                      ),
                   ],
                },
-               relationTo: "_craft-essence-type-specifics",
+               relationTo: "craft-essence-effects",
                hasMany: false,
             },
             {
