@@ -7,13 +7,13 @@ import type { Servant } from "~/db/payload-custom-types";
 import { fuzzyFilter } from "~/routes/_site+/c_+/_components/fuzzyFilter";
 import { ListTable } from "~/routes/_site+/c_+/_components/ListTable";
 
-export const CvsCraftEssences = ({ data }: any) => {
-   const ces = data?.cv?.ce_With_CV;
+export const IllustratorsCraftEssences = ({ data }: any) => {
+   const ces = data?.illustrator?.ce_With_Illustrator;
    return (
       <>
          {ces?.length > 0 ? (
             <>
-               <H2>Craft Essences with CV</H2>
+               <H2>Craft Essences with Illustrator</H2>
                <ListTable
                   gridView={gridView}
                   data={{ listData: { docs: ces } }}

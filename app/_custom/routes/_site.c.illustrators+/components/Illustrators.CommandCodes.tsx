@@ -7,19 +7,19 @@ import type { Servant } from "~/db/payload-custom-types";
 import { fuzzyFilter } from "~/routes/_site+/c_+/_components/fuzzyFilter";
 import { ListTable } from "~/routes/_site+/c_+/_components/ListTable";
 
-export const CvsCraftEssences = ({ data }: any) => {
-   const ces = data?.cv?.ce_With_CV;
+export const IllustratorsCommandCodes = ({ data }: any) => {
+   const ccs = data?.illustrator?.cc_With_Illustrator;
    return (
       <>
-         {ces?.length > 0 ? (
+         {ccs?.length > 0 ? (
             <>
-               <H2>Craft Essences with CV</H2>
+               <H2>Command Codes with Illustrator</H2>
                <ListTable
                   gridView={gridView}
-                  data={{ listData: { docs: ces } }}
+                  data={{ listData: { docs: ccs } }}
                   columns={columns}
                   pageSize={1000}
-                  defaultSort={[{ id: "library_number", desc: false }]}
+                  defaultSort={[{ id: "command_code_id", desc: false }]}
                   filters={filters}
                   defaultViewType={"grid"}
                />
@@ -36,26 +36,17 @@ const gridView = columnHelper.accessor("name", {
    cell: (info) => (
       <Link
          className="block relative w-full"
-         to={`/c/craft-essences/${
+         to={`/c/command-codes/${
             info.row.original.slug ?? info.row.original.id
          }`}
       >
-         <div className="h-[50px] w-[50px] m-auto">
-            {info.row.original._rarity?.icon_frame?.url ? (
-               <Image
-                  options="height=52&width=50"
-                  alt={"Frame"}
-                  url={info.row.original._rarity?.icon_frame?.url}
-                  className="object-contain z-10 absolute"
-               />
-            ) : null}
-            <Image
-               width={80}
-               alt={"CE Icon"}
-               url={info.row.original.icon?.url}
-               className="object-contain rounded-t-md w-[50px]"
-            />
-         </div>
+         <Image
+            width={50}
+            height={50}
+            url={info.row.original.icon?.url}
+            className="mx-auto"
+            options="aspect_ratio=1:1&height=80&width=80"
+         />
          <div
             className="truncate text-xs font-semibold text-center pt-1
                group-hover:underline decoration-zinc-400 underline-offset-2"
@@ -67,7 +58,7 @@ const gridView = columnHelper.accessor("name", {
 });
 
 const columns = [
-   columnHelper.accessor("library_number", {
+   columnHelper.accessor("command_code_id", {
       header: "Id",
       filterFn: fuzzyFilter,
       cell: (info) => {
@@ -75,32 +66,21 @@ const columns = [
       },
    }),
    columnHelper.accessor("name", {
-      header: "Essence",
+      header: "Code",
       filterFn: fuzzyFilter,
       cell: (info) => {
          return (
             <Link
-               to={`/c/craft-essences/${
+               to={`/c/command-codes/${
                   info.row.original.slug ?? info.row.original.id
                }`}
                className="flex items-center gap-3 group py-0.5"
             >
-               <div className="flex-none h-[38px]">
-                  {info.row.original._rarity?.icon_frame?.url ? (
-                     <Image
-                        options="height=40&width=38"
-                        alt={"Frame"}
-                        url={info.row.original._rarity?.icon_frame?.url}
-                        className="object-contain z-10 absolute"
-                     />
-                  ) : null}
-                  <Image
-                     width={80}
-                     alt={"CE Icon"}
-                     url={info.row.original.icon?.url}
-                     className="object-contain rounded-t-md w-[38px]"
-                  />
-               </div>
+               <Image
+                  width={38}
+                  url={info.row.original.icon?.url}
+                  options="width=80"
+               />
                <span className="decoration-zinc-400 underline-offset-2 truncate">
                   <div className="truncate flex items-center gap-2 group-hover:underline text-sm pb-1">
                      <span className="font-bold">{info.getValue()}</span>
@@ -110,10 +90,10 @@ const columns = [
          );
       },
    }),
-   columnHelper.accessor("_rarity", {
+   columnHelper.accessor("rarity", {
       header: "Rarity",
       filterFn: (row, columnId, filterValue) => {
-         return filterValue.includes(row?.original?._rarity?.id);
+         return filterValue.includes(row?.original?.rarity?.id);
       },
       cell: (info) => {
          return (
@@ -124,8 +104,8 @@ const columns = [
       },
       sortingFn: (A, B, columnId) => {
          return (
-            parseFloat(A.original?._rarity?.name) -
-            parseFloat(B.original?._rarity?.name)
+            parseFloat(A.original?.rarity?.name) -
+            parseFloat(B.original?.rarity?.name)
          );
       },
    }),
@@ -133,7 +113,7 @@ const columns = [
 
 const filters = [
    {
-      id: "_rarity",
+      id: "rarity",
       label: "Rarity",
       cols: 5 as const,
       options: [
