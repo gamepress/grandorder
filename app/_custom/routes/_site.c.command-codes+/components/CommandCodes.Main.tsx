@@ -1,5 +1,6 @@
 import type { CommandCode as CommandCodeType } from "payload/generated-custom-types";
 import { Image } from "~/components/Image";
+import { Link } from "@remix-run/react";
 
 export function CommandCodesMain({ data: cc }: { data: CommandCodeType }) {
    const mainStatDisplay = [
@@ -14,6 +15,7 @@ export function CommandCodesMain({ data: cc }: { data: CommandCodeType }) {
       {
          label: "Illustrator",
          value: cc.illustrator?.name,
+         url: "/c/illustrators/" + cc.illustrator?.id,
       },
    ];
 
@@ -39,7 +41,18 @@ export function CommandCodesMain({ data: cc }: { data: CommandCodeType }) {
                   <div className="flex items-center gap-2">
                      <span className="font-semibold text-sm">{row.label}</span>
                   </div>
-                  <div className="text-sm font-semibold">{row.value}</div>
+                  <div className="text-sm font-semibold">
+                     {row?.url ? (
+                        <Link
+                           to={`${row?.url}`}
+                           className="text-blue-500 hover:underline"
+                        >
+                           {row.value}
+                        </Link>
+                     ) : (
+                        row.value
+                     )}
+                  </div>
                </div>
             ))}
          </div>
