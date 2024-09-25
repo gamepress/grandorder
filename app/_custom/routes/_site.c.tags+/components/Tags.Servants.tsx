@@ -1,51 +1,30 @@
-import type { LoaderFunctionArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
+import { Image } from "~/components/Image";
 import { Link } from "@remix-run/react";
 import { createColumnHelper } from "@tanstack/react-table";
-import { gql } from "graphql-request";
-
-import { Badge } from "~/components/Badge";
-import { Image } from "~/components/Image";
 import type { Servant } from "~/db/payload-custom-types";
-import { fetchList } from "~/routes/_site+/c_+/$collectionId/utils/fetchList.server";
-import { listMeta } from "~/routes/_site+/c_+/$collectionId/utils/listMeta";
+
 import { fuzzyFilter } from "~/routes/_site+/c_+/_components/fuzzyFilter";
-import { List } from "~/routes/_site+/c_+/_components/List";
+import { ListTable } from "~/routes/_site+/c_+/_components/ListTable";
 
-export { listMeta as meta };
-
-export async function loader({
-   request,
-   params,
-   context: { payload, user },
-}: LoaderFunctionArgs) {
-   const list = await fetchList({
-      payload,
-      user,
-      params,
-      request,
-      gql: {
-         query: QUERY,
-      },
-   });
-
-   return json({ list });
-}
-
-export default function Servants() {
+export const TagsServants = ({ data }: any) => {
+   const servants = data?.servants;
    return (
-      <List
-         gridView={gridView}
-         columns={columns}
-         columnViewability={{
-            type: false,
-            class: false,
-            release_status: false,
-         }}
-         filters={filters}
-      />
+      <>
+         <ListTable
+            gridView={gridView}
+            data={{ listData: { docs: servants } }}
+            columns={columns}
+            pageSize={1000}
+            defaultSort={[
+               { id: "release_status", desc: false },
+               { id: "class", desc: false },
+               { id: "library_id", desc: false },
+            ]}
+            filters={filters}
+         />
+      </>
    );
-}
+};
 
 const columnHelper = createColumnHelper<Servant>();
 
@@ -98,20 +77,33 @@ const columns = [
                <span className="decoration-zinc-400 underline-offset-2 truncate">
                   <div className="truncate flex items-center gap-2 group-hover:underline text-sm pb-1">
                      <span className="font-bold">{info.getValue()}</span>
-                     <span className="text-xs text-1">
-                        {info.row.original.class?.name}
-                     </span>
                   </div>
-                  <div
-                     className="flex items-center gap-0.5 text-[10px]"
-                     dangerouslySetInnerHTML={{
-                        __html:
-                           info.row.original?.deck_layout?.description ?? "",
-                     }}
-                  />
                </span>
             </Link>
          );
+      },
+   }),
+   columnHelper.accessor("class", {
+      header: "Class",
+      filterFn: (row, columnId, filterValue) => {
+         return filterValue.includes(row?.original?.class?.id);
+      },
+      cell: (info) => {
+         return (
+            <div className="flex items-center gap-1">
+               <span>{info.getValue()?.name}</span>
+               <Image
+                  width={30}
+                  height={30}
+                  options="height=80&width=80"
+                  url={info.row.original?.class?.icon?.url}
+                  alt={"★"}
+               />
+            </div>
+         );
+      },
+      sortingFn: (A, B, columnId) => {
+         return A.original?.class?.id - B.original?.class?.id;
       },
    }),
    columnHelper.accessor("star_rarity", {
@@ -133,169 +125,30 @@ const columns = [
             </div>
          );
       },
-   }),
-   columnHelper.accessor("class", {
-      header: "Class",
-      filterFn: (row, columnId, filterValue) => {
-         return filterValue.includes(row?.original?.class?.id);
+      sortingFn: (A, B, columnId) => {
+         return A.original?.star_rarity?.id - B.original?.star_rarity?.id;
       },
    }),
+
    columnHelper.accessor("release_status", {
       header: "Server",
       filterFn: (row, columnId, filterValue) => {
          return filterValue.includes(row?.original?.release_status?.id);
       },
-   }),
-   columnHelper.accessor("tier_list_score", {
-      header: "Tier",
-      filterFn: fuzzyFilter,
       cell: (info) => {
-         switch (info.getValue()) {
-            case 101:
-               return <Badge color="violet">EX+</Badge>;
-
-            case 100:
-               return <Badge color="violet">EX</Badge>;
-
-            case 99:
-               return <Badge color="violet">EX-</Badge>;
-
-            case 91:
-               return <Badge color="blue">A+</Badge>;
-
-            case 90:
-               return <Badge color="blue">A</Badge>;
-
-            case 81:
-               return <Badge color="green">B+</Badge>;
-
-            case 80:
-               return <Badge color="green">B</Badge>;
-
-            case 71:
-               return <Badge color="yellow">C+</Badge>;
-
-            case 70:
-               return <Badge color="yellow">C</Badge>;
-
-            case 61:
-               return <Badge color="zinc">D+</Badge>;
-
-            case 60:
-               return <Badge color="zinc">D</Badge>;
-
-            case 50:
-               return <Badge color="zinc">E</Badge>;
-            default:
-         }
-         return "-";
+         return (
+            <div className="flex items-center gap-1">
+               <span>{info.getValue()?.name}</span>
+            </div>
+         );
+      },
+      sortingFn: (A, B, columnId) => {
+         return A.original?.release_status?.id - B.original?.release_status?.id;
       },
    }),
 ];
 
-// Add stats under atk_lv120 later.
-const QUERY = gql`
-   query {
-      listData: Servants(
-         limit: 2000
-         sort: "library_id"
-         where: {
-            library_id: { not_equals: null }
-            name: { not_equals: "Mash (Ortinax)" }
-         }
-      ) {
-         docs {
-            id
-            name
-            library_id
-            cost
-            hp_base
-            hp_max
-            atk_base
-            atk_max
-            star_generation_rate
-            star_absorption
-            instant_death_chance
-            np_charge_per_hit
-            np_charge_when_attacked
-            class {
-               id
-               name
-               icon {
-                  url
-               }
-            }
-            release_status {
-               id
-               name
-            }
-            attribute {
-               id
-               name
-            }
-            deck_layout {
-               name
-               description
-            }
-            alignment {
-               id
-               name
-            }
-            icon {
-               url
-            }
-            star_rarity {
-               id
-               name
-               icon {
-                  url
-               }
-            }
-            summon_availability {
-               name
-               description
-            }
-            jp_release_date
-            np_release_date
-            slug
-            tier_list_score
-         }
-      }
-   }
-`;
-
 const filters = [
-   {
-      id: "star_rarity",
-      label: "Rarity",
-      cols: 5 as const,
-      options: [
-         {
-            value: "3046",
-            label: "0 ★",
-         },
-         {
-            value: "71",
-            label: "1 ★",
-         },
-         {
-            value: "66",
-            label: "2 ★",
-         },
-         {
-            value: "61",
-            label: "3 ★",
-         },
-         {
-            value: "56",
-            label: "4 ★",
-         },
-         {
-            value: "51",
-            label: "5 ★",
-         },
-      ],
-   },
    {
       id: "release_status",
       label: "Server",
@@ -391,6 +244,37 @@ const filters = [
             value: "10586",
             label: "Beast",
             icon: "https://static.mana.wiki/grandorder/FGOClassIcon_3_33_Gold_Beast.png",
+         },
+      ],
+   },
+   {
+      id: "star_rarity",
+      label: "Rarity",
+      cols: 5 as const,
+      options: [
+         {
+            value: "3046",
+            label: "0 ★",
+         },
+         {
+            value: "71",
+            label: "1 ★",
+         },
+         {
+            value: "66",
+            label: "2 ★",
+         },
+         {
+            value: "61",
+            label: "3 ★",
+         },
+         {
+            value: "56",
+            label: "4 ★",
+         },
+         {
+            value: "51",
+            label: "5 ★",
          },
       ],
    },
