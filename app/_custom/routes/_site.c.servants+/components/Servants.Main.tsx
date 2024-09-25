@@ -28,17 +28,19 @@ export function ServantsMain({
                <h3 className="flex items-center dark:text-zinc-100 max-laptop:mt-3 mt-1 gap-3 pb-1.5 font-header text-lg">
                   <div className="min-w-[10px] flex-none">Traits</div>
                   <div className="h-1 flex-grow rounded-full bg-zinc-100 dark:bg-dark400" />
-               </h3>{" "}
+               </h3>
                {traitlist.map((trait: any, tkey) => {
                   return (
                      <>
-                        <div
-                           className="inline-flex text-sm font-semibold bg-2-sub gap-1 mr-2 rounded-lg px-2.5 py-1.5 mb-2 
-                           border-color-sub border shadow-sm shadow-1"
-                           key={"trait_list_" + tkey}
-                        >
-                           {trait.name}
-                        </div>
+                        <Link to={`/c/traits/${trait.id}`}>
+                           <div
+                              className="inline-flex text-sm font-semibold bg-2-sub gap-1 mr-2 rounded-lg px-2.5 py-1.5 mb-2 
+                           border-color-sub border shadow-sm shadow-1 hover:underline"
+                              key={"trait_list_" + tkey}
+                           >
+                              {trait.name}
+                           </div>
+                        </Link>
                      </>
                   );
                })}
