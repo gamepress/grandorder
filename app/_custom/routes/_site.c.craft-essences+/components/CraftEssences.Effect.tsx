@@ -1,5 +1,6 @@
 import type { CraftEssence as CraftEssenceType } from "payload/generated-custom-types";
 import { Image } from "~/components/Image";
+import { Link } from "@remix-run/react";
 import { SectionTitle } from "~/routes/_site+/c_+/$collectionId_.$entryId/components/SectionTitle";
 
 export function CraftEssencesEffect({ data: ce }: { data: CraftEssenceType }) {
@@ -28,6 +29,7 @@ export function CraftEssencesEffect({ data: ce }: { data: CraftEssenceType }) {
       {
          label: "CV",
          value: ce.cv?.name,
+         url: "/c/cvs/" + ce?.cv?.id,
       },
    ];
 
@@ -79,7 +81,16 @@ export function CraftEssencesEffect({ data: ce }: { data: CraftEssenceType }) {
                               </span>
                            </div>
                            <div className="text-sm font-semibold">
-                              {row.value}
+                              {row?.url ? (
+                                 <Link
+                                    to={`${row?.url}`}
+                                    className="text-blue-500 hover:underline"
+                                 >
+                                    {row.value}
+                                 </Link>
+                              ) : (
+                                 row.value
+                              )}
                            </div>
                         </div>
                      </>
