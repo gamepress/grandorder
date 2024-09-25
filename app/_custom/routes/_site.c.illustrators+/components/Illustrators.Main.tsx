@@ -6,7 +6,7 @@ import type { Servant } from "~/db/payload-custom-types";
 import { fuzzyFilter } from "~/routes/_site+/c_+/_components/fuzzyFilter";
 import { ListTable } from "~/routes/_site+/c_+/_components/ListTable";
 
-export const CvsMain = ({ data }: any) => {
+export const IllustratorsMain = ({ data }: any) => {
    const servants = data?.servants;
    return (
       <>

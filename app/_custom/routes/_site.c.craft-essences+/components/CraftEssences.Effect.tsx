@@ -21,10 +21,12 @@ export function CraftEssencesEffect({ data: ce }: { data: CraftEssenceType }) {
       },
    ];
 
+   console.log(ce);
    const mainStatDisplay = [
       {
          label: "Illustrator",
          value: ce.illustrator?.name,
+         url: "/c/illustrators/" + ce.illustrator?.id,
       },
       {
          label: "CV",

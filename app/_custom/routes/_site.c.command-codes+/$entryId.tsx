@@ -55,6 +55,7 @@ const QUERY = gql`
          desc_effect
          acquisition_method
          illustrator {
+            id
             name
          }
          icon {

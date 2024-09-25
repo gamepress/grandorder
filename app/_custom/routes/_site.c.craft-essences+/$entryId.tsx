@@ -61,9 +61,11 @@ const QUERY = gql`
          description_limit_break
          description_flavor
          illustrator {
+            id
             name
          }
          cv {
+            id
             name
          }
          servant {

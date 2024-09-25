@@ -30,6 +30,7 @@ function TableInfo({ data: servant }: { data: ServantType }) {
       {
          name: "Illustrator",
          value: servant?.illustrator?.name,
+         url: "/c/illustrators/" + servant?.illustrator?.id,
       },
       {
          name: "Seiyuu (CV)",
