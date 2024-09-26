@@ -55,6 +55,10 @@ export const CraftEssenceEffects: CollectionConfig = {
          },
       },
       {
+         name: "slug",
+         type: "text",
+      },
+      {
          name: "checksum",
          type: "text",
       },

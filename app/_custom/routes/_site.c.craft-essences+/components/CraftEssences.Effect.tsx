@@ -21,7 +21,6 @@ export function CraftEssencesEffect({ data: ce }: { data: CraftEssenceType }) {
       },
    ];
 
-   console.log(ce);
    const mainStatDisplay = [
       {
          label: "Illustrator",
