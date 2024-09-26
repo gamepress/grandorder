@@ -268,7 +268,7 @@ export default function ServantTierList() {
                   </>
                )}
             </Disclosure>
-            <div className="relative z-20 mx-auto max-w-[728px] justify-center pt-4">
+            <div className="relative z-20 mx-auto max-w-[728px] justify-center">
                <AdUnit
                   enableAds={true}
                   adType={{
@@ -276,7 +276,7 @@ export default function ServantTierList() {
                      tablet: "leaderboard_atf",
                      mobile: "med_rect_atf",
                   }}
-                  className="my-8 mx-auto flex items-center justify-center"
+                  className="my-4 mx-auto flex items-center justify-center"
                   selectorId="tier-list-1"
                />
             </div>
