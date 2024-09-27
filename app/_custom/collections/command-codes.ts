@@ -154,6 +154,10 @@ export const CommandCodes: CollectionConfig = {
                ],
                hasMany: true,
             },
+            {
+               name: "condition_notes",
+               type: "text",
+            },
          ],
       },
       {

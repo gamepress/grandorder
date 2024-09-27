@@ -231,6 +231,10 @@ export const CraftEssences: CollectionConfig = {
                ],
             },
             {
+               name: "condition_notes",
+               type: "text",
+            },
+            {
                name: "bonus_item",
                type: "relationship",
                hooks: {
