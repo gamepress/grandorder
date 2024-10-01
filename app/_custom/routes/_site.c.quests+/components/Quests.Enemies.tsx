@@ -108,7 +108,7 @@ function QuestBattleWave({ data }: { data: any }) {
                      <Image
                         height={60}
                         width={60}
-                        className="size-7 flex-none"
+                        className="size-7 flex-none min-w-[fit-content]"
                         url={enemy_icon}
                         alt="icon"
                         loading="lazy"
@@ -198,7 +198,7 @@ function EnemyAlternative({ data }: { data: any }) {
                <Image
                   width={48}
                   height={48}
-                  className="size-6"
+                  className="size-6 min-w-[fit-content]"
                   url={enemy_icon}
                   alt="icon"
                   loading="lazy"
@@ -208,7 +208,7 @@ function EnemyAlternative({ data }: { data: any }) {
             <Image
                width={48}
                height={48}
-               className="size-6"
+               className="size-6 min-w-[fit-content]"
                url={class_icon}
                alt="icon"
                loading="lazy"
