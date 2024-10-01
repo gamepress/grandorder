@@ -91,6 +91,8 @@ function QuestBattleWave({ data }: { data: any }) {
    const enemy_icon = data.enemy?.value?.icon?.url;
    const enemy_name = data.enemy?.value?.name;
    const enemy_desc = data.details;
+   const enemy_id = data?.enemy?.value?.slug ?? data?.enemy?.value?.id;
+   const enemy_relation = data?.enemy?.relationTo;
    const hp = data.hp;
    const lvl = data.level;
    const break_bars = data.break_bars;
@@ -102,16 +104,22 @@ function QuestBattleWave({ data }: { data: any }) {
             {/* Enemy */}
             <TableCell>
                <div className="flex items-start gap-3">
-                  <Image
-                     height={60}
-                     width={60}
-                     className="size-7 flex-none"
-                     url={enemy_icon}
-                     alt="icon"
-                     loading="lazy"
-                  />
+                  <a href={`/c/${enemy_relation}/${enemy_id}`}>
+                     <Image
+                        height={60}
+                        width={60}
+                        className="size-7 flex-none"
+                        url={enemy_icon}
+                        alt="icon"
+                        loading="lazy"
+                     />
+                  </a>
                   <div className="flex-grow">
-                     <div className="text-base">{enemy_name}</div>
+                     <a href={`/c/${enemy_relation}/${enemy_id}`}>
+                        <div className="text-base text-blue-500">
+                           {enemy_name}
+                        </div>
+                     </a>
                      <div
                         className="text-xs whitespace-normal"
                         dangerouslySetInnerHTML={{ __html: enemy_desc }}
@@ -177,6 +185,8 @@ function EnemyAlternative({ data }: { data: any }) {
       : data.enemy?.value?.class_rarity?.icon?.url;
    const enemy_icon = data.enemy?.value?.icon?.url;
    const enemy_name = data.enemy?.value?.name;
+   const enemy_id = data.enemy?.value?.slug ?? data.enemy?.value?.id;
+   const enemy_relation = data.enemy?.relationTo;
    const enemy_desc = data.details;
    const hp = data.hp;
    const lvl = data.level;
@@ -184,14 +194,17 @@ function EnemyAlternative({ data }: { data: any }) {
    return (
       <div className="flex items-start gap-3">
          <div className="flex flex-col gap-2">
-            <Image
-               width={48}
-               height={48}
-               className="size-6"
-               url={enemy_icon}
-               alt="icon"
-               loading="lazy"
-            />
+            <a href={`/c/${enemy_relation}/${enemy_id}`}>
+               <Image
+                  width={48}
+                  height={48}
+                  className="size-6"
+                  url={enemy_icon}
+                  alt="icon"
+                  loading="lazy"
+               />
+            </a>
+
             <Image
                width={48}
                height={48}
@@ -202,7 +215,9 @@ function EnemyAlternative({ data }: { data: any }) {
             />
          </div>
          <div className="">
-            <div className="text-sm font-bold">{enemy_name}</div>
+            <a href={`/c/${enemy_relation}/${enemy_id}`}>
+               <div className="text-sm text-blue-500">{enemy_name}</div>
+            </a>
             <div className="text-sm text-1">
                Lvl: {lvl} HP: {hp}
             </div>
