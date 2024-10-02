@@ -57,7 +57,7 @@ const NoblePhantasmDisplay = ({ np }: any) => {
                      </div>
                   </div>
                   <div
-                     className="text-sm whitespace-pre-wrap leading-tight text-1"
+                     className="text-sm whitespace-pre-wrap leading-tight"
                      dangerouslySetInnerHTML={{
                         __html: np_description
                            .replace(/\<br\>/g, "")
@@ -67,7 +67,7 @@ const NoblePhantasmDisplay = ({ np }: any) => {
                   <div className="space-y-1">
                      {unlock ? (
                         <div
-                           className="text-xs"
+                           className="text-xs text-1"
                            dangerouslySetInnerHTML={{
                               __html: unlock,
                            }}
