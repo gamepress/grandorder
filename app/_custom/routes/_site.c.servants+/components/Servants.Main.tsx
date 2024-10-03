@@ -14,7 +14,7 @@ export function ServantsMain({
 }) {
    const servant = data.servant;
    const costumes = data.costumeData;
-   console.log(costumes);
+   // console.log(costumes);
 
    const traitlist = servant?.traits;
 
@@ -29,21 +29,16 @@ export function ServantsMain({
                   <div className="min-w-[10px] flex-none">Traits</div>
                   <div className="h-1 flex-grow rounded-full bg-zinc-100 dark:bg-dark400" />
                </h3>
-               {traitlist.map((trait: any, tkey) => {
-                  return (
-                     <>
-                        <Link to={`/c/traits/${trait.id}`}>
-                           <div
-                              className="inline-flex text-sm font-semibold bg-2-sub gap-1 mr-2 rounded-lg px-2.5 py-1.5 mb-2 
+               {traitlist.map((trait: any, tkey: number) => (
+                  <Link to={`/c/traits/${trait.id}`} key={"trait_list_" + tkey}>
+                     <div
+                        className="inline-flex text-sm font-semibold bg-2-sub gap-1 mr-2 rounded-lg px-2.5 py-1.5 mb-2 
                            border-color-sub border shadow-sm shadow-1 hover:underline"
-                              key={"trait_list_" + tkey}
-                           >
-                              {trait.name}
-                           </div>
-                        </Link>
-                     </>
-                  );
-               })}
+                     >
+                        {trait.name}
+                     </div>
+                  </Link>
+               ))}
             </>
          ) : null}
          {taglist && taglist.length > 0 ? (
@@ -119,7 +114,7 @@ function ServantImageBaseData({
          url: cost.icon?.url,
       };
    });
-   console.log(costumeimg);
+   // console.log(costumeimg);
    selectimg.push(...costumeimg);
 
    // UseState variable to track selected display image for Servant
@@ -229,23 +224,20 @@ function ServantImageBaseData({
                </Link>
                {/* - Image Selection */}
                <div className="grid grid-cols-2 laptop:grid-cols-2 gap-2 py-2">
-                  {selectimg.map((opt: any) => {
-                     return (
-                        <>
-                           <button
-                              className={clsx(
-                                 characterImage == opt.name
-                                    ? "bg-blue-100 dark:text-blue-200 text-blue-500 border-blue-300 dark:border-blue-800 dark:bg-blue-950"
-                                    : " dark:border-zinc-600 dark:bg-dark400",
-                                 "border border-color shadow-sm shadow-1 rounded-md text-xs font-bold py-1.5 px-2 text-center",
-                              )}
-                              onClick={() => setCharacterImage(opt.name)}
-                           >
-                              {opt.name}
-                           </button>
-                        </>
-                     );
-                  })}
+                  {selectimg.map((opt: any) => (
+                     <button
+                        className={clsx(
+                           characterImage == opt.name
+                              ? "bg-blue-100 dark:text-blue-200 text-blue-500 border-blue-300 dark:border-blue-800 dark:bg-blue-950"
+                              : " dark:border-zinc-600 dark:bg-dark400",
+                           "border border-color shadow-sm shadow-1 rounded-md text-xs font-bold py-1.5 px-2 text-center",
+                        )}
+                        onClick={() => setCharacterImage(opt.name)}
+                        key={opt.name}
+                     >
+                        {opt.name}
+                     </button>
+                  ))}
                </div>
             </section>
             {/* Right Data Block */}
