@@ -5,7 +5,7 @@ import { useLoaderData } from "@remix-run/react";
 import { gql } from "graphql-request";
 
 import { EnemiesMain } from "~/_custom/routes/_site.c.enemies+/components/Enemies.Main";
-import type { Enemy as EnemyType } from "~/db/payload-custom-types";
+import type { Enemy as EnemyType } from "payload/generated-custom-types";
 import { Entry } from "~/routes/_site+/c_+/$collectionId_.$entryId/components/Entry";
 import { entryMeta } from "~/routes/_site+/c_+/$collectionId_.$entryId/utils/entryMeta";
 import { fetchEntry } from "~/routes/_site+/c_+/$collectionId_.$entryId/utils/fetchEntry.server";

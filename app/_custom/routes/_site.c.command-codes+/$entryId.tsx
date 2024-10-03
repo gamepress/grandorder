@@ -7,7 +7,7 @@ import { gql } from "graphql-request";
 import { CommandCodesEffect } from "~/_custom/routes/_site.c.command-codes+/components/CommandCodes.Effect";
 import { CommandCodesMain } from "~/_custom/routes/_site.c.command-codes+/components/CommandCodes.Main";
 import { CommandCodesSimilar } from "~/_custom/routes/_site.c.command-codes+/components/CommandCodes.Similar";
-import type { CommandCode as CommandCodeType } from "~/db/payload-custom-types";
+import type { CommandCode as CommandCodeType } from "payload/generated-custom-types";
 import { Entry } from "~/routes/_site+/c_+/$collectionId_.$entryId/components/Entry";
 import { entryMeta } from "~/routes/_site+/c_+/$collectionId_.$entryId/utils/entryMeta";
 import { fetchEntry } from "~/routes/_site+/c_+/$collectionId_.$entryId/utils/fetchEntry.server";

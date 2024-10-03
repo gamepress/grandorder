@@ -1,6 +1,6 @@
 import Payload from "payload";
 
-import type { Servant } from "~/db/payload-custom-types";
+import type { Servant } from "payload/generated-custom-types";
 
 import { deserializeSlate } from "./deserializeSlate";
 

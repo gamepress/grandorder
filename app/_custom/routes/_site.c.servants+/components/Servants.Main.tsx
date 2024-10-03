@@ -3,9 +3,9 @@ import { useState } from "react";
 import { Link } from "@remix-run/react";
 import clsx from "clsx";
 
+import type { Servant } from "payload/generated-custom-types";
 import { Icon } from "~/components/Icon";
 import { Image } from "~/components/Image";
-import type { Servant } from "~/db/payload-custom-types";
 
 export function ServantsMain({
    data,
@@ -47,32 +47,25 @@ export function ServantsMain({
                   <div className="min-w-[10px] flex-none">Tags</div>
                   <div className="h-1 flex-grow rounded-full bg-zinc-100 dark:bg-dark400" />
                </h3>
-               {taglist.map((tag: any, tkey) => {
-                  return (
-                     <>
-                        <Link to={`/c/tags/${tag.id}`}>
-                           <div
-                              className="inline-block bg-2-sub gap-1 mr-2 pr-2.5 rounded-md p-1.5 mb-2 border-color-sub border shadow-sm shadow-1"
-                              key={"tag_list_" + tkey}
-                           >
-                              {/* Show tag icon if applicable */}
-                              {tag.icon ? (
-                                 <div className="inline-block h-5 w-5 relative align-middle mr-1">
-                                    <Image
-                                       alt="Tag Icon"
-                                       className="object-contain w-full h-full"
-                                       url={tag.icon?.url}
-                                    />
-                                 </div>
-                              ) : null}
-                              <span className="align-middle text-sm font-semibold hover:underline">
-                                 {tag.name}
-                              </span>
+               {taglist.map((tag: any, tkey: number) => (
+                  <Link to={`/c/tags/${tag.id}`} key={"tag_list_" + tkey}>
+                     <div className="inline-block bg-2-sub gap-1 mr-2 pr-2.5 rounded-md p-1.5 mb-2 border-color-sub border shadow-sm shadow-1">
+                        {/* Show tag icon if applicable */}
+                        {tag.icon ? (
+                           <div className="inline-block h-5 w-5 relative align-middle mr-1">
+                              <Image
+                                 alt="Tag Icon"
+                                 className="object-contain w-full h-full"
+                                 url={tag.icon?.url}
+                              />
                            </div>
-                        </Link>
-                     </>
-                  );
-               })}
+                        ) : null}
+                        <span className="align-middle text-sm font-semibold hover:underline">
+                           {tag.name}
+                        </span>
+                     </div>
+                  </Link>
+               ))}
             </>
          ) : null}
       </div>
@@ -545,7 +538,7 @@ function TableNPGainStar({ data: servant }: { data: Servant }) {
                </div>
                <div className="text-sm font-semibold">{np_gain}%</div>
             </div>
-            {others?.map((row: any, ind) => {
+            {others?.map((row: any) => {
                return (
                   <div
                      key={row.id}

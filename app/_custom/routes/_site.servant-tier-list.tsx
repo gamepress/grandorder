@@ -24,7 +24,7 @@ import {
    TableRow,
 } from "~/components/Table";
 import { Text, TextLink } from "~/components/Text";
-import type { Servant } from "~/db/payload-custom-types";
+import type { Servant } from "payload/generated-custom-types";
 import { AdUnit } from "~/routes/_site+/_components/RampUnit";
 import { fuzzyFilter } from "~/routes/_site+/c_+/_components/fuzzyFilter";
 import { ListTable } from "~/routes/_site+/c_+/_components/ListTable";

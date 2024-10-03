@@ -7,7 +7,7 @@ import { gql } from "graphql-request";
 import { CraftEssencesEffect } from "~/_custom/routes/_site.c.craft-essences+/components/CraftEssences.Effect";
 import { CraftEssencesMain } from "~/_custom/routes/_site.c.craft-essences+/components/CraftEssences.Main";
 import { CraftEssencesSimilar } from "~/_custom/routes/_site.c.craft-essences+/components/CraftEssences.Similar";
-import type { CraftEssence as CraftEssenceType } from "~/db/payload-custom-types";
+import type { CraftEssence as CraftEssenceType } from "payload/generated-custom-types";
 import { Entry } from "~/routes/_site+/c_+/$collectionId_.$entryId/components/Entry";
 import { entryMeta } from "~/routes/_site+/c_+/$collectionId_.$entryId/utils/entryMeta";
 import { fetchEntry } from "~/routes/_site+/c_+/$collectionId_.$entryId/utils/fetchEntry.server";

@@ -2,7 +2,7 @@ import { Image } from "~/components/Image";
 import { H2 } from "~/components/Headers";
 import { Link } from "@remix-run/react";
 import { createColumnHelper } from "@tanstack/react-table";
-import type { Servant } from "~/db/payload-custom-types";
+import type { Servant } from "payload/generated-custom-types";
 
 import { fuzzyFilter } from "~/routes/_site+/c_+/_components/fuzzyFilter";
 import { ListTable } from "~/routes/_site+/c_+/_components/ListTable";

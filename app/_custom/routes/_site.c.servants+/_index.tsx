@@ -6,7 +6,7 @@ import { gql } from "graphql-request";
 
 import { Badge } from "~/components/Badge";
 import { Image } from "~/components/Image";
-import type { Servant } from "~/db/payload-custom-types";
+import type { Servant } from "payload/generated-custom-types";
 import { fetchList } from "~/routes/_site+/c_+/$collectionId/utils/fetchList.server";
 import { listMeta } from "~/routes/_site+/c_+/$collectionId/utils/listMeta";
 import { fuzzyFilter } from "~/routes/_site+/c_+/_components/fuzzyFilter";
