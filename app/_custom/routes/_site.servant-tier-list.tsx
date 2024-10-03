@@ -585,6 +585,7 @@ const gridView = columnHelper.accessor("name", {
                            width={80}
                            url={info.row.original.star_rarity?.icon?.url}
                            className="object-contain size-2.5"
+                           loading="lazy"
                         />
                      ))}
                </div>
