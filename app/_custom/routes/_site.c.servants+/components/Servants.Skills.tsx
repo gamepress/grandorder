@@ -39,11 +39,9 @@ export function Skills({ data }: { data: any }) {
       <>
          <div>
             <div className="space-y-3">
-               {skilllist?.map((skill: any, si: number) => {
-                  return (
-                     <SkillDisplay skill={skill} key={"skill_display_" + si} />
-                  );
-               })}
+               {skilllist?.map((skill: any, si: number) => (
+                  <SkillDisplay skill={skill} key={"skill_display_" + si} />
+               ))}
             </div>
             {classunlock ? (
                <>
@@ -153,8 +151,8 @@ const SkillDisplay = ({ skill }: any) => {
             </div>
          ) : null}
          {skill.upgrades
-            ? skill.upgrades.map((upg: any) => (
-                 <SkillUpgrade key={upg.id} skill={upg} />
+            ? skill.upgrades.map((upg: any, int: number) => (
+                 <SkillUpgrade key={upg.id + int} skill={upg} />
               ))
             : null}
       </div>

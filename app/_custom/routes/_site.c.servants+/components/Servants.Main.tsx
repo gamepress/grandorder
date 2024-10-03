@@ -208,8 +208,8 @@ function ServantImageBaseData({
                      <span>{id}</span>
                   </div>
                   <div className="flex flex-col gap-0.5 absolute top-2 left-2 backdrop-blur-md bg-white/30 rounded">
-                     {decklist.map((card: any) => (
-                        <div className="size-10" key={card.id}>
+                     {decklist?.map((card: any, int: number) => (
+                        <div className="size-10" key={int}>
                            <Image height={80} width={80} url={card} />
                         </div>
                      ))}
@@ -238,7 +238,7 @@ function ServantImageBaseData({
                {/* - Hit count */}
                <div className="flex items-center justify-evenly shadow-sm shadow-1 border border-color-sub py-2 rounded-lg bg-2-sub">
                   {hitcounts.map((hit: any, i: any) => (
-                     <div key={hit.id} className="relative">
+                     <div key={i} className="relative">
                         <div className="flex items-center align-middle gap-2">
                            <div className="h-auto w-8">
                               <Image height={64} url={hit.img} alt="CardType" />
@@ -330,8 +330,8 @@ export function StarRarity({ rar }: { rar: any }) {
    }
    return (
       <div className="flex items-center gap-1">
-         {color.map((a) => (
-            <FaStar key={a} className={` ${a} size-4 inline-block relative`} />
+         {color.map((a, i) => (
+            <FaStar key={i} className={` ${a} size-4 inline-block relative`} />
          ))}
       </div>
    );
@@ -538,10 +538,10 @@ function TableNPGainStar({ data: servant }: { data: Servant }) {
                </div>
                <div className="text-sm font-semibold">{np_gain}%</div>
             </div>
-            {others?.map((row: any) => {
+            {others?.map((row: any, int: number) => {
                return (
                   <div
-                     key={row.id}
+                     key={int}
                      className="p-3 justify-between flex items-center gap-2"
                   >
                      <div className="flex items-center gap-2">
