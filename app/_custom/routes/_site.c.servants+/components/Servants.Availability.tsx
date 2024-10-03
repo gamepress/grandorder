@@ -33,11 +33,8 @@ function SummonAvailability({ data: servant }: { data: ServantType }) {
    return (
       <>
          <div className="bg-2-sub shadow-1 shadow-sm rounded-lg p-3 border border-color-sub">
-            <span className="font-bold">{availability?.name}</span>
-            <span>
-               {" "}
-               - {availability?.description.replace(/<[^>]*>?/gm, "")}
-            </span>
+            <span className="font-bold">{availability?.name}</span>" - "
+            {availability?.description?.replace(/<[^>]*>?/gm, "")}
          </div>
       </>
    );

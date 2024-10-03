@@ -102,7 +102,7 @@ function ServantImageBaseData({
          url: charData.image_stage_4?.url,
       },
    ];
-   const costumeimg = costumeData?.map((cost) => {
+   const costumeimg = costumeData?.map((cost: any) => {
       return {
          name: cost.name,
          url: cost.icon?.url,
@@ -135,6 +135,7 @@ function ServantImageBaseData({
                return cc_b;
 
             default:
+               return undefined;
          }
       });
 
@@ -549,6 +550,7 @@ function TableNPGainStar({ data: servant }: { data: Servant }) {
                         "https://static.mana.wiki/grandorder/FGObufficon_303_NPGainUp.png"
                      }
                      alt="NPGain"
+                     loading="lazy"
                   />
                   <span className="text-sm font-semibold">NP Gain</span>
                </div>
