@@ -148,23 +148,22 @@ function FutureBanners({ data }: { data: any }) {
                         </div>
                      </DisclosureButton>
                      <DisclosurePanel className="space-y-3">
-                        {past_banners.map((b: any) => {
-                           return (
-                              <>
-                                 <div className="text-center overflow-hidden flex items-center w-full flex-col justify-center text-sm border border-color-sub rounded-lg">
-                                    <Image
-                                       height={250}
-                                       url={b.icon?.url}
-                                       className="h-32"
-                                       alt="Banner"
-                                    />
-                                    <div className="py-2 font-bold border-t border-color-sub bg-2-sub w-full">
-                                       {b.name}
-                                    </div>
-                                 </div>
-                              </>
-                           );
-                        })}
+                        {past_banners.map((b: any) => (
+                           <div
+                              className="text-center overflow-hidden flex items-center w-full flex-col justify-center text-sm border border-color-sub rounded-lg"
+                              key={b.name}
+                           >
+                              <Image
+                                 height={250}
+                                 url={b.icon?.url}
+                                 className="h-32"
+                                 alt="Banner"
+                              />
+                              <div className="py-2 font-bold border-t border-color-sub bg-2-sub w-full">
+                                 {b.name}
+                              </div>
+                           </div>
+                        ))}
                      </DisclosurePanel>
                   </>
                )}

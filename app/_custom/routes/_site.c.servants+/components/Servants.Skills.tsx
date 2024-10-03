@@ -105,6 +105,7 @@ const SkillDisplay = ({ skill }: any) => {
                height={80}
                url={skill_icon}
                alt="SkillIcon"
+               loading="lazy"
             />
             <div className="flex-grow">
                <div className="font-bold text-base pb-0.5">{skill_name}</div>
@@ -211,6 +212,7 @@ const SkillUpgrade = ({ skill }: any) => {
                height={80}
                url={skill_icon}
                alt="SkillIcon"
+               loading="lazy"
             />
             <div className="flex-grow">
                <div className="font-bold text-base pb-0.5">{skill_name}</div>
@@ -321,6 +323,7 @@ function AppendSkillDisplay({ skill }: any) {
                   height={80}
                   url={skill_icon}
                   alt="SkillIcon"
+                  loading="lazy"
                />
                <div className="flex-grow">
                   <div className="font-bold text-base">{skill_name}</div>
@@ -395,6 +398,7 @@ const ClassSkillDisplay = ({ skill }: any) => {
                   height={80}
                   url={skill_icon}
                   alt="SkillIcon"
+                  loading="lazy"
                />
                <div className="flex-grow">
                   <div className="font-bold text-base pb-0.5">{skill_name}</div>

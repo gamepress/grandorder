@@ -57,6 +57,7 @@ export function ServantsMain({
                                  alt="Tag Icon"
                                  className="object-contain w-full h-full"
                                  url={tag.icon?.url}
+                                 loading="lazy"
                               />
                            </div>
                         ) : null}
@@ -210,7 +211,12 @@ function ServantImageBaseData({
                   <div className="flex flex-col gap-0.5 absolute top-2 left-2 backdrop-blur-md bg-white/30 rounded">
                      {decklist?.map((card: any, int: number) => (
                         <div className="size-10" key={int}>
-                           <Image height={80} width={80} url={card} />
+                           <Image
+                              height={80}
+                              width={80}
+                              url={card}
+                              loading="lazy"
+                           />
                         </div>
                      ))}
                   </div>
@@ -241,12 +247,22 @@ function ServantImageBaseData({
                      <div key={i} className="relative">
                         <div className="flex items-center align-middle gap-2">
                            <div className="h-auto w-8">
-                              <Image height={64} url={hit.img} alt="CardType" />
+                              <Image
+                                 height={64}
+                                 url={hit.img}
+                                 alt="CardType"
+                                 loading="lazy"
+                              />
                            </div>
                            {/* Show NP Card type if NP row */}
                            {i == 4 ? (
                               <div className="h-auto w-8 inline-block">
-                                 <Image height={64} url={nptype} alt="NP" />
+                                 <Image
+                                    height={64}
+                                    url={nptype}
+                                    alt="NP"
+                                    loading="lazy"
+                                 />
                               </div>
                            ) : null}
                            <div className="text-xs font-bold rounded-full dark:bg-dark500 size-4 flex items-center justify-center absolute -right-4 bottom-[8px]">
@@ -550,6 +566,7 @@ function TableNPGainStar({ data: servant }: { data: Servant }) {
                            height={40}
                            url={row.icon}
                            alt="NPGain"
+                           loading="lazy"
                         />
                         <span className="font-semibold text-sm">
                            {row.label}

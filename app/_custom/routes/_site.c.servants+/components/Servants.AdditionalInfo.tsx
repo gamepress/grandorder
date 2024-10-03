@@ -22,34 +22,37 @@ export function AdditionalInfo({ data }: { data: any }) {
          <TableInfo data={servant} />
          <H2Plain text="Bond" />
          <BondTable data={servant} />
-         {bond_ce?.map((bc: any) => {
-            return (
-               <>
+         {bond_ce?.map((bc: any) => (
+            <div
+               className="flex items-center gap-3 shadow-sm shadow-1 bg-2-sub border border-color-sub px-3 py-2 rounded-xl mb-3"
+               key={bc?.id}
+            >
+               <Link
+                  to={`/c/craft-essences/${bc?.slug ?? bc?.id}`}
+                  className="size-14 rounded-md flex-none"
+               >
+                  <Image
+                     width={100}
+                     height={100}
+                     url={bc?.icon?.url ?? "no_image_42df124128"}
+                     alt={bc?.name}
+                     loading="lazy"
+                  />
+               </Link>
+               <div className="space-y-0.5">
                   <Link
-                     className="flex items-center gap-3 shadow-sm shadow-1 bg-2-sub border border-color-sub px-3 py-2 rounded-xl mb-3"
                      to={`/c/craft-essences/${bc?.slug ?? bc?.id}`}
+                     className="font-bold text-sm font-mono text-blue-500"
                   >
-                     <Image
-                        width={100}
-                        height={100}
-                        url={bc?.icon?.url ?? "no_image_42df124128"}
-                        className="size-14 rounded-md flex-none"
-                        alt={bc?.name}
-                        loading="lazy"
-                     />
-                     <div className="space-y-0.5">
-                        <div className="font-bold text-sm font-mono text-blue-500">
-                           {bc?.name}
-                        </div>
-                        <div
-                           className="text-sm"
-                           dangerouslySetInnerHTML={{ __html: bc?.description }}
-                        ></div>
-                     </div>
+                     {bc?.name}
                   </Link>
-               </>
-            );
-         })}
+                  <div
+                     className="text-sm"
+                     dangerouslySetInnerHTML={{ __html: bc?.description }}
+                  ></div>
+               </div>
+            </div>
+         ))}
       </>
    );
 }
