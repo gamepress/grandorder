@@ -224,9 +224,9 @@ const NoblePhantasmDisplay = ({ np }: any) => {
             ) : null}
          </div>
 
-         {np.np_upgrades?.map((npupg: any) => {
-            return <NoblePhantasmDisplay key={npupg.id} np={npupg} />;
-         })}
+         {np.np_upgrades?.map((npupg: any, int: number) => (
+            <NoblePhantasmDisplay key={int} np={npupg} />
+         ))}
       </>
    );
 };

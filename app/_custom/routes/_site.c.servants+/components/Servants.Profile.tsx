@@ -1,6 +1,7 @@
 import { Link } from "@remix-run/react";
 
 import type { Servant as ServantType } from "payload/generated-custom-types";
+import { Fragment } from "react";
 import { H2Plain } from "~/components/Headers";
 import { Image } from "~/components/Image";
 import {
@@ -62,36 +63,27 @@ function TableInfo({ data: servant }: { data: ServantType }) {
    return (
       <Table dense grid framed>
          <TableBody>
-            {info?.map((irow: any, ind: any) => {
-               return (
-                  <>
-                     {irow?.value ? (
-                        <>
-                           <TableRow key={"additional_info_" + ind}>
-                              <TableHeader
-                                 className="border-b-0"
-                                 key={"info_row_" + ind}
-                              >
-                                 {irow?.name}
-                              </TableHeader>
-                              <TableCell key={"info_value_" + ind}>
-                                 {irow?.url ? (
-                                    <Link
-                                       to={`${irow?.url}`}
-                                       className="text-blue-500 hover:underline"
-                                    >
-                                       {irow.value}
-                                    </Link>
-                                 ) : (
-                                    irow.value
-                                 )}
-                              </TableCell>
-                           </TableRow>
-                        </>
-                     ) : null}
-                  </>
-               );
-            })}
+            {info?.map((irow: any, ind: any) =>
+               irow?.value ? (
+                  <TableRow key={irow.name}>
+                     <TableHeader className="border-b-0">
+                        {irow?.name}
+                     </TableHeader>
+                     <TableCell>
+                        {irow?.url ? (
+                           <Link
+                              to={`${irow?.url}`}
+                              className="text-blue-500 hover:underline"
+                           >
+                              {irow.value}
+                           </Link>
+                        ) : (
+                           irow.value
+                        )}
+                     </TableCell>
+                  </TableRow>
+               ) : null,
+            )}
          </TableBody>
       </Table>
    );
@@ -139,21 +131,19 @@ function Parameters({ data: servant }: { data: ServantType }) {
       <>
          <H2Plain text="Parameters" />
          <div className="grid grid-cols-2 text-sm justify-center gap-x-6 gap-y-2 bg-2-sub shadow-1 shadow-sm rounded-lg p-3 py-4 border border-color-sub">
-            {paramlist?.map((p: any) => {
-               return (
-                  <>
-                     <div className="w-full flex justify-left gap-2">
-                        <div className="flex-none w-7 font-mono font-bold">
-                           {p.name}
-                        </div>
-                        <div className="flex-grow">
-                           {[1, 2, 3, 4, 5].map((bar: any) => {
-                              return (
-                                 <div
-                                    key={bar}
-                                    className={`inline-block h-5 w-1/5 border border-color-sub
+            {paramlist?.map((p) => (
+               <div className="w-full flex justify-left gap-2" key={p.name}>
+                  <div className="flex-none w-7 font-mono font-bold">
+                     {p.name}
+                  </div>
+                  <div className="flex-grow">
+                     {[1, 2, 3, 4, 5].map((bar) => {
+                        return (
+                           <div
+                              key={bar}
+                              className={`inline-block h-5 w-1/5 border border-color-sub
                                     ${
-                                       bar <= p.bar && p.bar != 6
+                                       p.bar && bar <= p.bar && p.bar != 6
                                           ? " bg-orange-400"
                                           : null
                                     }
@@ -164,15 +154,13 @@ function Parameters({ data: servant }: { data: ServantType }) {
                                     }
                                     ${bar == 1 ? " rounded-l-lg" : null}
                                     ${bar == 5 ? " rounded-r-lg" : null}`}
-                                 ></div>
-                              );
-                           })}
-                        </div>
-                        <div className="w-8 ml-1 font-bold">{p.grade}</div>
-                     </div>
-                  </>
-               );
-            })}
+                           ></div>
+                        );
+                     })}
+                  </div>
+                  <div className="w-8 ml-1 font-bold">{p.grade}</div>
+               </div>
+            ))}
          </div>
       </>
    );
@@ -185,26 +173,21 @@ function ValentinesCE({ ce }: { ce: any }) {
          {val_ce && val_ce.length > 0 ? (
             <>
                <H2Plain text="Valentine's CE" />
-               {val_ce?.map((bc: any) => {
-                  return (
-                     <>
-                        <Link
-                           className="bg-2-sub shadow-1 shadow-sm rounded-xl flex items-center gap-3 p-2.5 border border-color-sub mb-2"
-                           to={`/c/craft-essences/${bc?.id}`}
-                        >
-                           <Image
-                              className="size-12 rounded-lg border border-color-sub shadow-1 shadow-sm"
-                              url={bc?.icon?.url ?? "no_image_42df124128"}
-                              alt={bc?.name}
-                              loading="lazy"
-                           />
-                           <div className="text-blue-500 font-bold">
-                              {bc?.name}
-                           </div>
-                        </Link>
-                     </>
-                  );
-               })}
+               {val_ce?.map((bc: any) => (
+                  <Link
+                     className="bg-2-sub shadow-1 shadow-sm rounded-xl flex items-center gap-3 p-2.5 border border-color-sub mb-2"
+                     to={`/c/craft-essences/${bc?.id}`}
+                     key={bc?.id}
+                  >
+                     <Image
+                        className="size-12 rounded-lg border border-color-sub shadow-1 shadow-sm"
+                        url={bc?.icon?.url ?? "no_image_42df124128"}
+                        alt={bc?.name}
+                        loading="lazy"
+                     />
+                     <div className="text-blue-500 font-bold">{bc?.name}</div>
+                  </Link>
+               ))}
             </>
          ) : null}
       </>
@@ -219,19 +202,17 @@ function ProfileEntries({ data: servant }: { data: ServantType }) {
          {profiles && profiles.length > 0 ? (
             <>
                <H2Plain text="Profile Entries" />
-               {profiles.map((pe: any) => {
-                  return (
-                     <>
-                        <h3 className="pb-1 pt-3.5 mb-2.5 border-b-2 border-color-sub text-lg">
-                           {pe?.title}
-                        </h3>
-                        <div
-                           className="whitespace-pre-wrap"
-                           dangerouslySetInnerHTML={{ __html: pe.text }}
-                        ></div>
-                     </>
-                  );
-               })}
+               {profiles.map((pe: any) => (
+                  <Fragment key={pe.title}>
+                     <h3 className="pb-1 pt-3.5 mb-2.5 border-b-2 border-color-sub text-lg">
+                        {pe?.title}
+                     </h3>
+                     <div
+                        className="whitespace-pre-wrap"
+                        dangerouslySetInnerHTML={{ __html: pe.text }}
+                     ></div>
+                  </Fragment>
+               ))}
             </>
          ) : null}
       </>
@@ -248,29 +229,23 @@ function VoiceLines({ data: servant }: { data: ServantType }) {
                <H2Plain text="Voice Lines" />
                <Table grid framed dense>
                   <TableBody>
-                     {lines?.map((irow: any, ind: any) => {
-                        return (
-                           <>
-                              {irow?.text ? (
-                                 <>
-                                    <TableRow key={"voice_lines_row_" + ind}>
-                                       <TableHeader key={"info_row_" + ind}>
-                                          {irow?.title}
-                                       </TableHeader>
-                                       <TableCell>
-                                          <div
-                                             key={"info_value_" + ind}
-                                             dangerouslySetInnerHTML={{
-                                                __html: irow?.text,
-                                             }}
-                                          />
-                                       </TableCell>
-                                    </TableRow>
-                                 </>
-                              ) : null}
-                           </>
-                        );
-                     })}
+                     {lines?.map((irow: any, ind: any) =>
+                        irow?.text ? (
+                           <TableRow key={"voice_lines_row_" + ind}>
+                              <TableHeader key={"info_row_" + ind}>
+                                 {irow?.title}
+                              </TableHeader>
+                              <TableCell>
+                                 <div
+                                    key={"info_value_" + ind}
+                                    dangerouslySetInnerHTML={{
+                                       __html: irow?.text,
+                                    }}
+                                 />
+                              </TableCell>
+                           </TableRow>
+                        ) : null,
+                     )}
                   </TableBody>
                </Table>
             </>
