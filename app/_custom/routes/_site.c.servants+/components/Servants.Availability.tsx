@@ -102,7 +102,8 @@ function FutureBanners({ data }: { data: any }) {
                                     height={256}
                                     className="h-32 mb-2"
                                     url={b.icon?.url}
-                                    alt="Banner"
+                                    alt={b.name}
+                                    loading="lazy"
                                  />
                                  <div>{b.name}</div>
                               </TableCell>
@@ -154,7 +155,8 @@ function FutureBanners({ data }: { data: any }) {
                                  height={250}
                                  url={b.icon?.url}
                                  className="h-32"
-                                 alt="Banner"
+                                 alt={b.name}
+                                 loading="lazy"
                               />
                               <div className="py-2 font-bold border-t border-color-sub bg-2-sub w-full">
                                  {b.name}
