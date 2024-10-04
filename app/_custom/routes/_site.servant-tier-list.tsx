@@ -571,7 +571,8 @@ const gridView = columnHelper.accessor("name", {
                )}
             >
                <Image
-                  width={160}
+                  width={132}
+                  height={144}
                   className="w-20 mx-auto"
                   loading="lazy"
                   url={info.row.original.icon?.url}
@@ -637,7 +638,8 @@ const columns = [
             className="flex items-center gap-2 group py-0.5"
          >
             <Image
-               width={120}
+               width={132}
+               height={144}
                className="w-7 flex-none"
                loading="lazy"
                url={info.row.original.icon?.url}
