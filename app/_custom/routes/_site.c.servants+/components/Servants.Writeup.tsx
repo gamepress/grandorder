@@ -97,6 +97,9 @@ export function CERec({
                   })}
                </div>
                <EditorSection subSection={subSection} />
+               <div className="text-xs text-opacity-80 text-gray-500 italic text-center">
+                  Analysis by: {data?.servant?.authored_by}
+               </div>
             </>
          ) : null}
       </>
