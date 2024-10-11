@@ -176,79 +176,85 @@ export const CraftEssences: CollectionConfig = {
          hasMany: false,
       },
       {
-         name: "effect_list",
-         type: "array",
+         label: "effect_list",
+         type: "collapsible",
          fields: [
             {
-               name: "effect",
-               type: "relationship",
-               hooks: {
-                  afterChange: [
-                     Update_TermRelationsOneDeep(
-                        "effect_list", // Origin collection first level field name
-                        "effect", // Origin collection second level field name
-                        "craft-essence-effects", // Target collection to update
-                        "ce_With_Effect", // Target collection field to update
-                     ),
-                  ],
-               },
-               relationTo: "craft-essence-effects",
-               hasMany: false,
-            },
-            {
-               name: "value",
-               type: "number",
-            },
-            {
-               name: "value_mlb",
-               type: "number",
-            },
-            {
-               name: "turns",
-               type: "number",
-            },
-            {
-               name: "times",
-               type: "number",
-            },
-            {
-               name: "activation_chance",
-               type: "number",
-            },
-            {
-               name: "value_type",
-               type: "select",
-               hasMany: false,
-               options: [
+               name: "effect_list",
+               type: "array",
+               fields: [
                   {
-                     label: "flat",
-                     value: "flat",
+                     name: "effect",
+                     type: "relationship",
+                     hooks: {
+                        afterChange: [
+                           Update_TermRelationsOneDeep(
+                              "effect_list", // Origin collection first level field name
+                              "effect", // Origin collection second level field name
+                              "craft-essence-effects", // Target collection to update
+                              "ce_With_Effect", // Target collection field to update
+                           ),
+                        ],
+                     },
+                     relationTo: "craft-essence-effects",
+                     hasMany: false,
                   },
                   {
-                     label: "percent",
-                     value: "percent",
+                     name: "value",
+                     type: "number",
+                  },
+                  {
+                     name: "value_mlb",
+                     type: "number",
+                  },
+                  {
+                     name: "turns",
+                     type: "number",
+                  },
+                  {
+                     name: "times",
+                     type: "number",
+                  },
+                  {
+                     name: "activation_chance",
+                     type: "number",
+                  },
+                  {
+                     name: "value_type",
+                     type: "select",
+                     hasMany: false,
+                     options: [
+                        {
+                           label: "flat",
+                           value: "flat",
+                        },
+                        {
+                           label: "percent",
+                           value: "percent",
+                        },
+                     ],
+                  },
+                  {
+                     name: "condition_notes",
+                     type: "text",
+                  },
+                  {
+                     name: "bonus_item",
+                     type: "relationship",
+                     hooks: {
+                        afterChange: [
+                           Update_TermRelationsOneDeep(
+                              "effect_list", // Origin collection first level field name
+                              "bonus_item", // Origin collection second level field name
+                              "materials", // Target collection to update
+                              "ce_With_Drop_Bonus", // Target collection field to update
+                           ),
+                        ],
+                     },
+                     relationTo: "materials",
+                     hasMany: true,
                   },
                ],
-            },
-            {
-               name: "condition_notes",
-               type: "text",
-            },
-            {
-               name: "bonus_item",
-               type: "relationship",
-               hooks: {
-                  afterChange: [
-                     Update_TermRelationsOneDeep(
-                        "effect_list", // Origin collection first level field name
-                        "bonus_item", // Origin collection second level field name
-                        "materials", // Target collection to update
-                        "ce_With_Drop_Bonus", // Target collection field to update
-                     ),
-                  ],
-               },
-               relationTo: "materials",
-               hasMany: true,
             },
          ],
       },
