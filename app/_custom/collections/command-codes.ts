@@ -64,6 +64,10 @@ export const CommandCodes: CollectionConfig = {
          type: "textarea",
       },
       {
+         name: "desc_detail",
+         type: "textarea",
+      },
+      {
          name: "icon",
          type: "upload",
          relationTo: "images",
@@ -86,77 +90,83 @@ export const CommandCodes: CollectionConfig = {
          hasMany: false,
       },
       {
-         name: "effect_list",
-         type: "array",
+         label: "effect_list",
+         type: "collapsible",
          fields: [
             {
-               name: "effect",
-               type: "relationship",
-               hooks: {
-                  afterChange: [
-                     Update_TermRelationsOneDeep(
-                        "effect_list", // Origin collection first level field name
-                        "effect", // Origin collection second level field name
-                        "craft-essence-effects", // Target collection to update
-                        "cc_With_Effect", // Target collection field to update
-                     ),
-                  ],
-               },
-               relationTo: "craft-essence-effects",
-               hasMany: false,
-            },
-            {
-               name: "value",
-               type: "number",
-            },
-            {
-               name: "turns",
-               type: "number",
-            },
-            {
-               name: "times",
-               type: "number",
-            },
-            {
-               name: "cooldown",
-               type: "number",
-            },
-            {
-               name: "value_type",
-               type: "select",
-               hasMany: false,
-               options: [
+               name: "effect_list",
+               type: "array",
+               fields: [
                   {
-                     label: "flat",
-                     value: "flat",
+                     name: "effect",
+                     type: "relationship",
+                     hooks: {
+                        afterChange: [
+                           Update_TermRelationsOneDeep(
+                              "effect_list", // Origin collection first level field name
+                              "effect", // Origin collection second level field name
+                              "craft-essence-effects", // Target collection to update
+                              "cc_With_Effect", // Target collection field to update
+                           ),
+                        ],
+                     },
+                     relationTo: "craft-essence-effects",
+                     hasMany: false,
                   },
                   {
-                     label: "percent",
-                     value: "percent",
+                     name: "value",
+                     type: "number",
+                  },
+                  {
+                     name: "turns",
+                     type: "number",
+                  },
+                  {
+                     name: "times",
+                     type: "number",
+                  },
+                  {
+                     name: "cooldown",
+                     type: "number",
+                  },
+                  {
+                     name: "value_type",
+                     type: "select",
+                     hasMany: false,
+                     options: [
+                        {
+                           label: "flat",
+                           value: "flat",
+                        },
+                        {
+                           label: "percent",
+                           value: "percent",
+                        },
+                     ],
+                  },
+                  {
+                     name: "effect_condition",
+                     type: "relationship",
+                     relationTo: [
+                        "_alignments",
+                        "attributes",
+                        "_buff-categories",
+                        "_classes",
+                        "_command-cards",
+                        "craft-essence-effects",
+                        "_enemy-traits",
+                        "_field-types",
+                        "_status-effects",
+                        "_targets",
+                        "traits",
+                     ],
+                     hasMany: true,
+                  },
+                  {
+                     name: "condition_notes",
+                     type: "text",
                   },
                ],
-            },
-            {
-               name: "effect_condition",
-               type: "relationship",
-               relationTo: [
-                  "_alignments",
-                  "attributes",
-                  "_buff-categories",
-                  "_classes",
-                  "_command-cards",
-                  "craft-essence-effects",
-                  "_enemy-traits",
-                  "_field-types",
-                  "_status-effects",
-                  "_targets",
-                  "traits",
-               ],
-               hasMany: true,
-            },
-            {
-               name: "condition_notes",
-               type: "text",
             },
          ],
       },
