@@ -93,6 +93,9 @@ export const QuestEnemyCompactView = ({ refId }: Props) => {
                            icon {
                               url
                            }
+                           _rarity {
+                              icon_frame { url }
+                           }
                         }
                         ... on CommandCode {
                            id
@@ -136,6 +139,10 @@ export const QuestEnemyCompactView = ({ refId }: Props) => {
                            icon {
                               url
                            }
+                           _rarity {
+                              icon_frame { url }
+                           }
+                              
                         }
                         ... on CommandCode {
                            id
@@ -153,7 +160,8 @@ export const QuestEnemyCompactView = ({ refId }: Props) => {
             }
          }
       `,
-      (query: any) => gqlRequest("http://localhost:4000/api/graphql", query),
+      (query: any) =>
+         gqlRequest("https://grandorder.gamepress.gg:4000/api/graphql", query),
    );
    if (error) return null;
    if (isLoading) return <Loading />;
@@ -254,7 +262,7 @@ export const QuestEnemyCompactView = ({ refId }: Props) => {
                   <tr>
                      <th className={th_format}>Drops</th>
                      <td className={`text-left ${td_format}`} colSpan={4}>
-                        <div className="flex">
+                        <div className="flex flex-wrap">
                            {quest.quest_drops?.map((drop, dind) => (
                               <RewardRow data={drop} index={dind} />
                            ))}
@@ -266,7 +274,7 @@ export const QuestEnemyCompactView = ({ refId }: Props) => {
                   <tr>
                      <th className={th_format}>Rewards</th>
                      <td className={`text-left ${td_format}`} colSpan={4}>
-                        <div className="flex">
+                        <div className="flex flex-wrap">
                            {quest.quest_rewards?.map((drop, dind) => (
                               <RewardRow data={drop} index={dind} />
                            ))}
@@ -281,7 +289,7 @@ export const QuestEnemyCompactView = ({ refId }: Props) => {
 };
 
 const RewardRow = ({ data, index }: any) => {
-   const collection_type = data.mat?.relationTo;
+   const collection_type = data.mat?.relationTo?.replace("_", "-");
    const icon = data.mat?.value?.icon?.url;
    const name = data.mat?.value?.name;
    const qty = data.qty;
@@ -289,6 +297,7 @@ const RewardRow = ({ data, index }: any) => {
    const id = data.mat?.value?.id;
    const slug = data.mat?.value?.slug;
    const desc = data.other;
+   const frame = data?.mat?.value?._rarity?.icon_frame?.url;
 
    var dispqty = qty;
 
@@ -300,30 +309,62 @@ const RewardRow = ({ data, index }: any) => {
 
    return (
       <>
-         <Link className="p-1" to={`/c/${collection_type}/${slug ?? id}`}>
-            <div className="text-center relative overflow-clip">
-               <div className="relative">
-                  <Image
-                     height={80}
-                     className="h-10"
-                     url={icon}
-                     alt="icon"
-                     loading="lazy"
-                  />
-                  {qty > 1 ? (
-                     <div className="material-embedded-qty text-right bottom-0 right-[3px] text-[10pt]">
-                        {dispqty}
-                     </div>
-                  ) : null}
+         {id ? (
+            <>
+               <Link className="p-1" to={`/c/${collection_type}/${slug ?? id}`}>
+                  <div className="text-center relative overflow-clip">
+                     <div className="relative">
+                        {frame ? (
+                           <>
+                              <Image
+                                 height={80}
+                                 alt="icon"
+                                 url={frame}
+                                 className="relative object-contain h-10 z-10"
+                                 loading="lazy"
+                              />
+                              <Image
+                                 height={80}
+                                 alt="icon"
+                                 url={icon}
+                                 className="object-contain h-10 rounded-t-md absolute -top-0.5"
+                                 loading="lazy"
+                              />
+                           </>
+                        ) : (
+                           <Image
+                              height={80}
+                              alt="icon"
+                              url={icon}
+                              className="object-contain h-10"
+                              loading="lazy"
+                           />
+                        )}
 
-                  <div
-                     className="material-embedded-qty text-left top-0 left-0 text-nowrap text-[9pt]"
-                     dangerouslySetInnerHTML={{ __html: desc }}
-                  ></div>
-               </div>
-               {rate ? <div className="text-[7pt]">{rate}%</div> : null}
-            </div>
-         </Link>
+                        {qty > 1 ? (
+                           <div className="material-embedded-qty text-right bottom-0 right-[3px] text-[10pt]">
+                              {dispqty}
+                           </div>
+                        ) : null}
+
+                        <div
+                           className="material-embedded-qty text-left top-0 left-0 text-nowrap text-[9pt]"
+                           dangerouslySetInnerHTML={{ __html: desc }}
+                        ></div>
+                     </div>
+                     {rate ? <div className="text-[7pt]">{rate}%</div> : null}
+                  </div>
+               </Link>
+            </>
+         ) : (
+            <>
+               <div className="w-full"></div>
+               <div
+                  className="block text-left text-[9pt]"
+                  dangerouslySetInnerHTML={{ __html: desc }}
+               ></div>
+            </>
+         )}
       </>
    );
 };
