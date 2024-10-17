@@ -62,7 +62,7 @@ export const CustomBlocksAddConfig = (onSelect: any) => {
             onSelect: () => {
                onSelect({
                   id: nanoid(),
-                  refId: "test",
+                  refId: "",
                   type: BlockType.QuestEnemyCompactView,
                   children: [{ text: "" }],
                });
