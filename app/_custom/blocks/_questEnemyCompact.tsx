@@ -29,8 +29,6 @@ import { Icon } from "~/components/Icon";
 // eslint-disable-next-line import/no-cycle
 import { type CustomElement } from "~/routes/_editor+/core/types";
 
-import type { ListElement } from "~/routes/_editor+/core/types";
-
 import { QuestEnemyCompactView } from "./QuestEnemyCompactView";
 
 export const GROUP_COLORS = [
@@ -51,7 +49,7 @@ export function QuestEnemyCompact({
    element,
    children,
 }: {
-   element: ListElement;
+   element: any;
    children: ReactNode;
 }) {
    const editor = useSlate();
@@ -74,7 +72,8 @@ export function QuestEnemyCompact({
             }
          }
       `,
-      (query: any) => gqlRequest("http://localhost:4000/api/graphql", query),
+      (query: any) =>
+         gqlRequest("https://grandorder.gamepress.gg:4000/api/graphql", query),
    );
    const entryData = data?.Quests?.docs;
 
