@@ -1,11 +1,9 @@
-import type { ReactNode } from "react";
 import { gql, request as gqlRequest } from "graphql-request";
 import { Image } from "~/components/Image";
 import { Link } from "@remix-run/react";
 
 import useSWR from "swr";
 
-import type { ListElement } from "~/routes/_editor+/core/types";
 import { Loading } from "~/components/Loading";
 
 type Props = {
@@ -14,6 +12,9 @@ type Props = {
 
 export const QuestEnemyCompactView = ({ refId }: Props) => {
    const questid = refId;
+
+   if (!questid) return null;
+
    const { data, error, isLoading } = useSWR(
       gql`
          query {
@@ -160,8 +161,7 @@ export const QuestEnemyCompactView = ({ refId }: Props) => {
             }
          }
       `,
-      (query: any) =>
-         gqlRequest("https://grandorder.gamepress.gg:4000/api/graphql", query),
+      (query: any) => gqlRequest("http://localhost:4000/api/graphql", query),
    );
    if (error) return null;
    if (isLoading) return <Loading />;
@@ -301,10 +301,10 @@ const RewardRow = ({ data, index }: any) => {
 
    var dispqty = qty;
 
-   if (qty > 1000000) {
+   if (qty >= 1000000) {
       dispqty = Math.round(qty / 100000) / 10 + "M";
-   } else if (qty > 1000) {
-      dispqty = Math.round(qty / 1000) + "k";
+   } else if (qty >= 1000) {
+      dispqty = Math.round(qty / 100) / 10 + "k";
    }
 
    return (

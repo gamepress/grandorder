@@ -59,8 +59,6 @@ export function QuestEnemyCompact({
 
    const [selected] = useState();
 
-   const [refId, setRefId] = useState(element.refId?.id);
-
    const { data, error, isLoading } = useSWR(
       gql`
          query {
@@ -72,8 +70,7 @@ export function QuestEnemyCompact({
             }
          }
       `,
-      (query: any) =>
-         gqlRequest("https://grandorder.gamepress.gg:4000/api/graphql", query),
+      (query: any) => gqlRequest("http://localhost:4000/api/graphql", query),
    );
    const entryData = data?.Quests?.docs;
 
@@ -92,16 +89,12 @@ export function QuestEnemyCompact({
    // {{TO DO}}
    // ADAPT THE BELOW to update the entry correctly instead of using new entry, we don't need to push more children elements, we need to replace the element's refId
 
-   function handleUpdateItemsViewMode(
-      event: any,
-      editor: Editors,
-      element: any,
-   ) {
+   function handleUpdateBlockEntry(event: any, editor: Editors, element: any) {
       const path = ReactEditor.findPath(editor, element);
-      setItemsViewMode(event);
+      setRefId(event.id);
       return Transforms.setNodes<CustomElement>(
          editor,
-         { refId: event },
+         { refId: event.id },
          {
             at: path,
          },
@@ -137,9 +130,11 @@ export function QuestEnemyCompact({
       }
    }
 
-   const [itemsViewMode, setItemsViewMode] = useState(element.itemsViewMode);
+   const [refId, setRefId] = useState(element.refId);
 
-   const [isElementEditorOpen, setElementEditor] = useState(isGroupEmpty);
+   const [isElementEditorOpen, setElementEditor] = useState(
+      element.refId == "",
+   );
 
    return (
       <div contentEditable={false} className="mb-3 relative">
@@ -178,7 +173,7 @@ export function QuestEnemyCompact({
                      <Combobox
                         value={selected}
                         onChange={(e: any) => {
-                           handleUpdateItemsViewMode(e, editor, element);
+                           handleUpdateBlockEntry(e, editor, element);
                            setRefId(e?.id);
                            setElementEditor(false);
                         }}
@@ -280,20 +275,9 @@ export function QuestEnemyCompact({
                onDragEnd={handleDragEnd}
                collisionDetection={closestCenter}
             >
-               <SortableContext
-                  items={groupItems}
-                  strategy={
-                     itemsViewMode == "list"
-                        ? verticalListSortingStrategy
-                        : rectSortingStrategy
-                  }
-               >
-                  <GroupDnDContext.Provider
-                     value={{ groupItems, setGroupItems }}
-                  >
-                     <QuestEnemyCompactView refId={refId} />
-                  </GroupDnDContext.Provider>
-               </SortableContext>
+               <GroupDnDContext.Provider value={{ groupItems, setGroupItems }}>
+                  <QuestEnemyCompactView refId={refId} />
+               </GroupDnDContext.Provider>
             </DndContext>
          </section>
       </div>
