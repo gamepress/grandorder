@@ -4,8 +4,11 @@ import { DefaultElement, useReadOnly } from "slate-react";
 import { Icon } from "~/components/Icon";
 
 import { ExampleBlock } from "./Example";
+import { QuestEnemyCompactView } from "./QuestEnemyCompactView";
+import { QuestEnemyCompact } from "./_questEnemyCompact";
 enum BlockType {
    CustomComponent = "customComponent",
+   QuestEnemyCompactView = "questEnemyCompactView",
 }
 
 type CustomComponent = {
@@ -19,6 +22,9 @@ export const CustomBlocks = ({ element, children, attributes }: any) => {
       case BlockType.CustomComponent: {
          return <ExampleBlock element={element} children={children} />;
       }
+      case BlockType.QuestEnemyCompactView: {
+         return <QuestEnemyCompact element={element} children={children} />;
+      }
       default:
          //Render default element if no custom blocks match
          return (
@@ -31,16 +37,33 @@ export const CustomBlocks = ({ element, children, attributes }: any) => {
 
 export const CustomBlocksAddConfig = (onSelect: any) => {
    return {
-      label: "Custom",
+      // label: "Custom",
+      // items: [
+      //    {
+      //       label: "Sample Component",
+      //       icon: <Icon name="component" size={20} />,
+      //       description: "Sample component description",
+      //       onSelect: () => {
+      //          onSelect({
+      //             id: nanoid(),
+      //             stringField: "test",
+      //             type: BlockType.CustomComponent,
+      //             children: [{ text: "" }],
+      //          });
+      //       },
+      //    },
+      // ],
+      label: "Quest Enemy Compact View",
       items: [
          {
-            label: "Example",
+            label: "Quest Enemy Compact View",
             icon: <Icon name="component" size={20} />,
-            description: "Example component description",
+            description: "Summarized Enemy Layout View for Quests",
             onSelect: () => {
                onSelect({
                   id: nanoid(),
-                  type: BlockType.CustomComponent,
+                  refId: "test",
+                  type: BlockType.QuestEnemyCompactView,
                   children: [{ text: "" }],
                });
             },
