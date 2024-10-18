@@ -161,7 +161,8 @@ export const QuestEnemyCompactView = ({ refId }: Props) => {
             }
          }
       `,
-      (query: any) => gqlRequest("http://localhost:4000/api/graphql", query),
+      (query: any) =>
+         gqlRequest("https://grandorder.gamepress.gg:4000/api/graphql", query),
    );
    if (error) return null;
    if (isLoading) return <Loading />;

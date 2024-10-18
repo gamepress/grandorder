@@ -70,7 +70,8 @@ export function QuestEnemyCompact({
             }
          }
       `,
-      (query: any) => gqlRequest("http://localhost:4000/api/graphql", query),
+      (query: any) =>
+         gqlRequest("https://grandorder.gamepress.gg:4000/api/graphql", query),
    );
    const entryData = data?.Quests?.docs;
 
