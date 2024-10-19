@@ -74,6 +74,19 @@ const QUERY = gql`
                }
             }
          }
+         ce_With_Drop_Bonus {
+            id
+            slug
+            name
+            _rarity {
+               icon_frame {
+                  url
+               }
+            }
+            icon {
+               url
+            }
+         }
       }
       ascensionData: Servants(
          where: {
