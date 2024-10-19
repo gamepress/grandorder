@@ -2,6 +2,7 @@ import type { CraftEssence as CraftEssenceType } from "payload/generated-custom-
 import { Image } from "~/components/Image";
 import { Link } from "@remix-run/react";
 import { SectionTitle } from "~/routes/_site+/c_+/$collectionId_.$entryId/components/SectionTitle";
+import { Tooltip, TooltipTrigger, TooltipContent } from "~/components/Tooltip";
 
 export function CraftEssencesEffect({ data: ce }: { data: CraftEssenceType }) {
    const dispData = [
@@ -33,6 +34,8 @@ export function CraftEssencesEffect({ data: ce }: { data: CraftEssenceType }) {
          url: "/c/cvs/" + ce?.cv?.id,
       },
    ];
+
+   const bonusItems = ce.effect_list?.map((a) => a.bonus_item)?.flat();
 
    return (
       <>
@@ -99,6 +102,39 @@ export function CraftEssencesEffect({ data: ce }: { data: CraftEssenceType }) {
                </>
             ))}
          </div>
+         {/* If Bonus Items Exist */}
+         {bonusItems?.length > 0 ? (
+            <>
+               <SectionTitle customTitle={"Drop Bonus Item"} />
+               <div className="flex items-center gap-1">
+                  {bonusItems.map((mat) => (
+                     <MaterialDisplay mat={mat} />
+                  ))}
+               </div>
+            </>
+         ) : null}
       </>
    );
 }
+
+const MaterialDisplay = ({ mat }: any) => {
+   return (
+      <>
+         <Tooltip key={mat?.id} placement="top">
+            <TooltipTrigger className="size-12 inline-block align-middle m-0.5">
+               <Link to={`/c/materials/${mat?.slug ?? mat?.id}`}>
+                  <Image
+                     height={60}
+                     width={60}
+                     className="size-12"
+                     url={mat?.icon?.url}
+                     alt={mat?.name}
+                     loading="lazy"
+                  />
+               </Link>
+            </TooltipTrigger>
+            <TooltipContent>{mat?.name}</TooltipContent>
+         </Tooltip>
+      </>
+   );
+};

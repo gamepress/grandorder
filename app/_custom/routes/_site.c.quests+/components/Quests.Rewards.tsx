@@ -40,7 +40,7 @@ export function QuestsDrops({ data }: { data: any }) {
 }
 
 const RewardRow = ({ data, index }: any) => {
-   const collection_type = data.mat?.relationTo;
+   const collection_type = data.mat?.relationTo?.replace("_", "-");
    const icon = data.mat?.value?.icon?.url;
    const name = data.mat?.value?.name;
    const qty = data.qty;
