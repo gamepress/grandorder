@@ -26,7 +26,10 @@ export const Quests: CollectionConfig = {
          name: "name",
          type: "text",
       },
-
+      {
+         name: "slug",
+         type: "text",
+      },
       {
          name: "ap_cost",
          type: "number",
@@ -288,10 +291,6 @@ export const Quests: CollectionConfig = {
       },
       {
          name: "path",
-         type: "text",
-      },
-      {
-         name: "slug",
          type: "text",
       },
       {

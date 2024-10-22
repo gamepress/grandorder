@@ -52,6 +52,10 @@ export const CommandCodes: CollectionConfig = {
          type: "text",
       },
       {
+         name: "slug",
+         type: "text",
+      },
+      {
          name: "command_code_id",
          type: "number",
       },
@@ -184,10 +188,6 @@ export const CommandCodes: CollectionConfig = {
          },
          relationTo: "illustrators",
          hasMany: false,
-      },
-      {
-         name: "slug",
-         type: "text",
       },
       {
          name: "checksum",
