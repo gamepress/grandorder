@@ -66,6 +66,10 @@ export const CraftEssences: CollectionConfig = {
          type: "text",
       },
       {
+         name: "slug",
+         type: "text",
+      },
+      {
          name: "library_number",
          type: "number",
       },
@@ -257,10 +261,6 @@ export const CraftEssences: CollectionConfig = {
                ],
             },
          ],
-      },
-      {
-         name: "slug",
-         type: "text",
       },
       {
          name: "checksum",

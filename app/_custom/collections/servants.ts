@@ -34,6 +34,10 @@ export const Servants: CollectionConfig = {
          type: "text",
       },
       {
+         name: "slug",
+         type: "text",
+      },
+      {
          name: "release_status",
          type: "relationship",
          relationTo: "_release-statuses",
@@ -796,10 +800,6 @@ export const Servants: CollectionConfig = {
       },
       {
          name: "drupal_name_icon",
-         type: "text",
-      },
-      {
-         name: "slug",
          type: "text",
       },
       {

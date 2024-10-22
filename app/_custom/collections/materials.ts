@@ -39,6 +39,10 @@ export const Materials: CollectionConfig = {
          type: "text",
       },
       {
+         name: "slug",
+         type: "text",
+      },
+      {
          name: "icon",
          type: "upload",
          relationTo: "images",
@@ -101,10 +105,6 @@ export const Materials: CollectionConfig = {
          admin: {
             readOnly: true,
          },
-      },
-      {
-         name: "slug",
-         type: "text",
       },
       {
          name: "checksum",
