@@ -28,7 +28,7 @@ export function QuestsEnemies({ data }: { data: any }) {
                  <Table grid framed dense>
                     <TableHead>
                        <TableRow>
-                          <TableHeader>Enemies</TableHeader>
+                          <TableHeader className="w-full">Enemies</TableHeader>
                           <TableHeader center>Class</TableHeader>
                           <TableHeader center>HP</TableHeader>
                           <TableHeader center>Lvl</TableHeader>
