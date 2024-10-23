@@ -19,15 +19,15 @@ export function QuestsMain({ data }: { data: any }) {
       },
       {
          name: "Bond Points",
-         value: data.bond_points,
+         value: data.bond_points?.toLocaleString(),
       },
       {
          name: "QP",
-         value: data.qp,
+         value: data.qp?.toLocaleString(),
       },
       {
          name: "Quest EXP",
-         value: data.exp,
+         value: data.exp?.toLocaleString(),
       },
       {
          name: "Quest Type",
