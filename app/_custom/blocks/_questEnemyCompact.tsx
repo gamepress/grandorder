@@ -20,6 +20,7 @@ import { request as gqlRequest, gql } from "graphql-request";
 import { Transforms, Node, Editor } from "slate";
 import type { BaseEditor } from "slate";
 import { ReactEditor, useSlate } from "slate-react";
+import { useReadOnly } from "slate-react";
 import useSWR from "swr";
 
 import type { Entry } from "payload/generated-types";
@@ -58,6 +59,8 @@ export function QuestEnemyCompact({
    const [groupSelectQuery, setGroupSelectQuery] = useState("");
 
    const [selected] = useState();
+
+   const readOnly = useReadOnly();
 
    const { data, error, isLoading } = useSWR(
       gql`
@@ -139,31 +142,34 @@ export function QuestEnemyCompact({
 
    return (
       <div contentEditable={false} className="mb-3 relative">
-         <Float
-            middleware={[
-               offset({
-                  mainAxis: 8,
-                  crossAxis: -22,
-               }),
-            ]}
-            dialog
-            placement="left-start"
-            portal
-         >
-            <Float.Reference>
-               <div className="flex size-10 laptop:absolute -right-12 top-0">
-                  <Button
-                     className="size-9 !p-0"
-                     color="light/zinc"
-                     onClick={() => setElementEditor(!isElementEditorOpen)}
-                     contentEditable={false}
-                  >
-                     <Icon name="list-plus" size={16} />
-                  </Button>
-               </div>
-            </Float.Reference>
-            <div></div>
-         </Float>
+         {!readOnly && (
+            <Float
+               middleware={[
+                  offset({
+                     mainAxis: 8,
+                     crossAxis: -22,
+                  }),
+               ]}
+               dialog
+               placement="left-start"
+               portal
+            >
+               <Float.Reference>
+                  <div className="flex size-10 laptop:absolute -right-12 top-0">
+                     <Button
+                        className="size-9 !p-0"
+                        color="light/zinc"
+                        onClick={() => setElementEditor(!isElementEditorOpen)}
+                        contentEditable={false}
+                     >
+                        <Icon name="list-plus" size={16} />
+                     </Button>
+                  </div>
+               </Float.Reference>
+               <div></div>
+            </Float>
+         )}
+
          <Transition appear show={isElementEditorOpen} as={Fragment}>
             <div className="relative w-full laptop:w-[728px] px-4">
                <div
