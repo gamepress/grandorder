@@ -50,12 +50,21 @@ const NoblePhantasmDisplay = ({ np }: any) => {
                   height={80}
                />
                <div className="space-y-1 flex-grow">
-                  <div className="flex items-center justify-between pb-0.5">
+                  <div className="pb-0.5">
                      <div className="flex items-center gap-2 text-base">
                         <span className="font-bold">{np_name}</span>
                         <span className="text-1">{np_rank}</span>
                      </div>
+                     {unlock ? (
+                        <div
+                           className="text-xs text-1"
+                           dangerouslySetInnerHTML={{
+                              __html: unlock,
+                           }}
+                        ></div>
+                     ) : null}
                   </div>
+
                   <div
                      className="text-sm whitespace-pre-wrap leading-tight"
                      dangerouslySetInnerHTML={{
@@ -65,14 +74,6 @@ const NoblePhantasmDisplay = ({ np }: any) => {
                      }}
                   />
                   <div className="space-y-1">
-                     {unlock ? (
-                        <div
-                           className="text-xs text-1"
-                           dangerouslySetInnerHTML={{
-                              __html: unlock,
-                           }}
-                        ></div>
-                     ) : null}
                      <div className="font-bold text-sm">{"<Overcharge>"}</div>
                      <div
                         className="text-sm whitespace-pre-wrap leading-tight pb-1"
