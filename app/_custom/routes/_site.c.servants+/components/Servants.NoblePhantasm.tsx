@@ -127,7 +127,7 @@ const NoblePhantasmDisplay = ({ np }: any) => {
                         <TableHeader>Effect</TableHeader>
                         <TableCell
                            colSpan={5}
-                           className="border-b border-color"
+                           className="border-b border-color whitespace-pre-wrap leading-tight"
                         >
                            <div
                               dangerouslySetInnerHTML={{
