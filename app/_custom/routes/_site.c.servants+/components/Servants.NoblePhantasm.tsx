@@ -139,22 +139,25 @@ const NoblePhantasmDisplay = ({ np }: any) => {
                         </TableCell>
                      </TableRow>
                      <TableRow>
-                        <TableHeader>Level </TableHeader>
-                        <TableHeader>1 </TableHeader>
-                        <TableHeader>2 </TableHeader>
-                        <TableHeader>3 </TableHeader>
-                        <TableHeader>4 </TableHeader>
-                        <TableHeader>5 </TableHeader>
+                        <TableHeader className="!py-1">Level </TableHeader>
+                        <TableHeader className="!py-1">1 </TableHeader>
+                        <TableHeader className="!py-1">2 </TableHeader>
+                        <TableHeader className="!py-1">3 </TableHeader>
+                        <TableHeader className="!py-1">4 </TableHeader>
+                        <TableHeader className="!py-1">5 </TableHeader>
                      </TableRow>
                      {np_effect_list?.map((eff: any, ei: number) => {
                         return (
                            <TableRow key={"np_effect_list_" + ei}>
-                              <TableHeader className="border-b-0 border-t">
+                              <TableHeader className="border-b-0 border-t !py-1">
                                  {eff?.effect_display}
                               </TableHeader>
                               {[0, 1, 2, 3, 4]?.map((i: any) => {
                                  return (
-                                    <TableCell className="border-t" key={ei}>
+                                    <TableCell
+                                       className="border-t !py-1"
+                                       key={ei}
+                                    >
                                        {eff.values_per_level?.[i] ?? ""}
                                     </TableCell>
                                  );
@@ -182,18 +185,18 @@ const NoblePhantasmDisplay = ({ np }: any) => {
                         </TableCell>
                      </TableRow>
                      <TableRow>
-                        <TableHeader>Level</TableHeader>
-                        <TableHeader>1</TableHeader>
-                        <TableHeader>2</TableHeader>
-                        <TableHeader>3</TableHeader>
-                        <TableHeader>4</TableHeader>
-                        <TableHeader>5</TableHeader>
+                        <TableHeader className="!py-1">Level </TableHeader>
+                        <TableHeader className="!py-1">1 </TableHeader>
+                        <TableHeader className="!py-1">2 </TableHeader>
+                        <TableHeader className="!py-1">3 </TableHeader>
+                        <TableHeader className="!py-1">4 </TableHeader>
+                        <TableHeader className="!py-1">5 </TableHeader>
                      </TableRow>
                      {np_effect_list_overcharge?.map((eff: any, ei: number) => {
                         return (
                            <TableRow key={ei}>
                               <TableHeader
-                                 className="border-b-0"
+                                 className="border-b-0 !py-1"
                                  key={"np_effect_list_overcharge_" + ei}
                               >
                                  {eff?.effect_display}
@@ -202,7 +205,7 @@ const NoblePhantasmDisplay = ({ np }: any) => {
                               {[0, 1, 2, 3, 4]?.map((i: any) => {
                                  return (
                                     <>
-                                       <TableCell>
+                                       <TableCell className="!py-1">
                                           {eff.values_per_level?.[i] ?? ""}
                                        </TableCell>
                                     </>
