@@ -3,15 +3,16 @@
 }
 
 .field-type.text:not(.has-many) input {
-   height: 2rem;
+   height: 2.5rem;
 }
 
 label.field-label {
    padding-bottom: 0;
+   padding-top: 0.2rem;
 }
 
 .field-type.number:not(.has-many) input {
-   height: 2rem;
+   height: 2.5rem;
 }
 
 .react-select .rs__control {
@@ -24,7 +25,7 @@ label.field-label {
 
 .collapsible__content {
    background-color: rgba(200,200,200,0.1);
-   padding: 1.5rem;
+   padding: 1.2rem;
 }
 .field-type.textarea .textarea-outer {
    padding: 0 0 0 1rem;
