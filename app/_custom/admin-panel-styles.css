@@ -1,0 +1,35 @@
+.render-fields {
+   --spacing-field: 0;
+}
+
+.field-type.text:not(.has-many) input {
+   height: 2rem;
+}
+
+label.field-label {
+   padding-bottom: 0;
+}
+
+.field-type.number:not(.has-many) input {
+   height: 2rem;
+}
+
+.react-select .rs__control {
+   height: 2rem;
+}
+
+.array-field__title {
+   margin: 1rem 1rem 0 0;
+}
+
+.collapsible__content {
+   background-color: rgba(200,200,200,0.1);
+   padding: 1.5rem;
+}
+.field-type.textarea .textarea-outer {
+   padding: 0 0 0 1rem;
+}
+
+section {
+   height: 140px !important;
+}
