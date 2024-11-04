@@ -308,6 +308,11 @@ const RewardRow = ({ data, index }: any) => {
       dispqty = Math.round(qty / 100) / 10 + "k";
    }
 
+   var disprate = rate;
+   if (rate >= 100) {
+      disprate = Math.round(rate);
+   }
+
    return (
       <>
          {id ? (
@@ -353,7 +358,9 @@ const RewardRow = ({ data, index }: any) => {
                            dangerouslySetInnerHTML={{ __html: desc }}
                         ></div>
                      </div>
-                     {rate ? <div className="text-[7pt]">{rate}%</div> : null}
+                     {disprate ? (
+                        <div className="text-[7pt] w-[37px]">{disprate}%</div>
+                     ) : null}
                   </div>
                </Link>
             </>
