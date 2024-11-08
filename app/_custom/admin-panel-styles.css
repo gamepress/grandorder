@@ -16,7 +16,7 @@ label.field-label {
 }
 
 .react-select .rs__control {
-   height: 2rem;
+   height: min-content;
 }
 
 .array-field__title {
