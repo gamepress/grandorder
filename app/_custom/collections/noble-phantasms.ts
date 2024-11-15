@@ -1,13 +1,18 @@
 import type { CollectionConfig } from "payload/types";
-import { Update_TermRelationsOneDeep } from "./hooks/Update_TermRelationsOneDeep";
-import { Delete_TermRelationsOneDeep } from "./hooks/Delete_TermRelationsOneDeep";
+import { Duplicate_AppendIncrement } from "./hooks/Duplicate_AppendIncrement";
 
 import { isStaff } from "../../db/collections/users/users.access";
 
 export const NoblePhantasms: CollectionConfig = {
    slug: "noble-phantasms",
    labels: { singular: "Noble-Phantasm", plural: "Noble-Phantasms" },
-   admin: { group: "Custom", useAsTitle: "name" },
+   admin: {
+      group: "Custom",
+      useAsTitle: "name",
+      hooks: {
+         beforeDuplicate: Duplicate_AppendIncrement,
+      },
+   },
    access: {
       create: isStaff, //udpate in future to allow site admins as well
       read: () => true,
