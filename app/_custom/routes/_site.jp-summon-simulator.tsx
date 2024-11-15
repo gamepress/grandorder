@@ -377,7 +377,7 @@ const SummonSimulator = (data: any) => {
          var rem = tickets % 10;
          //every 10th ticket gives an extra pull
          if (rem + num >= 10) {
-            num++;
+            if (num != 11) num++;
             pulledBonus = true;
          }
       }

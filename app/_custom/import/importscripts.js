@@ -98,3 +98,5 @@ pnpm import_collection_raw collection:summon-events,filename:bannerupdate.json,i
 # Testing area!
 # Importing tier-arrow info
 pnpm import_collection_raw collection:servants,filename:Servant.json,idname:drupal_nid,sync:false,overwrite:true
+
+pnpm import_collection_raw collection:command-codes,filename:CommandCode.json,idname:drupal_nid,sync:false,overwrite:true
