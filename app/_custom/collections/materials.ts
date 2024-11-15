@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload/types";
+import { Duplicate_AppendIncrement } from "./hooks/Duplicate_AppendIncrement";
 
 import { isStaff } from "../../db/collections/users/users.access";
 import {
@@ -9,7 +10,13 @@ import {
 export const Materials: CollectionConfig = {
    slug: "materials",
    labels: { singular: "Material", plural: "Materials" },
-   admin: { group: "Custom", useAsTitle: "name" },
+   admin: {
+      group: "Custom",
+      useAsTitle: "name",
+      hooks: {
+         beforeDuplicate: Duplicate_AppendIncrement,
+      },
+   },
 
    access: {
       create: isStaff, //udpate in future to allow site admins as well
