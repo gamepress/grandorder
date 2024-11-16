@@ -4,7 +4,9 @@ export const Duplicate_AppendIncrement: BeforeDuplicate<any> = ({ data }) => {
    var tempid = data?.id;
    const last_num = parseInt(tempid.replace(/.*-/, ""));
    if (tempid.indexOf("-") > -1 && last_num) {
-      tempid = tempid.replace(/\-[^-]*$/, "") + "-" + (last_num + 1);
+      // If making clone of a clone, to avoid requerying the entire collection, will add timestamp as ID. Only the first clone will have -1.
+      var timestampid = new Date().getTime();
+      tempid = tempid.replace(/\-[^-]*$/, "") + "-" + timestampid;
    } else {
       tempid = tempid + "-1";
    }
