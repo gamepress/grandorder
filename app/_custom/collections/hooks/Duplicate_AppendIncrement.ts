@@ -3,7 +3,7 @@ import type { BeforeDuplicate } from "payload/types";
 export const Duplicate_AppendIncrement: BeforeDuplicate<any> = ({ data }) => {
    var tempid = data?.id;
    const last_num = parseInt(tempid.replace(/.*-/, ""));
-   if (last_num) {
+   if (tempid.indexOf("-") > -1 && last_num) {
       tempid = tempid.replace(/\-[^-]*$/, "") + "-" + (last_num + 1);
    } else {
       tempid = tempid + "-1";
