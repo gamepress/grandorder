@@ -14,3 +14,28 @@
       0 1px 0 #000,
       -1px 0 0 #000;
 }
+
+h2 {
+  border-left-color: #004F75;
+  background-image: url(https://static.mana.wiki/grandorder/bg_menu_pc.jpg);
+  background-size: cover;
+  border-left: 10px solid #004F75;
+  font-weight: bold;
+  color: #fff;
+  border-radius: 0 !important;
+}
+h2 > span {
+   background-color: transparent !important;
+   border-color: transparent !important;
+   --tw-shadow-color: transparent !important;
+}
+h2 > span > div {
+   --pattern-bg-color: transparent !important;
+}
+h2 > div {
+   --pattern-bg-color: transparent !important;
+}
+
+h3 {
+  border-bottom: 2px solid #00558a !important;
+}
