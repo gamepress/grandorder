@@ -659,6 +659,7 @@ const SummonSimulator = (data: any) => {
                   {banner_options?.length > 0 ? (
                      <>
                         <Select
+                           autoFocus
                            className="mt-3"
                            onChange={(e) =>
                               toggleOptions(e.target.value, banner_function)

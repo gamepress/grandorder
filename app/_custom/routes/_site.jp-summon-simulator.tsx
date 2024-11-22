@@ -665,6 +665,7 @@ const SummonSimulator = (data: any) => {
                   {banner_options?.length > 0 ? (
                      <>
                         <Select
+                           autoFocus
                            id="banner-rotation-select"
                            className="mt-3"
                            onChange={(e) =>
