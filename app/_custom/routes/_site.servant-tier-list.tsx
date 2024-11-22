@@ -105,7 +105,7 @@ export default function ServantTierList() {
                   Check out the full{" "}
                   <TextLink
                      target="_blank"
-                     href="https://fgo.gamepress.gg/tier-list-change-log-history"
+                     href="https://grandorder.gamepress.gg/p/tier-list-change-log-history"
                   >
                      change log{" "}
                   </TextLink>{" "}
