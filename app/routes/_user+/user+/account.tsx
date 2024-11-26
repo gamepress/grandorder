@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { Transition } from "@headlessui/react";
+import { Label, Transition } from "@headlessui/react";
 import { useFetcher } from "@remix-run/react";
 import type { MetaFunction } from "@remix-run/react";
 import type { ActionFunction } from "@remix-run/server-runtime";
@@ -24,6 +24,8 @@ import {
 import { useRootLoaderData } from "~/utils/useSiteLoaderData";
 
 import { UserContainer } from "../components/UserContainer";
+import { Input } from "~/components/Input";
+import { Field } from "~/components/Fieldset";
 
 const UserAccountSchema = z.object({
    userAvatar: z.any().optional(),
@@ -72,6 +74,10 @@ export default function UserAccount() {
 
    return (
       <UserContainer title="Account">
+         <Field className="flex flex-col gap-1 mb-6">
+            <Label className="text-xs font-bold pl-0.5">Username</Label>
+            <Input readOnly name="username" value={user?.username} />
+         </Field>
          <fetcher.Form
             //Only onSubmit if we have an uploaded file
             onSubmit={preparedAvatarFile && handleSubmit}
@@ -171,24 +177,24 @@ export const action: ActionFunction = async ({
          });
          if (result.success) {
             const { userAvatar, userAvatarId } = result.data;
-            //Icon
+            //Upload new avatar
             if (userAvatar && !userAvatarId) {
                const upload = await uploadImage({
                   payload,
+                  user,
                   image: userAvatar,
-                  user,
                });
-
-               await payload.update({
-                  collection: "users",
-                  id: user.id,
-                  data: {
-                     //@ts-ignore
-                     avatar: upload?.id,
-                  },
-                  overrideAccess: false,
-                  user,
-               });
+               if (upload) {
+                  await payload.update({
+                     collection: "users",
+                     id: user.id,
+                     data: {
+                        avatar: upload?.id as any,
+                     },
+                     overrideAccess: false,
+                     user,
+                  });
+               }
             }
             //If existing icon, delete it and upload new one
             if (userAvatar && userAvatarId) {
@@ -215,15 +221,7 @@ export const action: ActionFunction = async ({
                   user,
                });
             }
-            // await payload.update({
-            //    collection: "sites",
-            //    id: siteId,
-            //    data: {
-            //       ...result.data,
-            //    },
-            //    overrideAccess: false,
-            //    user,
-            // });
+
             return jsonWithSuccess(null, "Account settings updated");
          }
          if (result.error) {
