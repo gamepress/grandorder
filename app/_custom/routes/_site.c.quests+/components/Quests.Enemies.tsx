@@ -60,8 +60,8 @@ function QuestPartHeader({
    return (
       <>
          {show_part ? (
-            <H2>
-               {part_display}
+            <>
+               <H2>{part_display}</H2>
                {guest?.length > 0 ? (
                   <>
                      {guest.map((g: any, gi: any) => (
@@ -77,7 +77,7 @@ function QuestPartHeader({
                      ))}
                   </>
                ) : null}
-            </H2>
+            </>
          ) : null}
          <H3>{stage_display}</H3>
       </>
