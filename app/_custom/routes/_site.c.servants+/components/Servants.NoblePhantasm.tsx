@@ -196,7 +196,7 @@ const NoblePhantasmDisplay = ({ np }: any) => {
                         return (
                            <TableRow key={ei}>
                               <TableHeader
-                                 className="border-b-0 !py-1"
+                                 className="border-b-0 border-t !py-1"
                                  key={"np_effect_list_overcharge_" + ei}
                               >
                                  {eff?.effect_display}
@@ -205,7 +205,7 @@ const NoblePhantasmDisplay = ({ np }: any) => {
                               {[0, 1, 2, 3, 4]?.map((i: any) => {
                                  return (
                                     <>
-                                       <TableCell className="!py-1">
+                                       <TableCell className="border-t !py-1">
                                           {eff.values_per_level?.[i] ?? ""}
                                        </TableCell>
                                     </>
