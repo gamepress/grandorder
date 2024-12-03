@@ -1,86 +1,215 @@
-import { useState } from "react";
-
+import { gql, request as gqlRequest } from "graphql-request";
+import { Image } from "~/components/Image";
 import { Link } from "@remix-run/react";
+import { Icon } from "~/components/Icon";
 import clsx from "clsx";
 
-import type { Servant } from "payload/generated-custom-types";
-import { Icon } from "~/components/Icon";
-import { Image } from "~/components/Image";
+import { useState } from "react";
+import useSWR from "swr";
 
-export function ServantsMain({
-   data,
-}: {
-   data: { servant: Servant; costumeData: any };
-}) {
-   const servant = data.servant;
-   const costumes = data.costumeData;
-   // console.log(costumes);
+import { Loading } from "~/components/Loading";
+
+type Props = {
+   refId: String;
+};
+
+export const ServantOverviewView = ({ refId }: Props) => {
+   const servantid = refId;
+
+   if (!servantid) return null;
+
+   const { data, error, isLoading } = useSWR(
+      gql`
+         query {
+            Servant(id: "${servantid}") {
+               id
+               name
+               library_id
+               cost
+               hp_base
+               hp_max
+               hp_grail
+               hp_lv120
+               atk_base
+               atk_max
+               atk_grail
+               atk_lv120
+               num_hits_quick
+               num_hits_arts
+               num_hits_buster
+               num_hits_extra
+               class {
+                  name
+                  icon {
+                     url
+                  }
+               }
+               attribute {
+                  id
+                  name
+               }
+               deck_layout {
+                  name
+               }
+               alignment {
+                  id
+                  name
+               }
+               icon {
+                  url
+               }
+               image_stage_1 {
+                  url
+               }
+               image_stage_2 {
+                  url
+               }
+               image_stage_3 {
+                  url
+               }
+               image_stage_4 {
+                  url
+               }
+               star_rarity {
+                  name
+               }
+               tags {
+                  id
+                  name
+                  icon {
+                     url
+                  }
+               }
+               traits {
+                  id
+                  name
+               }
+               class_skills {
+                  name
+                  description
+                  skill_image {
+                     icon {
+                        url
+                     }
+                  }
+               }
+               noble_phantasm_base {
+                  card_type {
+                     name
+                     icon {
+                        url
+                     }
+                  }
+                  hit_count
+               }
+               slug
+            }
+            Costumes(where: { servant: { equals: ${servantid} } }) {
+               docs {
+                  id
+                  name
+                  icon {
+                     url
+                  }
+               }
+            }
+         }
+      `,
+      (query: any) =>
+         gqlRequest("https://grandorder.gamepress.gg:4000/api/graphql", query),
+   );
+   if (error) return null;
+   if (isLoading) return <Loading />;
+
+   //@ts-ignore
+   const servant = data?.Servant;
+   //@ts-ignore
+   const costumes = data?.Costumes?.docs;
 
    const traitlist = servant?.traits;
-
    const taglist = servant?.tags;
 
+   const classlist = servant?.class_skills;
+
    return (
-      <div>
-         <ServantImageBaseData charData={servant} costumeData={costumes} />
-         {traitlist && traitlist?.length > 0 ? (
-            <>
-               <h3 className="flex items-center dark:text-zinc-100 max-laptop:mt-3 mt-1 gap-3 mb-1.5 font-header text-lg">
-                  <div className="min-w-[10px] flex-none">Traits</div>
-                  <div className="h-1 flex-grow rounded-full bg-zinc-100 dark:bg-dark400" />
-               </h3>
-               {traitlist.map((trait: any, tkey: number) => (
-                  <Link to={`/c/traits/${trait.id}`} key={"trait_list_" + tkey}>
-                     <div
-                        className="inline-flex text-sm font-semibold bg-2-sub gap-1 mr-2 rounded-lg px-2.5 py-1.5 mb-2 
-                           border-color-sub border shadow-sm shadow-1 hover:underline"
+      <div contentEditable={false} className="">
+         <a href={`/c/servants/${servant.id}`}>
+            <div className="flex border border-color-sub shadow-1 shadow-color px-3 py-1 my-1 rounded-md bg-2-sub justify-between font-bold items-center">
+               <div className="text-blue-400">{servant.name}</div>
+            </div>
+         </a>
+
+         <div>
+            <ServantImageBaseData charData={servant} costumeData={costumes} />
+            {traitlist && traitlist?.length > 0 ? (
+               <>
+                  <h3 className="flex items-center dark:text-zinc-100 max-laptop:mt-3 mt-1 gap-3 mb-1.5 font-header text-lg">
+                     <div className="min-w-[10px] flex-none">Traits</div>
+                     <div className="h-1 flex-grow rounded-full bg-zinc-100 dark:bg-dark400" />
+                  </h3>
+                  {traitlist.map((trait: any, tkey: number) => (
+                     <Link
+                        to={`/c/traits/${trait.id}`}
+                        key={"trait_list_" + tkey}
                      >
-                        {trait.name}
-                     </div>
-                  </Link>
-               ))}
-            </>
-         ) : null}
-         {taglist && taglist.length > 0 ? (
-            <>
-               <h3 className="flex items-center dark:text-zinc-100 gap-3 mb-1.5 font-header text-lg">
-                  <div className="min-w-[10px] flex-none">Tags</div>
-                  <div className="h-1 flex-grow rounded-full bg-zinc-100 dark:bg-dark400" />
-               </h3>
-               {taglist.map((tag: any, tkey: number) => (
-                  <Link to={`/c/tags/${tag.id}`} key={"tag_list_" + tkey}>
-                     <div className="inline-block bg-2-sub gap-1 mr-2 pr-2.5 rounded-md p-1.5 mb-2 border-color-sub border shadow-sm shadow-1">
-                        {/* Show tag icon if applicable */}
-                        {tag.icon ? (
-                           <div className="inline-block h-5 w-5 relative align-middle mr-1">
-                              <Image
-                                 alt="Tag Icon"
-                                 className="object-contain w-full h-full"
-                                 url={tag.icon?.url}
-                                 loading="lazy"
-                              />
-                           </div>
-                        ) : null}
-                        <span className="align-middle text-sm font-semibold hover:underline">
-                           {tag.name}
-                        </span>
-                     </div>
-                  </Link>
-               ))}
-            </>
-         ) : null}
+                        <div
+                           className="inline-flex text-sm font-semibold bg-2-sub gap-1 mr-2 rounded-lg px-2.5 py-1.5 mb-2 
+                           border-color-sub border shadow-sm shadow-1 hover:underline"
+                        >
+                           {trait.name}
+                        </div>
+                     </Link>
+                  ))}
+               </>
+            ) : null}
+            {taglist && taglist.length > 0 ? (
+               <>
+                  <h3 className="flex items-center dark:text-zinc-100 gap-3 mb-1.5 font-header text-lg">
+                     <div className="min-w-[10px] flex-none">Tags</div>
+                     <div className="h-1 flex-grow rounded-full bg-zinc-100 dark:bg-dark400" />
+                  </h3>
+                  {taglist.map((tag: any, tkey: number) => (
+                     <Link to={`/c/tags/${tag.id}`} key={"tag_list_" + tkey}>
+                        <div className="inline-block bg-2-sub gap-1 mr-2 pr-2.5 rounded-md p-1.5 mb-2 border-color-sub border shadow-sm shadow-1">
+                           {/* Show tag icon if applicable */}
+                           {tag.icon ? (
+                              <div className="inline-block h-5 w-5 relative align-middle mr-1">
+                                 <Image
+                                    alt="Tag Icon"
+                                    className="object-contain w-full h-full"
+                                    url={tag.icon?.url}
+                                    loading="lazy"
+                                 />
+                              </div>
+                           ) : null}
+                           <span className="align-middle text-sm font-semibold hover:underline">
+                              {tag.name}
+                           </span>
+                        </div>
+                     </Link>
+                  ))}
+               </>
+            ) : null}
+
+            <h3 className="mb-1.5">Class Skills</h3>
+            {classlist?.map((skill: any, ci: number) => {
+               return (
+                  <ClassSkillDisplay
+                     skill={skill}
+                     key={"class_skill_display_" + ci}
+                  />
+               );
+            })}
+         </div>
       </div>
    );
-}
+};
 
-// =====================================
-// 2) Servant Image and Base Data
-// =====================================
 function ServantImageBaseData({
    charData,
    costumeData,
 }: {
-   charData: Servant;
+   charData: any;
    costumeData: any;
 }) {
    // Initialize list of selectable images for a Servant (4 stages by default; additional images can be appended to this object for costumes)
@@ -197,7 +326,7 @@ function ServantImageBaseData({
             <section className="space-y-0.5 max-tablet:pb-3 tablet:max-w-[340px]">
                {/* Servant Image */}
                <Link to={imgUrl ?? ""} className="relative block">
-                  <div className="tablet:w-[340px] min-h-[250px]">
+                  <div className="tablet:w-[295px] min-h-[250px]">
                      <Image
                         width={680}
                         className="rounded-md max-laptop:w-full"
@@ -222,23 +351,6 @@ function ServantImageBaseData({
                      ))}
                   </div>
                </Link>
-               {/* - Image Selection */}
-               <div className="grid grid-cols-2 laptop:grid-cols-2 gap-2 py-2">
-                  {selectimg.map((opt: any) => (
-                     <button
-                        className={clsx(
-                           characterImage == opt.name
-                              ? "bg-blue-100 dark:text-blue-200 text-blue-500 border-blue-300 dark:border-blue-800 dark:bg-blue-950"
-                              : " dark:border-zinc-600 dark:bg-dark400",
-                           "border border-color shadow-sm shadow-1 rounded-md text-xs font-bold py-1.5 px-2 text-center",
-                        )}
-                        onClick={() => setCharacterImage(opt.name)}
-                        key={opt.name}
-                     >
-                        {opt.name}
-                     </button>
-                  ))}
-               </div>
             </section>
             {/* Right Data Block */}
             <div className="flex-grow space-y-3">
@@ -299,8 +411,24 @@ function ServantImageBaseData({
                      </div>
                   </div>
                </div>
-               <TableNPGainStar data={charData} />
                <TableHPATK data={charData} />
+               {/* - Image Selection */}
+               <div className="grid grid-cols-2 laptop:grid-cols-2 gap-2 py-2">
+                  {selectimg.map((opt: any) => (
+                     <button
+                        className={clsx(
+                           characterImage == opt.name
+                              ? "bg-blue-100 dark:text-blue-200 text-blue-500 border-blue-300 dark:border-blue-800 dark:bg-blue-950"
+                              : " dark:border-zinc-600 dark:bg-dark400",
+                           "border border-color shadow-sm shadow-1 rounded-md text-xs font-bold py-1.5 px-2 text-center",
+                        )}
+                        onClick={() => setCharacterImage(opt.name)}
+                        key={opt.name}
+                     >
+                        {opt.name}
+                     </button>
+                  ))}
+               </div>
             </div>
          </div>
       </>
@@ -373,7 +501,7 @@ const FaStar = (props: any) => (
    </svg>
 );
 
-function TableHPATK({ data: servant }: { data: Servant }) {
+function TableHPATK({ data: servant }: { data: any }) {
    const baseatk = servant?.atk_base;
    const basehp = servant?.hp_base;
    const maxatk = servant?.atk_max;
@@ -485,100 +613,37 @@ function TableHPATK({ data: servant }: { data: Servant }) {
    );
 }
 
-function TableNPGainStar({ data: servant }: { data: Servant }) {
-   // NP Gain is handled separately.
-   const np_gain = servant.np_charge_per_hit; // FGObufficon_303_NPGainUp.png
-   // const card_np_gain = [
-   //    {
-   //       img: "https://static.mana.wiki/grandorder/FGOCommandCardIcon_Quick.png",
-   //       val: servant.np_per_hit_quick,
-   //    },
-   //    {
-   //       img: "https://static.mana.wiki/grandorder/FGOCommandCardIcon_Arts.png",
-   //       val: servant.np_per_hit_arts,
-   //    },
-   //    {
-   //       img: "https://static.mana.wiki/grandorder/FGOCommandCardIcon_Buster.png",
-   //       val: servant.np_per_hit_buster,
-   //    },
-   //    {
-   //       img: "https://static.mana.wiki/grandorder/FGOCommandCardIcon_Extra.png",
-   //       val: servant.np_per_hit_extra,
-   //    },
-   //    {
-   //       img: "https://static.mana.wiki/grandorder/FGOInterludeReward_NPUpgrade.png",
-   //       val: servant.np_per_hit_np,
-   //    },
-   // ];
-
-   // Remaining stats can tile simply.
-   const others = [
-      {
-         icon: "https://static.mana.wiki/grandorder/FGObufficon_335_NPDamageGainUp.png",
-         label: "NP when Attacked (%)",
-         value: servant.np_charge_when_attacked,
-      },
-      {
-         icon: "https://static.mana.wiki/grandorder/FGObufficon_325_StarGatherRateUp.png",
-         label: "Star Absorption",
-         value: servant.star_absorption,
-      },
-      {
-         icon: "https://static.mana.wiki/grandorder/FGObufficon_321_StarDropRateUp.png",
-         label: "Star Generation per Hit",
-         value: servant.star_generation_rate,
-      },
-      {
-         icon: "https://static.mana.wiki/grandorder/FGObufficon_337_DeathRateUp.png",
-         label: "Instant Death Chance",
-         value: servant.instant_death_chance,
-      },
-   ];
+const ClassSkillDisplay = ({ skill }: any) => {
+   const skill_name = skill?.name;
+   const skill_icon = skill?.skill_image?.icon?.url;
+   const skill_description = skill?.description;
 
    return (
       <>
-         <div
-            className="border border-color-sub divide-y divide-color-sub shadow-sm shadow-1 rounded-lg 
-               mb-3 [&>*:nth-of-type(odd)]:bg-zinc-50 dark:[&>*:nth-of-type(odd)]:bg-dark350 overflow-hidden"
-         >
-            <div className="p-2 justify-between flex items-center gap-2">
-               <div className="flex items-center  gap-2">
-                  <Image
-                     className="size-5"
-                     height={40}
-                     url={
-                        "https://static.mana.wiki/grandorder/FGObufficon_303_NPGainUp.png"
-                     }
-                     alt="NPGain"
-                     loading="lazy"
-                  />
-                  <span className="text-sm font-semibold">NP Gain</span>
-               </div>
-               <div className="text-sm font-semibold">{np_gain}%</div>
-            </div>
-            {others?.map((row: any, int: number) => {
-               return (
+         <div className="p-3 border border-color-sub rounded-lg mb-3 shadow-1 shadow-sm bg-zinc-50 dark:bg-dark350">
+            <div className="flex items-start gap-3">
+               <Image
+                  className="size-10 flex-none mt-0.5"
+                  height={80}
+                  url={skill_icon}
+                  alt="SkillIcon"
+                  loading="lazy"
+               />
+               <div className="flex-grow">
+                  <div className="font-bold text-base pb-0.5">{skill_name}</div>
                   <div
-                     key={int}
-                     className="p-3 justify-between flex items-center gap-2"
-                  >
-                     <div className="flex items-center gap-2">
-                        <Image
-                           className="size-5"
-                           height={40}
-                           url={row.icon}
-                           alt="NPGain"
-                           loading="lazy"
-                        />
-                        <span className="font-semibold text-sm">
-                           {row.label}
-                        </span>
-                     </div>
-                     <div className="text-sm font-semibold">{row.value}%</div>
-                  </div>
-               );
-            })}
+                     className="text-sm whitespace-pre-wrap"
+                     dangerouslySetInnerHTML={{
+                        __html: skill_description
+                           ? skill_description
+                                .replace(/\<br\>/g, "")
+                                .replace(/\<p\>\r\n/g, "<p>")
+                           : null,
+                     }}
+                  ></div>
+               </div>
+            </div>
          </div>
       </>
    );
-}
+};

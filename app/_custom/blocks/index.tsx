@@ -4,11 +4,20 @@ import { DefaultElement, useReadOnly } from "slate-react";
 import { Icon } from "~/components/Icon";
 
 import { ExampleBlock } from "./Example";
-import { QuestEnemyCompactView } from "./QuestEnemyCompactView";
 import { QuestEnemyCompact } from "./_questEnemyCompact";
+import { ServantOverview } from "./_servantOverview";
+import { ServantNPGain } from "./_servantNPGain";
+import { ServantMaterials } from "./_servantMaterials";
+import { ServantSkill } from "./_servantSkill";
+import { ServantNoblePhantasm } from "./_servantNoblePhantasm";
 enum BlockType {
    CustomComponent = "customComponent",
    QuestEnemyCompactView = "questEnemyCompactView",
+   ServantOverviewView = "servantOverviewView",
+   ServantNPGainView = "servantNPGainView",
+   ServantMaterialsView = "servantMaterialsView",
+   ServantSkillView = "servantSkillView",
+   ServantNoblePhantasmView = "servantNoblePhantasmView",
 }
 
 type CustomComponent = {
@@ -24,6 +33,21 @@ export const CustomBlocks = ({ element, children, attributes }: any) => {
       }
       case BlockType.QuestEnemyCompactView: {
          return <QuestEnemyCompact element={element} children={children} />;
+      }
+      case BlockType.ServantOverviewView: {
+         return <ServantOverview element={element} children={children} />;
+      }
+      case BlockType.ServantNPGainView: {
+         return <ServantNPGain element={element} children={children} />;
+      }
+      case BlockType.ServantMaterialsView: {
+         return <ServantMaterials element={element} children={children} />;
+      }
+      case BlockType.ServantSkillView: {
+         return <ServantSkill element={element} children={children} />;
+      }
+      case BlockType.ServantNoblePhantasmView: {
+         return <ServantNoblePhantasm element={element} children={children} />;
       }
       default:
          //Render default element if no custom blocks match
@@ -53,7 +77,7 @@ export const CustomBlocksAddConfig = (onSelect: any) => {
       //       },
       //    },
       // ],
-      label: "Quest Enemy Compact View",
+      label: "Custom",
       items: [
          {
             label: "Quest Enemy Compact View",
@@ -64,6 +88,71 @@ export const CustomBlocksAddConfig = (onSelect: any) => {
                   id: nanoid(),
                   refId: "",
                   type: BlockType.QuestEnemyCompactView,
+                  children: [{ text: "" }],
+               });
+            },
+         },
+         {
+            label: "Servant Overview",
+            icon: <Icon name="component" size={20} />,
+            description: "Servant Summarized Stats and Traits",
+            onSelect: () => {
+               onSelect({
+                  id: nanoid(),
+                  refId: "",
+                  type: BlockType.ServantOverviewView,
+                  children: [{ text: "" }],
+               });
+            },
+         },
+         {
+            label: "Servant NP Gain",
+            icon: <Icon name="component" size={20} />,
+            description: "Servant NP Gain / Star Gain Stats",
+            onSelect: () => {
+               onSelect({
+                  id: nanoid(),
+                  refId: "",
+                  type: BlockType.ServantNPGainView,
+                  children: [{ text: "" }],
+               });
+            },
+         },
+         {
+            label: "Servant Materials",
+            icon: <Icon name="component" size={20} />,
+            description: "Servant Ascension / Skill / Append Materials",
+            onSelect: () => {
+               onSelect({
+                  id: nanoid(),
+                  refId: "",
+                  type: BlockType.ServantMaterialsView,
+                  children: [{ text: "" }],
+               });
+            },
+         },
+         {
+            label: "Servant Skill",
+            icon: <Icon name="component" size={20} />,
+            description: "Servant Skill with Description and Values",
+            onSelect: () => {
+               onSelect({
+                  id: nanoid(),
+                  refId: "",
+                  type: BlockType.ServantSkillView,
+                  children: [{ text: "" }],
+               });
+            },
+         },
+         {
+            label: "Servant Noble Phantasm",
+            icon: <Icon name="component" size={20} />,
+            description: "Servant NP with Description and Values",
+            onSelect: () => {
+               onSelect({
+                  id: nanoid(),
+                  refId: "",
+                  type: BlockType.ServantNoblePhantasmView,
                   children: [{ text: "" }],
                });
             },
