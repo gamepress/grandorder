@@ -171,7 +171,7 @@ export function ServantSkill({
          )}
 
          <Transition appear show={isElementEditorOpen} as={Fragment}>
-            <div className="relative w-full laptop:w-[728px] px-4">
+            <div className="relative w-full laptop:w-[728px] px-4 z-30">
                <div
                   className="flex px-2 py-0.5 shadow-xl border-2 items-center shadow-1 bg-3-sub border-color-sub
                                     justify-center transform rounded-full"
