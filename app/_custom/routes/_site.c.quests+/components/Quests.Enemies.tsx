@@ -1,4 +1,3 @@
-import { H2, H3 } from "~/components/Headers";
 import { Image } from "~/components/Image";
 import {
    Table,
@@ -61,7 +60,9 @@ function QuestPartHeader({
       <>
          {show_part ? (
             <>
-               <H2>{part_display}</H2>
+               <div className="border-t border-b border-[#5e71c7] text-[#5e71c7] py-1 mb-0.5 text-lg font-bold">
+                  {part_display}
+               </div>
                {guest?.length > 0 ? (
                   <>
                      {guest.map((g: any, gi: any) => (
@@ -79,7 +80,7 @@ function QuestPartHeader({
                ) : null}
             </>
          ) : null}
-         <H3>{stage_display}</H3>
+         <div className="mt-2 mb-1 text-sm font-bold">{stage_display}</div>
       </>
    );
 }
