@@ -43,7 +43,7 @@ export function QuestsEnemies({ data }: { data: any }) {
               </div>
            );
         })
-      : "No enemies found...";
+      : null;
 }
 
 function QuestPartHeader({
