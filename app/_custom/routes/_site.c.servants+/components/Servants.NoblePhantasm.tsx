@@ -69,8 +69,8 @@ const NoblePhantasmDisplay = ({ np }: any) => {
                      className="text-sm whitespace-pre-wrap leading-tight"
                      dangerouslySetInnerHTML={{
                         __html: np_description
-                           .replace(/\<br\>/g, "")
-                           .replace(/\<p\>\r\n/g, "<p>"),
+                           ?.replace(/\<br\>/g, "")
+                           ?.replace(/\<p\>\r\n/g, "<p>"),
                      }}
                   />
                   <div className="space-y-1">
@@ -79,8 +79,8 @@ const NoblePhantasmDisplay = ({ np }: any) => {
                         className="text-sm whitespace-pre-wrap leading-tight pb-1"
                         dangerouslySetInnerHTML={{
                            __html: np_overcharge
-                              .replace(/\<br\>/g, "")
-                              .replace(/\<p\>\r\n/g, "<p>"),
+                              ?.replace(/\<br\>/g, "")
+                              ?.replace(/\<p\>\r\n/g, "<p>"),
                         }}
                      ></div>
                      <button
@@ -132,8 +132,8 @@ const NoblePhantasmDisplay = ({ np }: any) => {
                            <div
                               dangerouslySetInnerHTML={{
                                  __html: np_description
-                                    .replace(/\<br\>/g, "")
-                                    .replace(/\<p\>\r\n/g, "<p>"),
+                                    ?.replace(/\<br\>/g, "")
+                                    ?.replace(/\<p\>\r\n/g, "<p>"),
                               }}
                            />
                         </TableCell>
@@ -178,8 +178,8 @@ const NoblePhantasmDisplay = ({ np }: any) => {
                               className="text-sm whitespace-pre-wrap leading-tight"
                               dangerouslySetInnerHTML={{
                                  __html: np_overcharge
-                                    .replace(/\<br\>/g, "")
-                                    .replace(/\<p\>\r\n/g, "<p>"),
+                                    ?.replace(/\<br\>/g, "")
+                                    ?.replace(/\<p\>\r\n/g, "<p>"),
                               }}
                            ></div>
                         </TableCell>
