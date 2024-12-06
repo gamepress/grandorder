@@ -113,8 +113,8 @@ const SkillDisplay = ({ skill }: any) => {
                   className="text-sm whitespace-pre-wrap pb-1"
                   dangerouslySetInnerHTML={{
                      __html: skill_description
-                        .replace(/\<br\>/g, "")
-                        .replace(/\<p\>\r\n/g, "<p>"),
+                        ?.replace(/\<br\>/g, "")
+                        ?.replace(/\<p\>\r\n/g, "<p>"),
                   }}
                ></div>
                <div
@@ -220,12 +220,12 @@ const SkillUpgrade = ({ skill }: any) => {
                   className="text-sm whitespace-pre-wrap"
                   dangerouslySetInnerHTML={{
                      __html: skill_description
-                        .replace(
+                        ?.replace(
                            /\<i class=\"fa fa-caret-up\" aria-hidden=\"true\"\>\<\/i\>/g,
                            "▲",
                         )
-                        .replace(/\<br\>/g, "")
-                        .replace(/\<p\>\r\n/g, "<p>"),
+                        ?.replace(/\<br\>/g, "")
+                        ?.replace(/\<p\>\r\n/g, "<p>"),
                   }}
                ></div>
                <div
@@ -407,8 +407,8 @@ const ClassSkillDisplay = ({ skill }: any) => {
                      dangerouslySetInnerHTML={{
                         __html: skill_description
                            ? skill_description
-                                .replace(/\<br\>/g, "")
-                                .replace(/\<p\>\r\n/g, "<p>")
+                                ?.replace(/\<br\>/g, "")
+                                ?.replace(/\<p\>\r\n/g, "<p>")
                            : null,
                      }}
                   ></div>
