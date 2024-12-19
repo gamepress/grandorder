@@ -11,6 +11,7 @@ import { fetchList } from "~/routes/_site+/c_+/$collectionId/utils/fetchList.ser
 import { listMeta } from "~/routes/_site+/c_+/$collectionId/utils/listMeta";
 import { fuzzyFilter } from "~/routes/_site+/c_+/_components/fuzzyFilter";
 import { List } from "~/routes/_site+/c_+/_components/List";
+import { useState, useEffect } from "react";
 
 export { listMeta as meta };
 
@@ -33,19 +34,179 @@ export async function loader({
 }
 
 export default function Servants() {
-   return (
-      <List
-         gridView={gridView}
-         columns={columns}
-         columnViewability={{
+   const [colView, setColView] = useState("default");
+
+   const colViewSettings = [
+      {
+         name: "default",
+         label: "Default",
+         setting: {
+            name: true,
+            icon: false,
             type: false,
             class: false,
             release_status: false,
-         }}
-         filters={filters}
-      />
+            star_rarity: true,
+            tier_list_score: true,
+            hp_base: false,
+            atk_base: false,
+            hp_max: false,
+            atk_max: false,
+            star_generation_rate: false,
+            star_absorption: false,
+            instant_death_chance: false,
+            np_charge_per_hit: false,
+            np_charge_when_attacked: false,
+            summon_availability: false,
+            alignment: false,
+         },
+      },
+      {
+         name: "stats",
+         label: "HP/ATK",
+         setting: {
+            name: true,
+            icon: false,
+            type: false,
+            class: false,
+            release_status: false,
+            star_rarity: false,
+            tier_list_score: false,
+            hp_base: true,
+            atk_base: true,
+            hp_max: true,
+            atk_max: true,
+            star_generation_rate: false,
+            star_absorption: false,
+            instant_death_chance: false,
+            np_charge_per_hit: false,
+            np_charge_when_attacked: false,
+            summon_availability: false,
+            alignment: false,
+         },
+      },
+      {
+         name: "addstats",
+         label: "Other",
+         setting: {
+            name: true,
+            icon: false,
+            type: false,
+            class: false,
+            release_status: false,
+            star_rarity: false,
+            tier_list_score: false,
+            hp_base: false,
+            atk_base: false,
+            hp_max: false,
+            atk_max: false,
+            star_generation_rate: true,
+            star_absorption: true,
+            instant_death_chance: true,
+            np_charge_per_hit: true,
+            np_charge_when_attacked: true,
+            summon_availability: false,
+            alignment: false,
+         },
+      },
+      {
+         name: "availability",
+         label: "Availability",
+         setting: {
+            name: true,
+            icon: false,
+            type: false,
+            class: false,
+            release_status: false,
+            star_rarity: true,
+            tier_list_score: false,
+            hp_base: false,
+            atk_base: false,
+            hp_max: false,
+            atk_max: false,
+            star_generation_rate: false,
+            star_absorption: false,
+            instant_death_chance: false,
+            np_charge_per_hit: false,
+            np_charge_when_attacked: false,
+            summon_availability: true,
+            alignment: false,
+         },
+      },
+      {
+         name: "alignment",
+         label: "Alignment",
+         setting: {
+            name: true,
+            icon: false,
+            type: false,
+            class: false,
+            release_status: false,
+            star_rarity: true,
+            tier_list_score: false,
+            hp_base: false,
+            atk_base: false,
+            hp_max: false,
+            atk_max: false,
+            star_generation_rate: false,
+            star_absorption: false,
+            instant_death_chance: false,
+            np_charge_per_hit: false,
+            np_charge_when_attacked: false,
+            summon_availability: false,
+            alignment: true,
+         },
+      },
+   ];
+
+   const currCols =
+      colViewSettings.find((a) => a.name == colView)?.setting ?? {};
+
+   return (
+      <>
+         <List
+            gridView={gridView}
+            columns={columns}
+            columnViewability={currCols}
+            filters={filters}
+            beforeListComponent={
+               <ColumnSelector
+                  colView={colView}
+                  setColView={setColView}
+                  colViewSettings={colViewSettings}
+               />
+            }
+         />
+      </>
    );
 }
+
+const ColumnSelector = ({ colView, setColView, colViewSettings }: any) => {
+   return (
+      <div className="mx-auto max-w-[728px] max-tablet:px-3 ">
+         <h2 className="px-4 h-8 flex items-center mb-2 w-full">
+            Show Columns
+         </h2>
+         <div className="grid grid-cols-3 gap-2">
+            {colViewSettings.map((set: any, index: any) => {
+               return (
+                  <div
+                     className={`flex bg-3 h-9 text-sm cursor-pointer justify-center items-center dark:border-zinc-600 shadow-sm dark:shadow-zinc-800/80 rounded-md border border-zinc-300/80  ${
+                        set.name == colView
+                           ? "bg-blue-50 dark:bg-gray-800 text-blue-500 dark:text-blue-500"
+                           : "text-zinc-500"
+                     }`}
+                     onClick={() => setColView(set.name)}
+                     key={"col_select_" + index}
+                  >
+                     {set.label}
+                  </div>
+               );
+            })}
+         </div>
+      </div>
+   );
+};
 
 const columnHelper = createColumnHelper<Servant>();
 
@@ -110,6 +271,24 @@ const columns = [
                      }}
                   />
                </span>
+            </Link>
+         );
+      },
+   }),
+   columnHelper.accessor("icon", {
+      header: "Servant",
+      filterFn: fuzzyFilter,
+      cell: (info) => {
+         return (
+            <Link
+               to={`/c/servants/${info.row.original.slug}`}
+               className="flex items-center gap-3 group py-0.5"
+            >
+               <Image
+                  width={38}
+                  url={info.row.original.icon?.url}
+                  options="width=80"
+               />
             </Link>
          );
       },
@@ -191,6 +370,101 @@ const columns = [
          return "-";
       },
    }),
+   // Stats
+   columnHelper.accessor("hp_base", {
+      header: "HP Base",
+      filterFn: fuzzyFilter,
+      cell: (info) => {
+         return info.getValue();
+      },
+   }),
+   columnHelper.accessor("atk_base", {
+      header: "ATK Base",
+      filterFn: fuzzyFilter,
+      cell: (info) => {
+         return info.getValue();
+      },
+   }),
+   columnHelper.accessor("hp_max", {
+      header: "HP Max",
+      filterFn: fuzzyFilter,
+      cell: (info) => {
+         return info.getValue();
+      },
+   }),
+   columnHelper.accessor("atk_max", {
+      header: "ATK Max",
+      filterFn: fuzzyFilter,
+      cell: (info) => {
+         return info.getValue();
+      },
+   }),
+   columnHelper.accessor("star_generation_rate", {
+      header: "Star Gen",
+      filterFn: fuzzyFilter,
+      cell: (info) => {
+         return info.getValue();
+      },
+   }),
+   columnHelper.accessor("star_absorption", {
+      header: "Star Abs",
+      filterFn: fuzzyFilter,
+      cell: (info) => {
+         return info.getValue();
+      },
+   }),
+   columnHelper.accessor("instant_death_chance", {
+      header: "Death Rate",
+      filterFn: fuzzyFilter,
+      cell: (info) => {
+         return info.getValue();
+      },
+   }),
+   columnHelper.accessor("np_charge_per_hit", {
+      header: "NP% Hit",
+      filterFn: fuzzyFilter,
+      cell: (info) => {
+         return info.getValue();
+      },
+   }),
+   columnHelper.accessor("np_charge_when_attacked", {
+      header: "NP% Attacked",
+      filterFn: fuzzyFilter,
+      cell: (info) => {
+         return info.getValue();
+      },
+   }),
+   columnHelper.accessor("summon_availability", {
+      header: "Availability",
+      filterFn: (row, columnId, filterValue) => {
+         return filterValue.includes(row?.original?.summon_availability?.id);
+      },
+      cell: (info) => {
+         return (
+            <div className="flex items-center gap-1">
+               <span>{info.getValue()?.name}</span>
+            </div>
+         );
+      },
+   }),
+   columnHelper.accessor("alignment", {
+      header: "Alignment",
+      filterFn: (row, columnId, filterValue) => {
+         console.log(filterValue);
+         return filterValue
+            ?.map((a) =>
+               row?.original?.alignment?.name?.toLowerCase()?.includes(a),
+            )
+            ?.every((v) => v === true);
+      },
+      cell: (info) => {
+         return (
+            <div className="flex items-center gap-1">
+               <span>{info.getValue()?.name}</span>
+            </div>
+         );
+      },
+   }),
 ];
 
 // Add stats under atk_lv120 later.
@@ -252,6 +526,7 @@ const QUERY = gql`
                }
             }
             summon_availability {
+               id
                name
                description
             }
@@ -391,6 +666,85 @@ const filters = [
             value: "10586",
             label: "Beast",
             icon: "https://static.mana.wiki/grandorder/FGOClassIcon_3_33_Gold_Beast.png",
+         },
+      ],
+   },
+   {
+      id: "summon_availability",
+      label: "Availability",
+      cols: 2 as const,
+      options: [
+         {
+            value: "4041",
+            label: "Non-Limited",
+         },
+         {
+            value: "4076",
+            label: "Limited",
+         },
+
+         {
+            value: "4486",
+            label: "Story-locked",
+         },
+         {
+            value: "5071",
+            label: "Friend Point Summon",
+         },
+         {
+            value: "4121",
+            label: "Welfare",
+         },
+         {
+            value: "4116",
+            label: "Starting Servant",
+         },
+         {
+            value: "4126",
+            label: "Unavailable",
+         },
+      ],
+   },
+   {
+      id: "alignment",
+      label: "Alignment",
+      cols: 2 as const,
+      options: [
+         {
+            value: "lawful",
+            label: "Lawful",
+         },
+         {
+            value: "good",
+            label: "Good",
+         },
+         {
+            value: "neutral",
+            label: "Neutral",
+         },
+         {
+            value: "balanced",
+            label: "Balanced",
+         },
+         {
+            value: "chaotic",
+            label: "Chaotic",
+         },
+         {
+            value: "evil",
+            label: "Evil",
+         },
+         {
+            value: "summer",
+            label: "Summer",
+         },
+         {
+            value: "bride",
+            label: "Bride",
+         },
+         {
+            value: "madness",
+            label: "Madness",
          },
       ],
    },
