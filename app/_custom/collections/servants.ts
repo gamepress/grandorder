@@ -530,6 +530,10 @@ export const Servants: CollectionConfig = {
                relationTo: "traits",
                hasMany: true,
             },
+            {
+               name: "trait_notes",
+               type: "textarea",
+            },
          ],
       },
       {
