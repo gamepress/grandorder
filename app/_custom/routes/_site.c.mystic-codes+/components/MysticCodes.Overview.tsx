@@ -4,6 +4,7 @@ export const MysticCodesOverview = ({ data }: { data: MysticCode }) => {
    return (
       <>
          <OverviewText data={data} />
+         <UnlockText data={data} />
       </>
    );
 };
@@ -21,6 +22,23 @@ const OverviewText = ({ data }: { data: MysticCode }) => {
             className="my-2 whitespace-wrap"
             dangerouslySetInnerHTML={{ __html: overview }}
          ></div>
+      </>
+   );
+};
+
+const UnlockText = ({ data }: { data: MysticCode }) => {
+   const unlock = data.unlock_requirements;
+
+   return (
+      <>
+         {unlock ? (
+            <>
+               <h3>Unlock Requirements</h3>
+               <a className="text-blue-500" href={`/c/quests/${unlock.id}`}>
+                  <div className="my-2 whitespace-wrap">{unlock.name}</div>
+               </a>
+            </>
+         ) : null}
       </>
    );
 };

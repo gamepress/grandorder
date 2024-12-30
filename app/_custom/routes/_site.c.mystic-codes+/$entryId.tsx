@@ -73,6 +73,10 @@ const QUERY = gql`
                }
             }
          }
+         unlock_requirements {
+            id
+            name
+         }
          level_exp
          overview
       }
