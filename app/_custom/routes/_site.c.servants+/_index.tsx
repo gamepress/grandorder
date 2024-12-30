@@ -3,6 +3,8 @@ import { json } from "@remix-run/node";
 import { Link } from "@remix-run/react";
 import { createColumnHelper } from "@tanstack/react-table";
 import { gql } from "graphql-request";
+import { z } from "zod";
+import { zx } from "zodix";
 
 import { Badge } from "~/components/Badge";
 import { Image } from "~/components/Image";
@@ -12,6 +14,7 @@ import { listMeta } from "~/routes/_site+/c_+/$collectionId/utils/listMeta";
 import { fuzzyFilter } from "~/routes/_site+/c_+/_components/fuzzyFilter";
 import { List } from "~/routes/_site+/c_+/_components/List";
 import { useState, useEffect } from "react";
+import { useLoaderData } from "@remix-run/react";
 
 export { listMeta as meta };
 
@@ -20,6 +23,10 @@ export async function loader({
    params,
    context: { payload, user },
 }: LoaderFunctionArgs) {
+   const { viewtab, filterstate } = zx.parseQuery(request, {
+      viewtab: z.string().optional(),
+      filterstate: z.string().optional(),
+   });
    const list = await fetchList({
       payload,
       user,
@@ -30,137 +37,155 @@ export async function loader({
       },
    });
 
-   return json({ list });
+   return json({
+      list,
+      viewtab: viewtab,
+      filterstate: filterstate,
+   });
 }
 
-export default function Servants() {
-   const [colView, setColView] = useState("default");
+const colViewSettings = [
+   {
+      name: "default",
+      label: "Default",
+      setting: {
+         name: true,
+         icon: false,
+         type: false,
+         class: false,
+         release_status: false,
+         star_rarity: true,
+         tier_list_score: true,
+         hp_base: false,
+         atk_base: false,
+         hp_max: false,
+         atk_max: false,
+         star_generation_rate: false,
+         star_absorption: false,
+         instant_death_chance: false,
+         np_charge_per_hit: false,
+         np_charge_when_attacked: false,
+         summon_availability: false,
+         alignment: false,
+      },
+   },
+   {
+      name: "stats",
+      label: "HP/ATK",
+      setting: {
+         name: true,
+         icon: false,
+         type: false,
+         class: false,
+         release_status: false,
+         star_rarity: false,
+         tier_list_score: false,
+         hp_base: true,
+         atk_base: true,
+         hp_max: true,
+         atk_max: true,
+         star_generation_rate: false,
+         star_absorption: false,
+         instant_death_chance: false,
+         np_charge_per_hit: false,
+         np_charge_when_attacked: false,
+         summon_availability: false,
+         alignment: false,
+      },
+   },
+   {
+      name: "addstats",
+      label: "Other",
+      setting: {
+         name: true,
+         icon: false,
+         type: false,
+         class: false,
+         release_status: false,
+         star_rarity: false,
+         tier_list_score: false,
+         hp_base: false,
+         atk_base: false,
+         hp_max: false,
+         atk_max: false,
+         star_generation_rate: true,
+         star_absorption: true,
+         instant_death_chance: true,
+         np_charge_per_hit: true,
+         np_charge_when_attacked: true,
+         summon_availability: false,
+         alignment: false,
+      },
+   },
+   {
+      name: "availability",
+      label: "Availability",
+      setting: {
+         name: true,
+         icon: false,
+         type: false,
+         class: false,
+         release_status: false,
+         star_rarity: true,
+         tier_list_score: false,
+         hp_base: false,
+         atk_base: false,
+         hp_max: false,
+         atk_max: false,
+         star_generation_rate: false,
+         star_absorption: false,
+         instant_death_chance: false,
+         np_charge_per_hit: false,
+         np_charge_when_attacked: false,
+         summon_availability: true,
+         alignment: false,
+      },
+   },
+   {
+      name: "alignment",
+      label: "Alignment",
+      setting: {
+         name: true,
+         icon: false,
+         type: false,
+         class: false,
+         release_status: false,
+         star_rarity: true,
+         tier_list_score: false,
+         hp_base: false,
+         atk_base: false,
+         hp_max: false,
+         atk_max: false,
+         star_generation_rate: false,
+         star_absorption: false,
+         instant_death_chance: false,
+         np_charge_per_hit: false,
+         np_charge_when_attacked: false,
+         summon_availability: false,
+         alignment: true,
+      },
+   },
+];
 
-   const colViewSettings = [
-      {
-         name: "default",
-         label: "Default",
-         setting: {
-            name: true,
-            icon: false,
-            type: false,
-            class: false,
-            release_status: false,
-            star_rarity: true,
-            tier_list_score: true,
-            hp_base: false,
-            atk_base: false,
-            hp_max: false,
-            atk_max: false,
-            star_generation_rate: false,
-            star_absorption: false,
-            instant_death_chance: false,
-            np_charge_per_hit: false,
-            np_charge_when_attacked: false,
-            summon_availability: false,
-            alignment: false,
-         },
-      },
-      {
-         name: "stats",
-         label: "HP/ATK",
-         setting: {
-            name: true,
-            icon: false,
-            type: false,
-            class: false,
-            release_status: false,
-            star_rarity: false,
-            tier_list_score: false,
-            hp_base: true,
-            atk_base: true,
-            hp_max: true,
-            atk_max: true,
-            star_generation_rate: false,
-            star_absorption: false,
-            instant_death_chance: false,
-            np_charge_per_hit: false,
-            np_charge_when_attacked: false,
-            summon_availability: false,
-            alignment: false,
-         },
-      },
-      {
-         name: "addstats",
-         label: "Other",
-         setting: {
-            name: true,
-            icon: false,
-            type: false,
-            class: false,
-            release_status: false,
-            star_rarity: false,
-            tier_list_score: false,
-            hp_base: false,
-            atk_base: false,
-            hp_max: false,
-            atk_max: false,
-            star_generation_rate: true,
-            star_absorption: true,
-            instant_death_chance: true,
-            np_charge_per_hit: true,
-            np_charge_when_attacked: true,
-            summon_availability: false,
-            alignment: false,
-         },
-      },
-      {
-         name: "availability",
-         label: "Availability",
-         setting: {
-            name: true,
-            icon: false,
-            type: false,
-            class: false,
-            release_status: false,
-            star_rarity: true,
-            tier_list_score: false,
-            hp_base: false,
-            atk_base: false,
-            hp_max: false,
-            atk_max: false,
-            star_generation_rate: false,
-            star_absorption: false,
-            instant_death_chance: false,
-            np_charge_per_hit: false,
-            np_charge_when_attacked: false,
-            summon_availability: true,
-            alignment: false,
-         },
-      },
-      {
-         name: "alignment",
-         label: "Alignment",
-         setting: {
-            name: true,
-            icon: false,
-            type: false,
-            class: false,
-            release_status: false,
-            star_rarity: true,
-            tier_list_score: false,
-            hp_base: false,
-            atk_base: false,
-            hp_max: false,
-            atk_max: false,
-            star_generation_rate: false,
-            star_absorption: false,
-            instant_death_chance: false,
-            np_charge_per_hit: false,
-            np_charge_when_attacked: false,
-            summon_availability: false,
-            alignment: true,
-         },
-      },
-   ];
+export default function Servants() {
+   // @ts-ignore
+   const { viewtab, filterstate } = useLoaderData();
+   console.log(viewtab);
+   console.log(filterstate);
+
+   const urlFilters = filterstate
+      ? JSON.parse(decodeURIComponent(filterstate))
+      : [];
+
+   // If the viewtab setting is legal, use it, otherwise default
+   const [colView, setColView] = useState(
+      colViewSettings.find((a) => a.name == viewtab) ? viewtab : "default",
+   );
 
    const currCols =
       colViewSettings.find((a) => a.name == colView)?.setting ?? {};
+
+   console.log(columns);
 
    return (
       <>
@@ -169,6 +194,7 @@ export default function Servants() {
             columns={columns}
             columnViewability={currCols}
             filters={filters}
+            defaultFilters={urlFilters}
             beforeListComponent={
                <ColumnSelector
                   colView={colView}
@@ -450,7 +476,6 @@ const columns = [
    columnHelper.accessor("alignment", {
       header: "Alignment",
       filterFn: (row, columnId, filterValue) => {
-         console.log(filterValue);
          return filterValue
             ?.map((a) =>
                row?.original?.alignment?.name?.toLowerCase()?.includes(a),
