@@ -33,7 +33,6 @@ const tablestyling = `
 export function Skills({ data }: { data: any }) {
    const servant = data.servant;
    const skilllist = servant?.skills;
-   const classunlock = servant?.class_skill_unlock;
 
    return (
       <>
@@ -43,12 +42,6 @@ export function Skills({ data }: { data: any }) {
                   <SkillDisplay skill={skill} key={"skill_display_" + si} />
                ))}
             </div>
-            {classunlock ? (
-               <>
-                  <h3>Class Skill Unlock Conditions</h3>
-                  <div dangerouslySetInnerHTML={{ __html: classunlock }}></div>
-               </>
-            ) : null}
          </div>
       </>
    );
@@ -376,12 +369,26 @@ function AppendSkillDisplay({ skill }: any) {
 
 export function ClassSkill({ data }: any) {
    const classlist = data?.servant?.class_skills;
+   const classunlock = data?.servant?.class_skill_unlock;
 
-   return classlist?.map((skill: any, ci: number) => {
-      return (
-         <ClassSkillDisplay skill={skill} key={"class_skill_display_" + ci} />
-      );
-   });
+   return (
+      <>
+         {classlist?.map((skill: any, ci: number) => {
+            return (
+               <ClassSkillDisplay
+                  skill={skill}
+                  key={"class_skill_display_" + ci}
+               />
+            );
+         })}
+         {classunlock ? (
+            <>
+               <h3>Class Skill Unlock Conditions</h3>
+               <div dangerouslySetInnerHTML={{ __html: classunlock }}></div>
+            </>
+         ) : null}
+      </>
+   );
 }
 
 const ClassSkillDisplay = ({ skill }: any) => {
