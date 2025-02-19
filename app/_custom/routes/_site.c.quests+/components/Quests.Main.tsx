@@ -37,7 +37,7 @@ export function QuestsMain({ data }: { data: any }) {
 
    // For proper formatting of inline ul elements in description!
    const formatting = `<style>
-   ul {list-style-type: disc;margin: 0 0 .75em 25px;}
+   div.main ul {list-style-type: disc;margin: 0 0 .75em 25px;} div.main a {color: rgb(100,100,255);}
    </style>`;
 
    return (
@@ -73,7 +73,7 @@ export function QuestsMain({ data }: { data: any }) {
                <H2>Quest Overview</H2>
                {overview_text.map((ot: any, oti: number) => (
                   <div
-                     className=""
+                     className="main"
                      key={oti}
                      dangerouslySetInnerHTML={{ __html: ot.text }}
                   ></div>

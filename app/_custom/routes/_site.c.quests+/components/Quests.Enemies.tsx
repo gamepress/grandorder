@@ -122,7 +122,7 @@ function QuestBattleWave({ data }: { data: any }) {
                         </div>
                      </a>
                      <div
-                        className="text-xs whitespace-normal"
+                        className="text-xs whitespace-normal main"
                         dangerouslySetInnerHTML={{ __html: enemy_desc }}
                      ></div>
                      {/* Alt Enemy */}
@@ -193,7 +193,7 @@ function EnemyAlternative({ data }: { data: any }) {
    const lvl = data.level;
 
    return (
-      <div className="flex items-start gap-3">
+      <div className="flex items-start gap-3 bg-opacity-10 bg-gray-500 p-2 my-1">
          <div className="flex flex-col gap-2">
             <a href={`/c/${enemy_relation}/${enemy_id}`}>
                <Image
