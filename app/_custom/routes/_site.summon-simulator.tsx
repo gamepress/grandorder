@@ -477,18 +477,51 @@ const SummonSimulator = (data: any) => {
       featured4sChance =
          rates4s[Math.min(currFeatured4S?.length, rates4s.length - 1)];
 
-      const currFiveStars = loaderdata?.general_servants?.filter(
-         // @ts-ignore
-         (s) => s.rarity?.name == 5,
-      );
-      const currFourStars = loaderdata?.general_servants?.filter(
-         // @ts-ignore
-         (s) => s.rarity?.name == 4,
-      );
-      const currThreeStars = loaderdata?.general_servants?.filter(
-         // @ts-ignore
-         (s) => s.rarity?.name == 3,
-      );
+      const currFiveStars =
+         banner_data?.base_servant_override_5?.length > 0
+            ? loaderdata?.servants?.filter(
+                 // @ts-ignore
+                 (s) =>
+                    s.rarity?.name == 5 &&
+                    banner_data?.base_servant_override_5?.find(
+                       // @ts-ignore
+                       (so) => so.id == s.id,
+                    ),
+              )
+            : loaderdata?.general_servants?.filter(
+                 // @ts-ignore
+                 (s) => s.rarity?.name == 5,
+              );
+      const currFourStars =
+         banner_data?.base_servant_override_4?.length > 0
+            ? loaderdata?.servants?.filter(
+                 // @ts-ignore
+                 (s) =>
+                    s.rarity?.name == 4 &&
+                    banner_data?.base_servant_override_4?.find(
+                       // @ts-ignore
+                       (so) => so.id == s.id,
+                    ),
+              )
+            : loaderdata?.general_servants?.filter(
+                 // @ts-ignore
+                 (s) => s.rarity?.name == 4,
+              );
+      const currThreeStars =
+         banner_data?.base_servant_override_3?.length > 0
+            ? loaderdata?.servants?.filter(
+                 // @ts-ignore
+                 (s) =>
+                    s.rarity?.name == 3 &&
+                    banner_data?.base_servant_override_3?.find(
+                       // @ts-ignore
+                       (so) => so.id == s.id,
+                    ),
+              )
+            : loaderdata?.general_servants?.filter(
+                 // @ts-ignore
+                 (s) => s.rarity?.name == 3,
+              );
 
       // @ts-ignore
       var servant;
@@ -659,6 +692,10 @@ const SummonSimulator = (data: any) => {
                   {banner_options?.length > 0 ? (
                      <>
                         <Select
+                           onFocus={(e) => {
+                              e.preventDefault();
+                              //window.scrollTo(0, 1870);
+                           }}
                            autoFocus
                            className="mt-3"
                            onChange={(e) =>
@@ -699,7 +736,7 @@ const SummonSimulator = (data: any) => {
                   {fEssences?.length > 0 ? (
                      <>
                         <H2>Featured Essences</H2>
-                        <div className="space-y-2">
+                        <div className="grid grid-cols-3 gap-2">
                            {fEssences.map((ce, index) => (
                               <FeaturedEssenceRow
                                  data={ce}
@@ -1096,39 +1133,41 @@ export function FeaturedEssenceRow({ data }: any) {
 
    return (
       <Link
-         className="border border-color-sub bg-2-sub shadow-sm shadow-1 x-3 p-2 pr-4 rounded-lg flex justify-between items-center"
+         className={`flex items-center gap-2 
+            border  rounded-lg p-2 shadow-sm shadow-1 border-zinc-200 bg-2-sub hover:border-zinc-300 dark:border-zinc-600/50`}
          to={`/c/craft-essences/${url}`}
       >
-         <div className="flex items-center gap-3">
-            <div className="inline-flex align-middle items-top justify-center">
+         <div className="flex-none h-[34px]">
+            {frame ? (
                <Image
-                  width={80}
+                  options="height=35&width=30"
                   alt={name}
                   url={frame}
-                  className="object-contain w-8 z-10"
+                  className="object-contain z-10 absolute mt-[1.5px]"
                />
-               <Image
-                  width={80}
-                  alt={name}
-                  url={icon}
-                  className="object-contain w-8 rounded-t-md absolute"
-               />
-            </div>
-            <div className="font-semibold text-sm">{name}</div>
+            ) : null}
+            <Image
+               width={80}
+               alt={name}
+               url={icon}
+               className="object-contain rounded-t-md w-[30px]"
+            />
          </div>
-         <div className="flex items-center gap-1">
-            {Array(rarity)
-               .fill(0)
-               .map((x) => (
-                  <Image
-                     className="size-4"
-                     key={x}
-                     width={40}
-                     height={40}
-                     alt={rarity.toString()}
-                     url={star}
-                  />
-               ))}
+         <div className="space-y-1">
+            <div className="text-xs font-bold text-left">{name}</div>
+            <div className="flex items-center gap-0.5">
+               {Array(rarity)
+                  .fill(0)
+                  .map((x) => (
+                     <Image
+                        key={x}
+                        width={80}
+                        alt={rarity.toString()}
+                        url={star}
+                        className="object-contain size-3"
+                     />
+                  ))}
+            </div>
          </div>
       </Link>
    );

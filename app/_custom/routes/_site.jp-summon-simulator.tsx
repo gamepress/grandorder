@@ -483,18 +483,51 @@ const SummonSimulator = (data: any) => {
       featured4sChance =
          rates4s[Math.min(currFeatured4S?.length, rates4s.length - 1)];
 
-      const currFiveStars = loaderdata?.general_servants?.filter(
-         // @ts-ignore
-         (s) => s.rarity?.name == 5,
-      );
-      const currFourStars = loaderdata?.general_servants?.filter(
-         // @ts-ignore
-         (s) => s.rarity?.name == 4,
-      );
-      const currThreeStars = loaderdata?.general_servants?.filter(
-         // @ts-ignore
-         (s) => s.rarity?.name == 3,
-      );
+      const currFiveStars =
+         banner_data?.base_servant_override_5?.length > 0
+            ? loaderdata?.servants?.filter(
+                 // @ts-ignore
+                 (s) =>
+                    s.rarity?.name == 5 &&
+                    banner_data?.base_servant_override_5?.find(
+                       // @ts-ignore
+                       (so) => so.id == s.id,
+                    ),
+              )
+            : loaderdata?.general_servants?.filter(
+                 // @ts-ignore
+                 (s) => s.rarity?.name == 5,
+              );
+      const currFourStars =
+         banner_data?.base_servant_override_4?.length > 0
+            ? loaderdata?.servants?.filter(
+                 // @ts-ignore
+                 (s) =>
+                    s.rarity?.name == 4 &&
+                    banner_data?.base_servant_override_4?.find(
+                       // @ts-ignore
+                       (so) => so.id == s.id,
+                    ),
+              )
+            : loaderdata?.general_servants?.filter(
+                 // @ts-ignore
+                 (s) => s.rarity?.name == 4,
+              );
+      const currThreeStars =
+         banner_data?.base_servant_override_3?.length > 0
+            ? loaderdata?.servants?.filter(
+                 // @ts-ignore
+                 (s) =>
+                    s.rarity?.name == 3 &&
+                    banner_data?.base_servant_override_3?.find(
+                       // @ts-ignore
+                       (so) => so.id == s.id,
+                    ),
+              )
+            : loaderdata?.general_servants?.filter(
+                 // @ts-ignore
+                 (s) => s.rarity?.name == 3,
+              );
 
       // @ts-ignore
       var servant;
@@ -704,12 +737,14 @@ const SummonSimulator = (data: any) => {
                   {fEssences?.length > 0 ? (
                      <>
                         <H2>Featured Essences</H2>
-                        {fEssences.map((ce, index) => (
-                           <FeaturedEssenceRow
-                              data={ce}
-                              key={"fessence_" + index}
-                           />
-                        ))}
+                        <div className="grid grid-cols-3 gap-2">
+                           {fEssences.map((ce, index) => (
+                              <FeaturedEssenceRow
+                                 data={ce}
+                                 key={"fessence_" + index}
+                              />
+                           ))}
+                        </div>
                      </>
                   ) : null}
                </div>
