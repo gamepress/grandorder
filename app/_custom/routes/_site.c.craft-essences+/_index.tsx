@@ -199,7 +199,7 @@ const ColumnSelector = ({ colView, setColView, colViewSettings }: any) => {
    return (
       <div className="mx-auto max-w-[728px] max-tablet:px-3 ">
          <a href="/c/craft-essence-effects">
-            <div className="text-blue-500 font-bold border rounded-md p-2 my-2 text-center cursor-pointer">
+            <div className="text-blue-500 font-bold border rounded-md p-2 my-2 text-center cursor-pointer dark:border-blue-400">
                See Full List of Craft Essence Effects Here!
             </div>
          </a>
