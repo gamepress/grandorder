@@ -170,8 +170,6 @@ const colViewSettings = [
 export default function Servants() {
    // @ts-ignore
    const { viewtab, filterstate } = useLoaderData();
-   console.log(viewtab);
-   console.log(filterstate);
 
    const urlFilters = filterstate
       ? JSON.parse(decodeURIComponent(filterstate))
@@ -189,20 +187,37 @@ export default function Servants() {
 
    return (
       <>
-         <List
-            gridView={gridView}
-            columns={columns}
-            columnViewability={currCols}
-            filters={filters}
-            defaultFilters={urlFilters}
-            beforeListComponent={
-               <ColumnSelector
-                  colView={colView}
-                  setColView={setColView}
-                  colViewSettings={colViewSettings}
-               />
-            }
-         />
+         {urlFilters?.length > 0 ? (
+            <List
+               gridView={gridView}
+               columns={columns}
+               columnViewability={currCols}
+               filters={filters}
+               defaultFilters={urlFilters}
+               beforeListComponent={
+                  <ColumnSelector
+                     colView={colView}
+                     setColView={setColView}
+                     colViewSettings={colViewSettings}
+                  />
+               }
+            />
+         ) : (
+            <List
+               gridView={gridView}
+               columns={columns}
+               columnViewability={currCols}
+               filters={filters}
+               //defaultFilters={urlFilters}
+               beforeListComponent={
+                  <ColumnSelector
+                     colView={colView}
+                     setColView={setColView}
+                     colViewSettings={colViewSettings}
+                  />
+               }
+            />
+         )}
       </>
    );
 }
