@@ -303,6 +303,7 @@ export default function ServantTierList() {
                      //@ts-ignore
                      data={{ listData: { docs: data.exTier.docs } }}
                      columns={columns}
+                     pageSize={1000}
                      columnViewability={{ star_rarity: false }}
                      gridCellClassNames=" "
                      gridContainerClassNames={gridContainerClassNames}
@@ -326,6 +327,7 @@ export default function ServantTierList() {
                      //@ts-ignore
                      data={{ listData: { docs: data.exMinusTier.docs } }}
                      columns={columns}
+                     pageSize={1000}
                      columnViewability={{ star_rarity: false }}
                      gridCellClassNames=" "
                      gridContainerClassNames={gridContainerClassNames}
@@ -349,6 +351,7 @@ export default function ServantTierList() {
                      //@ts-ignore
                      data={{ listData: { docs: data.aPlusTier.docs } }}
                      columns={columns}
+                     pageSize={1000}
                      columnViewability={{ star_rarity: false }}
                      gridCellClassNames=" "
                      gridContainerClassNames={gridContainerClassNames}
@@ -372,6 +375,7 @@ export default function ServantTierList() {
                      //@ts-ignore
                      data={{ listData: { docs: data.aTier.docs } }}
                      columns={columns}
+                     pageSize={1000}
                      columnViewability={{ star_rarity: false }}
                      gridCellClassNames=" "
                      gridContainerClassNames={gridContainerClassNames}
@@ -395,6 +399,7 @@ export default function ServantTierList() {
                      data={{ listData: { docs: data.bPlusTier.docs } }}
                      columns={columns}
                      pager={false}
+                     pageSize={1000}
                      columnViewability={{ star_rarity: false }}
                      gridCellClassNames=" "
                      gridContainerClassNames={gridContainerClassNames}
@@ -418,6 +423,7 @@ export default function ServantTierList() {
                      data={{ listData: { docs: data.bTier.docs } }}
                      columns={columns}
                      pager={false}
+                     pageSize={1000}
                      columnViewability={{ star_rarity: false }}
                      gridCellClassNames=" "
                      gridContainerClassNames={gridContainerClassNames}
@@ -441,6 +447,7 @@ export default function ServantTierList() {
                      data={{ listData: { docs: data.cPlusTier.docs } }}
                      columns={columns}
                      pager={false}
+                     pageSize={1000}
                      columnViewability={{ star_rarity: false }}
                      gridCellClassNames=" "
                      gridContainerClassNames={gridContainerClassNames}
@@ -464,6 +471,7 @@ export default function ServantTierList() {
                      data={{ listData: { docs: data.cTier.docs } }}
                      columns={columns}
                      pager={false}
+                     pageSize={1000}
                      columnViewability={{ star_rarity: false }}
                      gridCellClassNames=" "
                      gridContainerClassNames={gridContainerClassNames}
@@ -489,6 +497,7 @@ export default function ServantTierList() {
                      columns={columns}
                      columnViewability={{ star_rarity: false }}
                      pager={false}
+                     pageSize={1000}
                      gridCellClassNames=" "
                      gridContainerClassNames={gridContainerClassNames}
                   />
@@ -512,6 +521,7 @@ export default function ServantTierList() {
                      columns={columns}
                      columnViewability={{ star_rarity: false }}
                      pager={false}
+                     pageSize={1000}
                      gridCellClassNames=" "
                      gridContainerClassNames={gridContainerClassNames}
                   />
@@ -535,6 +545,7 @@ export default function ServantTierList() {
                      columns={columns}
                      columnViewability={{ star_rarity: false }}
                      pager={false}
+                     pageSize={1000}
                      gridCellClassNames=" "
                      gridContainerClassNames={gridContainerClassNames}
                   />
@@ -844,7 +855,7 @@ const QUERY = gql`
    query {
       exTier: Servants(
          where: { tier_list_score: { equals: 100 } }
-         limit: 100
+         limit: 1000
          sort: "name"
       ) {
          totalDocs
@@ -878,7 +889,7 @@ const QUERY = gql`
       }
       exMinusTier: Servants(
          where: { tier_list_score: { equals: 99 } }
-         limit: 100
+         limit: 1000
          sort: "name"
       ) {
          totalDocs
@@ -912,7 +923,7 @@ const QUERY = gql`
       }
       aPlusTier: Servants(
          where: { tier_list_score: { equals: 91 } }
-         limit: 100
+         limit: 1000
          sort: "name"
       ) {
          totalDocs
@@ -946,7 +957,7 @@ const QUERY = gql`
       }
       aTier: Servants(
          where: { tier_list_score: { equals: 90 } }
-         limit: 100
+         limit: 1000
          sort: "name"
       ) {
          totalDocs
@@ -980,7 +991,7 @@ const QUERY = gql`
       }
       bPlusTier: Servants(
          where: { tier_list_score: { equals: 81 } }
-         limit: 100
+         limit: 1000
          sort: "name"
       ) {
          totalDocs
@@ -1014,7 +1025,7 @@ const QUERY = gql`
       }
       bTier: Servants(
          where: { tier_list_score: { equals: 80 } }
-         limit: 100
+         limit: 1000
          sort: "name"
       ) {
          totalDocs
@@ -1048,7 +1059,7 @@ const QUERY = gql`
       }
       cPlusTier: Servants(
          where: { tier_list_score: { equals: 71 } }
-         limit: 100
+         limit: 1000
          sort: "name"
       ) {
          totalDocs
@@ -1082,7 +1093,7 @@ const QUERY = gql`
       }
       cTier: Servants(
          where: { tier_list_score: { equals: 70 } }
-         limit: 100
+         limit: 1000
          sort: "name"
       ) {
          totalDocs
@@ -1116,7 +1127,7 @@ const QUERY = gql`
       }
       dTier: Servants(
          where: { tier_list_score: { equals: 60 } }
-         limit: 100
+         limit: 1000
          sort: "name"
       ) {
          totalDocs
@@ -1150,7 +1161,7 @@ const QUERY = gql`
       }
       dPlusTier: Servants(
          where: { tier_list_score: { equals: 61 } }
-         limit: 100
+         limit: 1000
          sort: "name"
       ) {
          totalDocs
@@ -1184,7 +1195,7 @@ const QUERY = gql`
       }
       dTier: Servants(
          where: { tier_list_score: { equals: 60 } }
-         limit: 100
+         limit: 1000
          sort: "name"
       ) {
          totalDocs
@@ -1218,7 +1229,7 @@ const QUERY = gql`
       }
       eTier: Servants(
          where: { tier_list_score: { equals: 50 } }
-         limit: 100
+         limit: 1000
          sort: "name"
       ) {
          totalDocs
