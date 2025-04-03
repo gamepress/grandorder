@@ -28,6 +28,7 @@ export const Interludes = ({ data }: { data: any }) => {
                <TableBody>
                   {interlude_quests?.map((int: any, index: number) => {
                      const questname = int.quest?.name;
+                     const questnick = int.quest_nickname;
                      const questid = int.quest?.id;
                      const chaptername = int.chapter?.name;
                      const ascension = int.ascension;
@@ -40,13 +41,17 @@ export const Interludes = ({ data }: { data: any }) => {
                         <TableRow key={index}>
                            <TableCell>
                               <div>
-                                 {available}
-                                 <a
-                                    className="text-blue-500"
-                                    href={`/c/quests/${questid}`}
-                                 >
-                                    {questname}
-                                 </a>
+                                 {available}{" "}
+                                 {questid ? (
+                                    <a
+                                       className="text-blue-500"
+                                       href={`/c/quests/${questid}`}
+                                    >
+                                       {questnick}
+                                    </a>
+                                 ) : (
+                                    <>{questnick}</>
+                                 )}
                               </div>
                               <div className="text-xs my-1">
                                  <span className="font-bold mr-1">
