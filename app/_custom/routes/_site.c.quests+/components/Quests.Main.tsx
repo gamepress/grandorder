@@ -33,6 +33,10 @@ export function QuestsMain({ data }: { data: any }) {
          name: "Quest Type",
          value: data.quest_type?.name,
       },
+      {
+         name: "Location",
+         value: data.main_quest?.name,
+      },
    ];
 
    // For proper formatting of inline ul elements in description!
