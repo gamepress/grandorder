@@ -100,3 +100,7 @@ pnpm import_collection_raw collection:summon-events,filename:bannerupdate.json,i
 pnpm import_collection_raw collection:servants,filename:Servant.json,idname:drupal_nid,sync:false,overwrite:true
 
 pnpm import_collection_raw collection:command-codes,filename:CommandCode.json,idname:drupal_nid,sync:false,overwrite:true
+
+pnpm import_collection_data collection:costumes,filename:Costume.json,idname:drupal_nid,sync:false,overwrite:true
+
+pnpm import_collection_data collection:_class-score-nodes,filename:ClassScoreNode_Import.json,idname:id,sync:false,overwrite:false
