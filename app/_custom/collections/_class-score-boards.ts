@@ -25,6 +25,10 @@ export const _ClassScoreBoards: CollectionConfig = {
          type: "text",
       },
       {
+         name: "sort",
+         type: "number",
+      },
+      {
          name: "icon",
          type: "upload",
          relationTo: "images",
