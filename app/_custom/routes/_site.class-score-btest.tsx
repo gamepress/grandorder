@@ -24,6 +24,7 @@ import {
    TableRow,
 } from "~/components/Table";
 import { Text, TextLink } from "~/components/Text";
+import { Tooltip, TooltipTrigger, TooltipContent } from "~/components/Tooltip";
 import { AdUnit } from "~/routes/_site+/_components/RampUnit";
 import { fetchWithCache } from "~/utils/cache.server";
 
@@ -170,7 +171,6 @@ const ClassScore = (data: any) => {
          const allmats = snode?.unlock_materials?.[0]?.qp_cost
             ? [qpmat, ...snode?.unlock_materials?.[0]?.materials]
             : snode?.unlock_materials?.[0]?.materials;
-         console.log(allmats);
 
          return (
             <div
@@ -249,6 +249,26 @@ const ClassScore = (data: any) => {
          .sort((a, b) => parseInt(a.node) - parseInt(b.node));
 
       const matData = classnodes?.map((cn) => cn.unlock_materials)?.flat();
+      const buffData = classnodes
+         ?.map((cn) =>
+            cn.effect_list?.map((eff) => {
+               return {
+                  materials: [
+                     {
+                        material: {
+                           id: eff.effect?.id,
+                           name: eff.effect?.name,
+                           icon: {
+                              url: eff.effect?.icon?.url,
+                           },
+                        },
+                        qty: eff.value_single,
+                     },
+                  ],
+               };
+            }),
+         )
+         ?.flat();
 
       let ascensionTotal = CalculateTotals(matData);
       let ascensionQP = matData
@@ -266,7 +286,10 @@ const ClassScore = (data: any) => {
       };
 
       const totalmats = [qpmat, ...ascensionTotal];
-      console.log(ascensionQP);
+      const totalbuffs = CalculateTotals(buffData)?.sort(
+         (a, b) => b.qty - a.qty,
+      );
+      console.log(totalbuffs);
       return (
          <>
             <table className="w-full">
@@ -285,7 +308,25 @@ const ClassScore = (data: any) => {
                         ))}
                      </td>
                   </tr>
+                  <tr>
+                     <td className="bg-[#2F2478] text-center text-[#DDEBF7] px-2 py-1 border border-color-sub">
+                        Total Buffs
+                     </td>
+                     <td className="px-2 py-1 border border-color-sub">
+                        {totalbuffs?.map((mat, key) => (
+                           <BuffFrame
+                              materialqty={mat}
+                              key={"node_buff_" + key}
+                           />
+                        ))}
+                     </td>
+                  </tr>
                </tbody>
+            </table>
+
+            <table className="w-full">
+               <thead></thead>
+               <tbody></tbody>
             </table>
          </>
       );
@@ -362,6 +403,33 @@ const MaterialQtyFrame = ({ materialqty }: any) => {
                </div>
             </a>
          </div>
+      </>
+   );
+};
+
+const BuffFrame = ({ materialqty }: any) => {
+   const mat = materialqty?.material;
+   const qty = materialqty?.qty;
+   var dispqty = qty + "%";
+
+   return (
+      <>
+         <Tooltip key={mat?.id} placement="top">
+            <TooltipTrigger className="relative inline-block text-center mr-0.5 mb-1">
+               <div className="relative inline-block h-8 w-8 align-middle text-xs">
+                  <img
+                     src={mat?.icon?.url ?? "no_image_42df124128"}
+                     className={`object-contain h-8`}
+                     alt={mat?.name}
+                     loading="lazy"
+                  />
+               </div>
+               <div className="text-xs text-white bg-zinc-900 bg-opacity-80 px-1 mt-1 rounded-sm">
+                  {dispqty}
+               </div>
+            </TooltipTrigger>
+            <TooltipContent>{mat?.name}</TooltipContent>
+         </Tooltip>
       </>
    );
 };
