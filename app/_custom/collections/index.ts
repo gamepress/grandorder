@@ -8,6 +8,8 @@ import { _CeTypeImages } from "./_ce-type-images";
 import { _Chapters } from "./_chapters";
 import { _ClassRarities } from "./_class-rarities";
 import { _Classes } from "./_classes";
+import { _ClassScoreBoards } from "./_class-score-boards";
+import { _ClassScoreNodes } from "./_class-score-nodes";
 import { _ClassSkillTypes } from "./_class-skill-types";
 import { _CommandCards } from "./_command-cards";
 import { CraftEssenceEffects } from "./craft-essence-effects";
@@ -83,6 +85,8 @@ export const CustomCollections = [
    _Chapters,
    _ClassRarities,
    _Classes,
+   _ClassScoreBoards,
+   _ClassScoreNodes,
    _ClassSkillTypes,
    _CommandCards,
    CraftEssenceEffects,
