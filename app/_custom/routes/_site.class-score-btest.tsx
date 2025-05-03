@@ -90,11 +90,21 @@ const ClassScore = (data: any) => {
    const loaderdata = useLoaderData<typeof loader>();
    const csboards = loaderdata?.class_score_board;
    const csnodes = loaderdata?.class_score_nodes;
-   console.log(loaderdata);
+
+   const emptydata = csboards.map((cs) => {
+      return {
+         class: cs.id,
+         nodes: new Array(72).fill(0),
+      };
+   });
+
+   const urlimport = loaderdata?.urldata
+      ? URLStringtoJSON(loaderdata?.urldata)
+      : emptydata;
 
    const [selectedClass, setSelectedClass] = useState("saber");
    const [selectedNode, setSelectedNode] = useState("");
-   const [activeNodes, setActiveNodes] = useState(new Array(72).fill(0));
+   const [saveData, setSaveData] = useState(urlimport);
 
    const ClassSelection = () => {
       return (
@@ -145,18 +155,23 @@ const ClassScore = (data: any) => {
 
       const canvas_style = `
          <style>
-         .canvas-board{position:relative;display:inline-block;height:425px;width:700px;float:center;background-size:contain;background-repeat:no-repeat;background-position:center center;background-image:url('${imageboard}');}
+            .canvas-board{position:relative;display:inline-block;height:425px;width:700px;float:center;background-size:contain;background-repeat:no-repeat;background-position:center center;background-image:url('${imageboard}');}
          </style>
       `;
 
       const InfoPopup = () => {
-         const nid = snode?.id;
+         const nid = snode?.node;
+         const nclass = snode?.class_score_board?.id;
          const nicon = snode?.icon?.url;
          const posx = snode?.posx_left > 460 ? 460 : snode?.posx_left;
          const posy = snode?.posy_top > 275 ? 275 : snode?.posy_top;
          const efficon = snode?.effect_list?.[0]?.effect?.icon?.url;
          const name = snode?.name;
          const desc = snode?.desc;
+
+         const activated = saveData.find((sd) => sd.class == nclass)?.nodes?.[
+            nid - 1
+         ];
 
          const qpmat = {
             material: {
@@ -201,6 +216,38 @@ const ClassScore = (data: any) => {
                      />
                   ))}
                </div>
+
+               {/* Confirm or Remove node from planner */}
+               <div className="justify-between w-full flex">
+                  <div
+                     className={`border border-slate-400 rounded-md px-1 cursor-pointer hover:bg-slate-700 bg-opacity-40`}
+                     onClick={() => {
+                        var update = [...saveData];
+                        const cind = update.findIndex(
+                           (sd) => sd.class == nclass,
+                        );
+                        update[cind].nodes[nid - 1] = 0;
+
+                        setSaveData(update);
+                     }}
+                  >
+                     ❌
+                  </div>
+                  <div
+                     className={`border border-slate-400 rounded-md px-1 cursor-pointer hover:bg-slate-700 bg-opacity-40`}
+                     onClick={() => {
+                        var update = [...saveData];
+                        const cind = update.findIndex(
+                           (sd) => sd.class == nclass,
+                        );
+                        update[cind].nodes[nid - 1] = 1;
+
+                        setSaveData(update);
+                     }}
+                  >
+                     ✔
+                  </div>
+               </div>
             </div>
          );
       };
@@ -215,13 +262,23 @@ const ClassScore = (data: any) => {
                >
                   {classnodes?.map((node: any) => {
                      const nid = node?.id;
+                     const nodeid = parseInt(node?.node);
+                     const nclass = node?.class_score_board?.id;
                      const nicon = node?.icon?.url;
                      const posx = node?.posx_left;
                      const posy = node?.posy_top;
+
+                     const activated = saveData.find((sd) => sd.class == nclass)
+                        ?.nodes?.[nodeid - 1];
+
                      return (
                         <div
                            key={"node-" + nid}
-                           className={`absolute h-7 w-7 rounded-md bg-contain bg-no-repeat bg-center hover:drop-shadow-[0_0_6px_rgb(255,255,255)]`}
+                           className={`absolute h-7 w-7 bg-contain bg-no-repeat bg-center hover:drop-shadow-[0_0_6px_rgb(255,255,255)] ${
+                              activated == 1
+                                 ? "border-2 border-blue-50 border-opacity-50 rounded-lg shadow-[0_0_4px_rgb(255,255,255)]"
+                                 : ""
+                           }`}
                            style={{
                               top: `${posy}px`,
                               left: `${posx}px`,
@@ -239,6 +296,96 @@ const ClassScore = (data: any) => {
                   {selectedNode != "" ? <InfoPopup /> : null}
                </div>
             </div>
+         </>
+      );
+   };
+
+   const ActiveTotal = () => {
+      const classnodes = csnodes
+         .filter((csn: any) => csn.class_score_board?.id == selectedClass)
+         .sort((a, b) => parseInt(a.node) - parseInt(b.node));
+
+      const activenodes = saveData
+         .find((sd: any) => sd.class == selectedClass)
+         ?.nodes?.filter((n) => n == 1)
+         ?.map((e) => classnodes[e]);
+
+      const matData = activenodes?.map((cn) => cn.unlock_materials)?.flat();
+      const buffData = activenodes
+         ?.map((cn) =>
+            cn.effect_list?.map((eff) => {
+               return {
+                  materials: [
+                     {
+                        material: {
+                           id: eff.effect?.id,
+                           name: eff.effect?.name,
+                           icon: {
+                              url: eff.effect?.icon?.url,
+                           },
+                        },
+                        qty: eff.value_single,
+                     },
+                  ],
+               };
+            }),
+         )
+         ?.flat();
+
+      let ascensionTotal = matData ? CalculateTotals(matData) : [];
+      let ascensionQP = matData
+         ?.map((a) => a.qp_cost)
+         .reduce((ps, a) => ps + a, 0);
+
+      const qpmat = {
+         material: {
+            id: "4861",
+            name: "QP",
+            slug: "qp",
+            icon: { url: "https://static.mana.wiki/grandorder/Qp.png" },
+         },
+         qty: ascensionQP,
+      };
+
+      const totalmats = [qpmat, ...ascensionTotal];
+      const totalbuffs = CalculateTotals(buffData)?.sort(
+         (a, b) => b.qty - a.qty,
+      );
+      return (
+         <>
+            {matData ? (
+               <table className="w-full my-2">
+                  <thead></thead>
+                  <tbody>
+                     <tr>
+                        <td className="w-[80px] bg-[#2F2478] text-center text-[#DDEBF7] px-2 py-1 border border-color-sub">
+                           Active Mats
+                        </td>
+                        <td className="px-2 py-1 border border-color-sub">
+                           {totalmats?.map((mat, key) => (
+                              <MaterialQtyFrame
+                                 materialqty={mat}
+                                 key={"node_mat_" + key}
+                              />
+                           ))}
+                        </td>
+                     </tr>
+                     <tr>
+                        <td className="bg-[#2F2478] text-center text-[#DDEBF7] px-2 py-1 border border-color-sub">
+                           Active Buffs
+                        </td>
+                        <td className="px-2 py-1 border border-color-sub">
+                           {totalbuffs?.map((mat, key) => (
+                              <BuffFrame
+                                 materialqty={mat}
+                                 key={"node_buff_" + key}
+                              />
+                           ))}
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            ) : null}
          </>
       );
    };
@@ -289,10 +436,9 @@ const ClassScore = (data: any) => {
       const totalbuffs = CalculateTotals(buffData)?.sort(
          (a, b) => b.qty - a.qty,
       );
-      console.log(totalbuffs);
       return (
          <>
-            <table className="w-full">
+            <table className="w-full my-2">
                <thead></thead>
                <tbody>
                   <tr>
@@ -323,11 +469,20 @@ const ClassScore = (data: any) => {
                   </tr>
                </tbody>
             </table>
+         </>
+      );
+   };
 
-            <table className="w-full">
-               <thead></thead>
-               <tbody></tbody>
-            </table>
+   const SaveTextBox = () => {
+      const savestring =
+         "http://grandorder.gamepress.gg/class-score?board=" +
+         JSONtoURLString(saveData);
+      return (
+         <>
+            <H2>Save URL</H2>
+            <textarea className="w-full dark:bg-dark500 px-2 py-1 border border-color-sub text-xs h-20">
+               {savestring}
+            </textarea>
          </>
       );
    };
@@ -342,7 +497,9 @@ const ClassScore = (data: any) => {
             <ClassSelection />
 
             <ClassScoreBoard />
+            <ActiveTotal />
             <ClassTotal />
+            <SaveTextBox />
          </div>
       </>
    );
@@ -379,7 +536,7 @@ const MaterialQtyFrame = ({ materialqty }: any) => {
 
    if (qty >= 1000000) {
       dispqty = Math.round(qty / 100000) / 10 + "M";
-   } else if (qty >= 1000) {
+   } else if (qty >= 10000) {
       dispqty = Math.round(qty / 100) / 10 + "k";
    }
 
@@ -433,6 +590,29 @@ const BuffFrame = ({ materialqty }: any) => {
       </>
    );
 };
+
+// JSON to URL string
+function JSONtoURLString(json: any) {
+   var urlstring = "";
+   json.map((j) => {
+      urlstring += j.class + "," + j.nodes?.toString(",") + ".";
+   });
+
+   return urlstring;
+}
+
+// URL string to JSON
+function URLStringtoJSON(urlstring: any) {
+   const cdata = urlstring.split(".")?.slice(0, -1);
+   const jsondata = cdata.map((cd) => {
+      const centry = cd.split(",");
+      return {
+         class: centry[0],
+         nodes: centry.slice(1)?.map((a) => parseInt(a)),
+      };
+   });
+   return jsondata;
+}
 
 export default ClassScore;
 
