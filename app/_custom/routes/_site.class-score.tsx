@@ -307,10 +307,12 @@ const ClassScore = (data: any) => {
 
       const activenodes = saveData
          .find((sd: any) => sd.class == selectedClass)
-         ?.nodes?.filter((n) => n == 1)
+         ?.nodes?.map((e, i) => (e == 1 ? i : null))
+         .filter((a) => a !== null)
          ?.map((e) => classnodes[e]);
 
       const matData = activenodes?.map((cn) => cn.unlock_materials)?.flat();
+
       const buffData = activenodes
          ?.map((cn) =>
             cn.effect_list?.map((eff) => {
@@ -331,6 +333,8 @@ const ClassScore = (data: any) => {
             }),
          )
          ?.flat();
+
+      console.log(saveData.find((sd: any) => sd.class == selectedClass)?.nodes);
 
       let ascensionTotal = matData ? CalculateTotals(matData) : [];
       let ascensionQP = matData
@@ -480,9 +484,11 @@ const ClassScore = (data: any) => {
       return (
          <>
             <H2>Save URL</H2>
-            <textarea className="w-full dark:bg-dark500 px-2 py-1 border border-color-sub text-xs h-20">
-               {savestring}
-            </textarea>
+            <textarea
+               className="w-full dark:bg-dark500 px-2 py-1 border border-color-sub text-xs h-20"
+               value={savestring}
+               readOnly={true}
+            ></textarea>
          </>
       );
    };
