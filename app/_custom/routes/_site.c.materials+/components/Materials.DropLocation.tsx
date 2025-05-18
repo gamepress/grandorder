@@ -1,4 +1,5 @@
 import { BadgeButton } from "~/components/Badge";
+import { Link } from "@remix-run/react";
 import {
    Table,
    TableBody,
@@ -66,8 +67,8 @@ const DropLocationList = ({ data }: any) => {
       a.ap_per_drop > b.ap_per_drop
          ? 1
          : b.ap_per_drop > a.ap_per_drop
-           ? -1
-           : 0,
+         ? -1
+         : 0,
    );
 
    return (
@@ -83,9 +84,11 @@ const DropLocationList = ({ data }: any) => {
                {sorted?.map((loc, index) => (
                   <TableRow key={index}>
                      <TableCell>
-                        <div className="font-bold">
-                           {loc?.quest_dropped_from?.name}
-                        </div>
+                        <Link to={`/c/quests/${loc?.quest_dropped_from?.id}`}>
+                           <div className="text-blue-500 font-bold">
+                              {loc?.quest_dropped_from?.name}
+                           </div>
+                        </Link>
                         <div className="text-xs text-1">
                            {loc?.quest_dropped_from?.main_quest?.name} -{" "}
                            {loc?.quest_dropped_from?.main_quest_chapter?.name}
