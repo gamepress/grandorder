@@ -154,7 +154,7 @@ function QuestBattleWave({ data }: { data: any }) {
             </TableCell>
             {/* HP */}
             <TableCell center>
-               {hp.toLocaleString()}
+               {hp?.toLocaleString()}
                {/* Break Bars */}
                {break_bars?.length > 0 ? (
                   <div>
@@ -174,7 +174,7 @@ function QuestBattleWave({ data }: { data: any }) {
                ) : null}
             </TableCell>
             {/* Lvl */}
-            <TableCell center>{lvl.toLocaleString()}</TableCell>
+            <TableCell center>{lvl?.toLocaleString()}</TableCell>
          </TableRow>
       </>
    );
