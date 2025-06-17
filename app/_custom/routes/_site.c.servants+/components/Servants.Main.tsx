@@ -6,6 +6,7 @@ import clsx from "clsx";
 import type { Servant } from "payload/generated-custom-types";
 import { Icon } from "~/components/Icon";
 import { Image } from "~/components/Image";
+import { Dialog } from "~/components/Dialog";
 
 export function ServantsMain({
    data,
@@ -113,6 +114,7 @@ function ServantImageBaseData({
 
    // UseState variable to track selected display image for Servant
    const [characterImage, setCharacterImage] = useState(selectimg[0]?.name);
+   const [isOpen, setIsOpen] = useState(false);
 
    // Get deck list array
    // ----------------
@@ -177,6 +179,49 @@ function ServantImageBaseData({
    const classname = charData?.class?.name;
    const rarityno = charData?.star_rarity?.name;
 
+   const tierlistexplanation = charData?.writeup_tier_list_explanation;
+   const tierlistscore = charData?.tier_list_score;
+
+   function convertTierLetter(score: any) {
+      var tierletter = "";
+      switch (score) {
+         case 50:
+            tierletter = "E";
+            break;
+         case 60:
+            tierletter = "D";
+            break;
+         case 70:
+            tierletter = "C";
+            break;
+         case 71:
+            tierletter = "C+";
+            break;
+         case 80:
+            tierletter = "B";
+            break;
+         case 81:
+            tierletter = "B+";
+            break;
+         case 90:
+            tierletter = "A";
+            break;
+         case 91:
+            tierletter = "A+";
+            break;
+         case 99:
+            tierletter = "EX-";
+            break;
+         case 100:
+            tierletter = "EX";
+            break;
+         case 101:
+            tierletter = "EX+";
+            break;
+      }
+      return tierletter;
+   }
+
    return (
       <>
          {/* Header - Class and Rarity */}
@@ -189,10 +234,44 @@ function ServantImageBaseData({
                   {classname}
                </div>
             </div>
-            <div className="flex-none">
+            <div className="flex-none inline-flex">
                <StarRarity key={id} rar={rarityno} />
+               {tierlistscore ? (
+                  <>
+                     {tierlistexplanation ? (
+                        <div
+                           className="text-sm w-8 h-8 ml-3 rounded-full p-0 relative inline-flex items-center justify-center gap-x-2 border-2 font-bold bg-blue-100 border-blue-400 dark:bg-blue-900 dark:border-blue-600 cursor-pointer"
+                           onClick={() => setIsOpen(true)}
+                        >
+                           {convertTierLetter(tierlistscore)}
+                        </div>
+                     ) : (
+                        <div className="text-sm w-8 h-8 ml-3 rounded-full p-0 relative inline-flex items-center justify-center gap-x-2 border-2 font-bold bg-blue-100 border-blue-400 dark:bg-blue-900 dark:border-blue-600 cursor-default">
+                           {convertTierLetter(tierlistscore)}
+                        </div>
+                     )}
+                  </>
+               ) : null}
             </div>
          </div>
+         <Dialog
+            size="3xl"
+            onClose={() => {
+               setIsOpen(false);
+            }}
+            open={isOpen}
+         >
+            <div className="text-lg pb-2 mb-2 border-b font-bold">
+               Tier List Explanation
+            </div>
+            <div
+               className="whitespace-normal"
+               dangerouslySetInnerHTML={{
+                  //@ts-ignore
+                  __html: tierlistexplanation,
+               }}
+            ></div>
+         </Dialog>
          <div className="tablet:flex max-tablet:flex-col items-start gap-3 pb-4">
             <section className="space-y-0.5 max-tablet:pb-3 tablet:max-w-[340px]">
                {/* Servant Image */}
