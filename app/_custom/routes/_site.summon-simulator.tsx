@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 import type { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
@@ -581,15 +581,50 @@ const SummonSimulator = (data: any) => {
       const currFeatured4E = fEssences?.filter((s) => s.rarity?.name == 4);
       const currFeatured3E = fEssences?.filter((s) => s.rarity?.name == 3);
 
-      const currFiveStarEss = loaderdata?.general_craft_essences?.filter(
-         (s) => s.rarity?.name == 5,
-      );
-      const currFourStarEss = loaderdata?.general_craft_essences?.filter(
-         (s) => s.rarity?.name == 4,
-      );
-      const currThreeStarEss = loaderdata?.general_craft_essences?.filter(
-         (s) => s.rarity?.name == 3,
-      );
+      const currFiveStarEss =
+         banner_data?.base_ce_override_5?.length > 0
+            ? loaderdata?.craft_essences?.filter(
+                 // @ts-ignore
+                 (s) =>
+                    banner_data?.base_ce_override_5?.find(
+                       // @ts-ignore
+                       (so) => so.id == s.id,
+                    ),
+              )
+            : loaderdata?.general_craft_essences?.filter(
+                 // @ts-ignore
+                 (s) => s.rarity?.name == 5,
+              );
+
+      const currFourStarEss =
+         banner_data?.base_ce_override_4?.length > 0
+            ? loaderdata?.craft_essences?.filter(
+                 // @ts-ignore
+                 (s) =>
+                    banner_data?.base_ce_override_4?.find(
+                       // @ts-ignore
+                       (so) => so.id == s.id,
+                    ),
+              )
+            : loaderdata?.general_craft_essences?.filter(
+                 // @ts-ignore
+                 (s) => s.rarity?.name == 4,
+              );
+
+      const currThreeStarEss =
+         banner_data?.base_ce_override_3?.length > 0
+            ? loaderdata?.craft_essences?.filter(
+                 // @ts-ignore
+                 (s) =>
+                    banner_data?.base_ce_override_3?.find(
+                       // @ts-ignore
+                       (so) => so.id == s.id,
+                    ),
+              )
+            : loaderdata?.general_craft_essences?.filter(
+                 // @ts-ignore
+                 (s) => s.rarity?.name == 3,
+              );
 
       var essence;
 
@@ -671,6 +706,15 @@ const SummonSimulator = (data: any) => {
    };
 
    const SummonBannerInfo = () => {
+      const selectRef = useRef(null);
+
+      useEffect(() => {
+         // Focus without scrolling
+         if (selectRef.current) {
+            selectRef.current.focus({ preventScroll: true });
+         }
+      }, []);
+
       return (
          <>
             <div className="p-3 flex items-center justify-center bg-2-sub border border-color-sub rounded-lg mt-3 shadow-sm shadow-1">
@@ -692,11 +736,7 @@ const SummonSimulator = (data: any) => {
                   {banner_options?.length > 0 ? (
                      <>
                         <Select
-                           onFocus={(e) => {
-                              e.preventDefault();
-                              //window.scrollTo(0, 1870);
-                           }}
-                           autoFocus
+                           ref={selectRef} // autoFocus
                            className="mt-3"
                            onChange={(e) =>
                               toggleOptions(e.target.value, banner_function)
