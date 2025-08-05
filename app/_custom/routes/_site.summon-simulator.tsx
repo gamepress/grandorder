@@ -581,53 +581,56 @@ const SummonSimulator = (data: any) => {
       const currFeatured4E = fEssences?.filter((s) => s.rarity?.name == 4);
       const currFeatured3E = fEssences?.filter((s) => s.rarity?.name == 3);
 
-      const currFiveStarEss = featuredOnly
-         ? fEssences
-         : banner_data?.base_ce_override_5?.length > 0
-         ? loaderdata?.craft_essences?.filter(
-              // @ts-ignore
-              (s) =>
-                 banner_data?.base_ce_override_5?.find(
-                    // @ts-ignore
-                    (so) => so.id == s.id,
-                 ),
-           )
-         : loaderdata?.general_craft_essences?.filter(
-              // @ts-ignore
-              (s) => s.rarity?.name == 5,
-           );
+      const currFiveStarEss =
+         featuredOnly && fEssences?.length > 0
+            ? fEssences
+            : banner_data?.base_ce_override_5?.length > 0
+            ? loaderdata?.craft_essences?.filter(
+                 // @ts-ignore
+                 (s) =>
+                    banner_data?.base_ce_override_5?.find(
+                       // @ts-ignore
+                       (so) => so.id == s.id,
+                    ),
+              )
+            : loaderdata?.general_craft_essences?.filter(
+                 // @ts-ignore
+                 (s) => s.rarity?.name == 5,
+              );
 
-      const currFourStarEss = featuredOnly
-         ? fEssences
-         : banner_data?.base_ce_override_4?.length > 0
-         ? loaderdata?.craft_essences?.filter(
-              // @ts-ignore
-              (s) =>
-                 banner_data?.base_ce_override_4?.find(
-                    // @ts-ignore
-                    (so) => so.id == s.id,
-                 ),
-           )
-         : loaderdata?.general_craft_essences?.filter(
-              // @ts-ignore
-              (s) => s.rarity?.name == 4,
-           );
+      const currFourStarEss =
+         featuredOnly && fEssences?.length > 0
+            ? fEssences
+            : banner_data?.base_ce_override_4?.length > 0
+            ? loaderdata?.craft_essences?.filter(
+                 // @ts-ignore
+                 (s) =>
+                    banner_data?.base_ce_override_4?.find(
+                       // @ts-ignore
+                       (so) => so.id == s.id,
+                    ),
+              )
+            : loaderdata?.general_craft_essences?.filter(
+                 // @ts-ignore
+                 (s) => s.rarity?.name == 4,
+              );
 
-      const currThreeStarEss = featuredOnly
-         ? fEssences
-         : banner_data?.base_ce_override_3?.length > 0
-         ? loaderdata?.craft_essences?.filter(
-              // @ts-ignore
-              (s) =>
-                 banner_data?.base_ce_override_3?.find(
-                    // @ts-ignore
-                    (so) => so.id == s.id,
-                 ),
-           )
-         : loaderdata?.general_craft_essences?.filter(
-              // @ts-ignore
-              (s) => s.rarity?.name == 3,
-           );
+      const currThreeStarEss =
+         featuredOnly && fEssences?.length > 0
+            ? fEssences
+            : banner_data?.base_ce_override_3?.length > 0
+            ? loaderdata?.craft_essences?.filter(
+                 // @ts-ignore
+                 (s) =>
+                    banner_data?.base_ce_override_3?.find(
+                       // @ts-ignore
+                       (so) => so.id == s.id,
+                    ),
+              )
+            : loaderdata?.general_craft_essences?.filter(
+                 // @ts-ignore
+                 (s) => s.rarity?.name == 3,
+              );
 
       var essence;
 
@@ -1071,7 +1074,7 @@ const SummonSimulator = (data: any) => {
    );
 };
 
-export function FeaturedServantRow({ data }: any) {
+export function FeaturedServantRow({ data }: any, { key }: any) {
    const icon = data?.icon?.url;
    const url = data?.slug ?? data?.id;
    const name = data?.name;
@@ -1082,6 +1085,7 @@ export function FeaturedServantRow({ data }: any) {
       <Link
          className="border border-color-sub bg-2-sub shadow-sm shadow-1 x-3 p-2 pr-4 rounded-lg flex justify-between items-center"
          to={`/c/servants/${url}`}
+         key={key}
       >
          <div className="flex items-center gap-3">
             <Image width={80} alt={name} url={icon} className="w-8" />
