@@ -265,7 +265,6 @@ const SummonSimulator = (data: any) => {
    const [destinyOrderPool, setDestinyOrderPool] = useState([]);
    var destiny_order = banner_data?.is_destiny_order;
    var class_list = loaderdata?.class_list;
-   console.log(loaderdata);
 
    // Initialize Featured Servants / Essences each time a new banner is selected
    useEffect(() => {
