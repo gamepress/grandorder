@@ -26,6 +26,7 @@ import {
 import { Text, TextLink } from "~/components/Text";
 import { AdUnit } from "~/routes/_site+/_components/RampUnit";
 import { fetchWithCache } from "~/utils/cache.server";
+import { Tooltip, TooltipTrigger, TooltipContent } from "~/components/Tooltip";
 
 async function fetchGQL(query: string, variables?: Record<string, any>) {
    const { data, errors } = await fetchWithCache(
@@ -56,9 +57,10 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
       simid: z.string().optional(),
    });
 
-   const [summonEventList, summonPools] = await Promise.all([
+   const [summonEventList, summonPools, classList] = await Promise.all([
       fetchGQL(SummonEventListQuery),
       fetchGQL(SummonPoolQuery),
+      fetchGQL(ClassQuery),
    ]);
 
    // Servants: Defaults to Story Summon - General Pool
@@ -203,6 +205,7 @@ export async function loader({ params, request }: LoaderFunctionArgs) {
          craft_essences: craft_essences?.CraftEssences?.docs,
          general_servants: general_servants?.Servants?.docs,
          general_craft_essences: general_craft_essences?.CraftEssences?.docs,
+         class_list: classList?._classes?.docs,
          errorMessage: null,
       },
       { headers: { "Cache-Control": "public, s-maxage=60" } },
@@ -258,6 +261,10 @@ const SummonSimulator = (data: any) => {
    const [rotatingBanner, setRotatingBanner] = useState(
       banner_options?.[0]?.value,
    );
+   // Destiny Order Variables
+   const [destinyOrderPool, setDestinyOrderPool] = useState([]);
+   var destiny_order = banner_data?.is_destiny_order;
+   var class_list = loaderdata?.class_list;
 
    // Initialize Featured Servants / Essences each time a new banner is selected
    useEffect(() => {
@@ -463,8 +470,9 @@ const SummonSimulator = (data: any) => {
       var featuredChance = Math.floor(Math.random() * 1000);
       var pullFeatured = false;
 
-      const currFeatured5S =
-         fServants?.filter((s: any) => s.rarity?.name == 5) ?? [];
+      const currFeatured5S = destiny_order
+         ? destinyOrderPool
+         : fServants?.filter((s: any) => s.rarity?.name == 5) ?? [];
       const currFeatured4S =
          fServants?.filter((s: any) => s.rarity?.name == 4) ?? [];
       const currFeatured3S =
@@ -529,6 +537,7 @@ const SummonSimulator = (data: any) => {
       if (stars == "guaranteed") {
          // Pull guaranteed Servant
          servant = pullFeaturedObj(true, currFeatured5S, currFeatured5S);
+         setNotableResults((notableResults) => [...notableResults, servant]);
          // Added 12/31/2021 - If Pity is active for banner:
          // Reset pity counter to 0
          if (pity330) {
@@ -537,6 +546,7 @@ const SummonSimulator = (data: any) => {
       } else if (stars == "guaranteed4") {
          // Pull guaranteed 4 star
          servant = pullFeaturedObj(true, currFeatured4S, currFourStars);
+         setNotableResults((notableResults) => [...notableResults, servant]);
       } else if (stars == 3) {
          // Pull a 3 star, all the extra code was to format the result pull cell color based on availability, unneeded here.
          pullFeatured = checkFeatured(featuredChance, featured3sChance);
@@ -711,6 +721,107 @@ const SummonSimulator = (data: any) => {
       );
    };
 
+   const DestinyOrderDisplay = () => {
+      return (
+         <>
+            <Table grid dense framed id="quartz-table" className="mt-4">
+               <TableBody>
+                  {banner_options?.map((option: any, index: any) => {
+                     const class_name = option?.label;
+                     const class_icon = class_list?.find(
+                        (a) => a.name == class_name,
+                     )?.icon?.url;
+                     const servant_list = option?.value?.map((a: any) =>
+                        loaderdata?.servants?.find((b: any) => b.name == a),
+                     );
+                     const selected_servant = destinyOrderPool[index];
+
+                     return (
+                        <>
+                           <TableRow>
+                              <TableHeader className="w-1/6" center>
+                                 {class_icon ? (
+                                    <Image
+                                       width={40}
+                                       alt={class_name}
+                                       url={class_icon}
+                                       className="inline-block"
+                                    />
+                                 ) : (
+                                    class_name
+                                 )}
+                                 <div>{selected_servant?.name}</div>
+                              </TableHeader>
+                              <TableCell className="w-5/6" center>
+                                 {servant_list?.map((data: any) => {
+                                    const icon = data?.icon?.url;
+                                    const name = data?.name;
+                                    const id = data?.id;
+                                    const avail =
+                                       data?.summon_availability?.name;
+                                    var color = "";
+
+                                    switch (avail) {
+                                       case "Story-locked":
+                                          color = "text-blue-500";
+                                          break;
+                                       case "Limited":
+                                          color = "text-red-500";
+                                       case "Non-Limited":
+                                       default:
+                                    }
+
+                                    return (
+                                       <>
+                                          <Tooltip key={id} placement="bottom">
+                                             <TooltipTrigger
+                                                className={`inline-block align-middle items-center w-16 border border-color-sub rounded-md m-0.5 px-0.5 py-1 ${
+                                                   data?.name ==
+                                                   destinyOrderPool[index]?.name
+                                                      ? "bg-opacity-50 bg-blue-500"
+                                                      : ""
+                                                }`}
+                                                onClick={() => {
+                                                   var newPool = [
+                                                      ...destinyOrderPool,
+                                                   ];
+                                                   // @ts-ignore
+                                                   newPool[index] = data;
+                                                   setDestinyOrderPool(newPool);
+                                                }}
+                                             >
+                                                <Image
+                                                   width={50}
+                                                   alt={name}
+                                                   url={icon}
+                                                   className="inline-block"
+                                                />
+                                             </TooltipTrigger>
+                                             <TooltipContent>
+                                                <div className="text-center">
+                                                   {name}
+                                                </div>
+                                                <div
+                                                   className={`text-center ${color}`}
+                                                >
+                                                   {avail}
+                                                </div>
+                                             </TooltipContent>
+                                          </Tooltip>
+                                       </>
+                                    );
+                                 })}
+                              </TableCell>
+                           </TableRow>
+                        </>
+                     );
+                  })}
+               </TableBody>
+            </Table>
+         </>
+      );
+   };
+
    const SummonBannerInfo = () => {
       const selectRef = useRef(null);
 
@@ -739,7 +850,7 @@ const SummonSimulator = (data: any) => {
                      dangerouslySetInnerHTML={{ __html: banner_info_display }}
                   ></div>
                   {/* If select options exist, create the select box */}
-                  {banner_options?.length > 0 ? (
+                  {banner_options?.length > 0 && !destiny_order ? (
                      <>
                         <Select
                            ref={selectRef} // autoFocus
@@ -759,13 +870,14 @@ const SummonSimulator = (data: any) => {
                         </Select>
                      </>
                   ) : null}
+                  {destiny_order ? <DestinyOrderDisplay /> : null}
                </>
             ) : null}
 
             <div id="summon-info">
                <div id="summon-blurb"></div>
                <div id="featured-lists">
-                  {fServants?.length > 0 ? (
+                  {fServants?.length > 0 && !destiny_order ? (
                      <>
                         <H2>Featured Servants</H2>
                         <div className="space-y-2">
@@ -779,7 +891,7 @@ const SummonSimulator = (data: any) => {
                      </>
                   ) : null}
 
-                  {fEssences?.length > 0 ? (
+                  {fEssences?.length > 0 && !destiny_order ? (
                      <>
                         <H2>Featured Essences</H2>
                         <div className="grid grid-cols-3 gap-2">
@@ -799,6 +911,8 @@ const SummonSimulator = (data: any) => {
    };
 
    const SummonButtonSelector = () => {
+      var destiny_selected =
+         destinyOrderPool?.filter((a) => a)?.length == banner_options?.length; //Please select 1 Servant from each Class first.
       return (
          <>
             <div className="flex items-center gap-3 py-3">
@@ -810,14 +924,16 @@ const SummonSimulator = (data: any) => {
                >
                   10-Pull{pullEleven ? " (+1)" : ""}
                </Button>
-               <Button
-                  className="!text-base flex-grow shadow-sm shadow-1"
-                  color={summonType == "single" ? "zinc" : "light"}
-                  id="summon-single-switch"
-                  onClick={() => setSummonType("single")}
-               >
-                  Summon Tickets
-               </Button>
+               {!destiny_order ? (
+                  <Button
+                     className="!text-base flex-grow shadow-sm shadow-1"
+                     color={summonType == "single" ? "zinc" : "light"}
+                     id="summon-single-switch"
+                     onClick={() => setSummonType("single")}
+                  >
+                     Summon Tickets
+                  </Button>
+               ) : null}
             </div>
 
             {summonType == "single" ? (
@@ -886,14 +1002,24 @@ const SummonSimulator = (data: any) => {
                </>
             ) : (
                <div id="summon-10-div">
-                  <Button
-                     id="summon-button"
-                     color="green"
-                     className="w-full !text-base"
-                     onClick={() => simulate(10, false)}
-                  >
-                     SUMMON
-                  </Button>
+                  {destiny_order && !destiny_selected ? (
+                     <Button
+                        id="summon-button"
+                        color="emerald"
+                        className="w-full !text-base"
+                     >
+                        Please select 1 Servant from each Class first.
+                     </Button>
+                  ) : (
+                     <Button
+                        id="summon-button"
+                        color="green"
+                        className="w-full !text-base"
+                        onClick={() => simulate(10, false)}
+                     >
+                        SUMMON
+                     </Button>
+                  )}
                   <Button
                      outline
                      className="w-full mt-3 !text-base !text-1 shadow-sm shadow-1"
@@ -1334,6 +1460,7 @@ const SummonEventQuery = `
         featured_ess_daily
         guaranteed:is_guaranteed
         guaranteed4:is_4star_guaranteed
+        is_destiny_order
         
         na:available_in_na
         jp:available_in_jp
@@ -1400,6 +1527,18 @@ query ($ceIdList: [String]) {
     }
   }
 }
+`;
+
+const ClassQuery = `
+   query {
+      _classes(limit:100) {
+        docs {
+          id
+          name
+          icon{url}
+        }
+      }
+    }
 `;
 
 // Parses any <select><option> HTML in the info text and returns relevant values
