@@ -86,6 +86,10 @@ export const SummonEvents: CollectionConfig = {
          type: "checkbox",
       },
       {
+         name: "is_destiny_order",
+         type: "checkbox",
+      },
+      {
          name: "available_in_jp",
          type: "checkbox",
       },
