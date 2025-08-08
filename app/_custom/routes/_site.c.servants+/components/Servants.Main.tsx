@@ -18,7 +18,7 @@ export function ServantsMain({
    // console.log(costumes);
 
    const traitlist = servant?.traits;
-
+   const traitnotes = servant?.trait_notes;
    const taglist = servant?.tags;
 
    return (
@@ -40,6 +40,13 @@ export function ServantsMain({
                      </div>
                   </Link>
                ))}
+            </>
+         ) : null}
+         {traitnotes && traitnotes != "" ? (
+            <>
+               <div className="text-xs whitespace-pre-wrap py-1 px-2 border border-color-sub my-1">
+                  {traitnotes}
+               </div>
             </>
          ) : null}
          {taglist && taglist.length > 0 ? (

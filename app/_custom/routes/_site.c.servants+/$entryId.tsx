@@ -172,6 +172,7 @@ const QUERY = gql`
             id
             name
          }
+         trait_notes
          damage_rating
          critical_rating
          support_rating
