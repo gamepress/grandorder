@@ -9,13 +9,12 @@ export function MaterialsMain({ data }: { data: any }) {
    const desc = material?.description;
    const bonusces = material?.ce_With_Drop_Bonus;
 
-   console.log(bonusces);
    return (
       <>
          <div className="bg-2-sub border border-color-sub shadow-sm shadow-1 rounded-lg p-4 flex items-center flex-col justify-center">
             <Image
                height={100}
-               className="size-20 mx-auto"
+               className="h-20 w-auto mx-auto"
                url={icon}
                alt="material_icon"
                loading="lazy"
