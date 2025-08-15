@@ -21,6 +21,7 @@ export function NoblePhantasm({ data }: { data: any }) {
 
 const NoblePhantasmDisplay = ({ np }: any) => {
    const np_name = np?.name;
+   const np_subname = np?.sub_name;
    const np_description = np?.description;
    const np_overcharge = np?.description_overcharge;
    const np_card_icon = np?.card_type?.icon?.url;
@@ -109,6 +110,7 @@ const NoblePhantasmDisplay = ({ np }: any) => {
             {open ? (
                <section className="pt-4 space-y-3">
                   {/* NP Main info table */}
+                  <div className="italic text-sm pl-3">{np_subname}</div>
                   <Table dense grid framed>
                      <TableRow>
                         <TableHeader>Rank</TableHeader>
