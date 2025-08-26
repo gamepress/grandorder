@@ -45,7 +45,7 @@ export const AppendSkills: CollectionConfig = {
             {
                name: "effect",
                type: "relationship",
-               relationTo: "_skill-classification-specifics",
+               relationTo: "servant-skill-effects",
                hasMany: false,
             },
             {
@@ -56,7 +56,7 @@ export const AppendSkills: CollectionConfig = {
             },
             {
                name: "value_single",
-               type: "number"
+               type: "number",
             },
             {
                name: "value_type",
@@ -65,47 +65,57 @@ export const AppendSkills: CollectionConfig = {
                options: [
                   {
                      label: "flat",
-                     value: "flat"
+                     value: "flat",
                   },
                   {
                      label: "percent",
-                     value: "percent"
-                  }
-               ]
+                     value: "percent",
+                  },
+               ],
             },
             {
                name: "turns",
-               type: "number"
+               type: "number",
             },
             {
                name: "times",
-               type: "number"
+               type: "number",
             },
             {
                name: "effect_condition",
                type: "relationship",
-               relationTo: ["_alignments","attributes","_buff-categories","_classes","_command-cards","_enemy-traits","_field-types","_status-effects","traits"],
+               relationTo: [
+                  "_alignments",
+                  "attributes",
+                  "_buff-categories",
+                  "_classes",
+                  "_command-cards",
+                  "_enemy-traits",
+                  "_field-types",
+                  "_status-effects",
+                  "traits",
+               ],
                hasMany: true,
             },
             {
                name: "effect_on_damage_turns",
-               type: "number"
+               type: "number",
             },
             {
                name: "effect_on_damage_times",
-               type: "number"
+               type: "number",
             },
             {
                name: "values_per_level",
                type: "number",
-               hasMany: true
+               hasMany: true,
             },
             {
                name: "chance_per_level",
                type: "number",
-               hasMany: true
+               hasMany: true,
             },
-         ]
+         ],
       },
       {
          name: "drupal_nid",

@@ -31,8 +31,8 @@ import { _NPClassifications } from "./_np-classifications";
 import { _QuestTypes } from "./_quest-types";
 import { _Rarities } from "./_rarities";
 import { _ReleaseStatuses } from "./_release-statuses";
+import { ServantSkillEffects } from "./servant-skill-effects";
 import { _SimulatorPools } from "./_simulator-pools";
-import { _SkillClassificationSpecifics } from "./_skill-classification-specifics";
 import { _SkillImages } from "./_skill-images";
 import { _StarRarities } from "./_star-rarities";
 import { _StatusEffects } from "./_status-effects";
@@ -108,8 +108,8 @@ export const CustomCollections = [
    _QuestTypes,
    _Rarities,
    _ReleaseStatuses,
+   ServantSkillEffects,
    _SimulatorPools,
-   _SkillClassificationSpecifics,
    _SkillImages,
    _StarRarities,
    _StatusEffects,
