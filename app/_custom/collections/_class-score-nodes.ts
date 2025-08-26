@@ -58,7 +58,7 @@ export const _ClassScoreNodes: CollectionConfig = {
             {
                name: "effect",
                type: "relationship",
-               relationTo: "_skill-classification-specifics",
+               relationTo: "servant-skill-effects",
                hasMany: false,
             },
             {

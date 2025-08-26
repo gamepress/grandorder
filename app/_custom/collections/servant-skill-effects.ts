@@ -2,9 +2,12 @@ import type { CollectionConfig } from "payload/types";
 
 import { isStaff } from "../../db/collections/users/users.access";
 
-export const _SkillClassificationSpecifics: CollectionConfig = {
-   slug: "_skill-classification-specifics",
-   labels: { singular: "_Skill-Classification-Specific", plural: "_Skill-Classification-Specifics" },
+export const ServantSkillEffects: CollectionConfig = {
+   slug: "servant-skill-effects",
+   labels: {
+      singular: "Servant-Skill-Effect",
+      plural: "Servant-Skill-Effects",
+   },
    admin: {
       group: "Custom",
       useAsTitle: "name",

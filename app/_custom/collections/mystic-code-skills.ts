@@ -62,7 +62,7 @@ export const MysticCodeSkills: CollectionConfig = {
       {
          name: "type_specific",
          type: "relationship",
-         relationTo: "_skill-classification-specifics",
+         relationTo: "servant-skill-effects",
          hasMany: false,
       },
       {
