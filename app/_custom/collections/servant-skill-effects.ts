@@ -37,6 +37,10 @@ export const ServantSkillEffects: CollectionConfig = {
          relationTo: "images",
       },
       {
+         name: "slug",
+         type: "text",
+      },
+      {
          name: "checksum",
          type: "text",
       },
