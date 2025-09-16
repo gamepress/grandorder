@@ -27,7 +27,7 @@ type AutocompleteProps = Partial<AutocompleteOptions<BaseItem>> & {
 const searchOnlyTypesenseClient = () =>
    new Typesense.Client({
       apiKey:
-         settings?.typesenseSearchOnlyKey ?? "RHiNS3SKaBlvYQOcp9zi7qUOBJbhxJEo",
+         settings?.typesenseSearchOnlyKey ?? "PQF5xdtOm5BQI7ovUNPlyS9QqGYvC39R",
       nodes: [
          {
             host: settings.typesenseHost ?? "search.mana.wiki",
