@@ -10,12 +10,16 @@ export const ServantSkillEffectsMain = ({ data }: any) => {
    const skill_list_upgrade = extractSkillUpgradeData(data);
    const np_list_base = extractNPBaseData(data);
    const np_list_upgrade = extractNPUpgradeData(data);
+   const np_list_oc_base = extractNPOCBaseData(data);
+   const np_list_oc_upgrade = extractNPOCUpgradeData(data);
 
    const full_list = [
       ...skill_list_base,
       ...skill_list_upgrade,
       ...np_list_base,
       ...np_list_upgrade,
+      ...np_list_oc_base,
+      ...np_list_oc_upgrade,
    ];
 
    // Check if "Times", "Turns", or various sections need to appear (hide if all entries blank)
@@ -23,7 +27,7 @@ export const ServantSkillEffectsMain = ({ data }: any) => {
    const show_turns = checkFieldHasEntry(full_list, "effect_turns");
    const show_value = checkFieldHasEntry(full_list, "value");
    const show_value_mlb = checkFieldHasEntry(full_list, "value_mlb");
-   const show_condition = checkFieldHasEntry(full_list, "condition_notes");
+   const show_condition = checkFieldHasEntry(full_list, "effect_condition");
 
    return (
       <>
@@ -41,7 +45,7 @@ export const ServantSkillEffectsMain = ({ data }: any) => {
                value_mlb: show_value_mlb,
                effect_turns: show_turns,
                effect_times: show_times,
-               condition: show_condition,
+               effect_condition: show_condition,
                _rarity: false,
                class: false,
             }}
@@ -563,7 +567,7 @@ function extractNPBaseData(data: any) {
    data?.servants_np_base?.map(
       (a) =>
          a.noble_phantasm_base?.effect_list?.map((eff) => {
-            if (eff.effect.id == entryid) {
+            if (eff.effect?.id == entryid) {
                // Process data
                var val5, val1, val5disp, val1disp;
                if (eff.values_per_level?.length > 0) {
@@ -579,7 +583,7 @@ function extractNPBaseData(data: any) {
 
                // Extract and generate data object for display
                var temppush = {
-                  id: a.id,
+                  id: a?.id,
                   name: a.name,
                   slug: a.slug,
                   icon: { url: a.icon?.url },
@@ -621,6 +625,121 @@ function extractNPUpgradeData(data: any) {
          a.noble_phantasm_base?.np_upgrades?.map(
             (b) =>
                b.effect_list?.map((eff) => {
+                  if (eff.effect.id == entryid) {
+                     // Process data
+                     var val5, val1, val5disp, val1disp;
+                     if (eff.values_per_level?.length > 0) {
+                        val1disp = eff.values_per_level[0];
+                        val5disp = eff.values_per_level[4];
+                        val1 = val1disp.replace(/\D/g, "");
+                        val5 = val5disp.replace(/\D/g, "");
+                     }
+
+                     const condition_text = eff.effect_condition
+                        .map((cond) => cond.value?.name)
+                        ?.join(", ");
+
+                     // Extract and generate data object for display
+                     var temppush = {
+                        id: a.id,
+                        name: a.name,
+                        slug: a.slug,
+                        icon: { url: a.icon?.url },
+                        _rarity: a.star_rarity?.id,
+                        class: a.class?.id,
+
+                        skill_id: b.id,
+                        skill_name: b.name,
+                        skill_icon: {
+                           url: b.card_type?.icon?.url,
+                        },
+                        stype: "NP Upgrade",
+
+                        effect_name: eff.effect.name,
+                        effect_turns: eff.turns,
+                        effect_times: eff.times,
+                        effect_target: eff.target?.name,
+                        effect_value_lv1: val1,
+                        effect_value_lv10: val5,
+                        effect_value_lv1_display: val1disp,
+                        effect_value_lv10_display: val5disp,
+                        effect_chance_per_level: eff.chance_per_level,
+                        effect_condition: condition_text,
+                     };
+
+                     np_final.push(temppush);
+                  }
+               }),
+         ),
+   );
+
+   return np_final;
+}
+
+function extractNPOCBaseData(data: any) {
+   var np_final: any = [];
+   const entryid = data?.entry?.id;
+   data?.servants_np_base?.map(
+      (a) =>
+         a.noble_phantasm_base?.effect_list_overcharge?.map((eff) => {
+            if (eff.effect?.id == entryid) {
+               // Process data
+               var val5, val1, val5disp, val1disp;
+               if (eff.values_per_level?.length > 0) {
+                  val1disp = eff.values_per_level[0];
+                  val5disp = eff.values_per_level[4];
+                  val1 = val1disp.replace(/\D/g, "");
+                  val5 = val5disp.replace(/\D/g, "");
+               }
+
+               const condition_text = eff.effect_condition
+                  .map((cond) => cond.value?.name)
+                  ?.join(", ");
+
+               // Extract and generate data object for display
+               var temppush = {
+                  id: a?.id,
+                  name: a.name,
+                  slug: a.slug,
+                  icon: { url: a.icon?.url },
+                  _rarity: a.star_rarity?.id,
+                  class: a.class?.id,
+
+                  skill_id: a.noble_phantasm_base?.id,
+                  skill_name: a.noble_phantasm_base?.name,
+                  skill_icon: {
+                     url: a.noble_phantasm_base?.card_type?.icon?.url,
+                  },
+                  stype: "NP Base",
+
+                  effect_name: eff.effect.name,
+                  effect_turns: eff.turns,
+                  effect_times: eff.times,
+                  effect_target: eff.target?.name,
+                  effect_value_lv1: val1,
+                  effect_value_lv10: val5,
+                  effect_value_lv1_display: val1disp,
+                  effect_value_lv10_display: val5disp,
+                  effect_chance_per_level: eff.chance_per_level,
+                  effect_condition: condition_text,
+               };
+
+               np_final.push(temppush);
+            }
+         }),
+   );
+
+   return np_final;
+}
+
+function extractNPOCUpgradeData(data: any) {
+   var np_final: any = [];
+   const entryid = data?.entry?.id;
+   data?.servants_np_base?.map(
+      (a) =>
+         a.noble_phantasm_base?.np_upgrades?.map(
+            (b) =>
+               b.effect_list_overcharge?.map((eff) => {
                   if (eff.effect.id == entryid) {
                      // Process data
                      var val5, val1, val5disp, val1disp;

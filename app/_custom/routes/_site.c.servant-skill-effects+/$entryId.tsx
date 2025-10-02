@@ -105,6 +105,7 @@ const SECTIONS = {
 export default function EntryPage() {
    const loaderdata = useLoaderData<typeof loader>();
    const { entry } = loaderdata; // 796
+   console.log(loaderdata);
 
    // return "Check Console Log";
    return <Entry customComponents={SECTIONS} customData={loaderdata} />;
@@ -433,7 +434,70 @@ query ($servantIdList: [JSON]) {
             values_per_level
             chance_per_level
 
-         }  
+         }
+         effect_list_overcharge {
+            effect {
+               id
+               name
+            }
+            target {
+               name
+            }
+            turns
+            times
+            effect_condition {
+               relationTo
+               value {
+                  ... on _alignment {
+                     name
+                  }
+               }
+               value {
+                  ... on Attribute {
+                     name
+                  }
+               }
+               value {
+                  ... on _buffCategory {
+                     name
+                  }
+               }
+               value {
+                  ... on _class {
+                     name
+                  }
+               }
+               value {
+                  ... on _commandCard {
+                     name
+                  }
+               }
+               value {
+                  ... on _enemyTrait {
+                     name
+                  }
+               }
+               value {
+                  ... on _fieldType {
+                     name
+                  }
+               }
+               value {
+                  ... on _statusEffect {
+                     name
+                  }
+               }
+               value {
+                  ... on Trait {
+                     name
+                  }
+               }
+            }
+            effect_on_damage_turns
+            effect_on_damage_times
+            values_per_level
+            chance_per_level
+         }
          np_upgrades {
             id
             name
@@ -441,6 +505,69 @@ query ($servantIdList: [JSON]) {
                icon { url }
             }
             effect_list {
+               effect {
+                  id
+                  name
+               }
+               target {
+                  name
+               }
+               turns
+               times
+               effect_condition {
+                  relationTo
+                  value {
+                     ... on _alignment {
+                        name
+                     }
+                  }
+                  value {
+                     ... on Attribute {
+                        name
+                     }
+                  }
+                  value {
+                     ... on _buffCategory {
+                        name
+                     }
+                  }
+                  value {
+                     ... on _class {
+                        name
+                     }
+                  }
+                  value {
+                     ... on _commandCard {
+                        name
+                     }
+                  }
+                  value {
+                     ... on _enemyTrait {
+                        name
+                     }
+                  }
+                  value {
+                     ... on _fieldType {
+                        name
+                     }
+                  }
+                  value {
+                     ... on _statusEffect {
+                        name
+                     }
+                  }
+                  value {
+                     ... on Trait {
+                        name
+                     }
+                  }
+               }
+               effect_on_damage_turns
+               effect_on_damage_times
+               values_per_level
+               chance_per_level
+            }
+            effect_list_overcharge {
                effect {
                   id
                   name

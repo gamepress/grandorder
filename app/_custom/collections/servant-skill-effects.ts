@@ -37,6 +37,10 @@ export const ServantSkillEffects: CollectionConfig = {
          relationTo: "images",
       },
       {
+         name: "hide_entry",
+         type: "checkbox",
+      },
+      {
          name: "slug",
          type: "text",
       },
