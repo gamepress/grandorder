@@ -105,7 +105,6 @@ const SECTIONS = {
 export default function EntryPage() {
    const loaderdata = useLoaderData<typeof loader>();
    const { entry } = loaderdata; // 796
-   console.log(loaderdata);
 
    // return "Check Console Log";
    return <Entry customComponents={SECTIONS} customData={loaderdata} />;
