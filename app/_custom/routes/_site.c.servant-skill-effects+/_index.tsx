@@ -5,14 +5,12 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { gql } from "graphql-request";
 import { Avatar } from "~/components/Avatar";
 
-import { Badge } from "~/components/Badge";
 import { Image } from "~/components/Image";
 import type { ServantSkillEffects } from "payload/generated-custom-types";
 import { fetchList } from "~/routes/_site+/c_+/$collectionId/utils/fetchList.server";
 import { listMeta } from "~/routes/_site+/c_+/$collectionId/utils/listMeta";
 import { fuzzyFilter } from "~/routes/_site+/c_+/_components/fuzzyFilter";
 import { List } from "~/routes/_site+/c_+/_components/List";
-import { useState, useEffect } from "react";
 import { useLoaderData } from "@remix-run/react";
 
 export { listMeta as meta };
@@ -37,7 +35,7 @@ export async function loader({
    });
 }
 
-export default function CraftEssences() {
+export default function ServantSkillEffects() {
    // @ts-ignore
    const { list } = useLoaderData();
 
