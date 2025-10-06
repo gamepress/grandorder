@@ -90,16 +90,19 @@ const columns = [
             }`}
             className="flex items-center gap-2 group py-0.5"
          >
-            <Avatar
-               className="size-7 flex-none"
-               initials={
-                  info.row.original.icon?.url
-                     ? undefined
-                     : info.row.original.name.charAt(0)
-               }
-               src={info.row.original.icon?.url}
-               options="aspect_ratio=1:1&height=120&width=120"
-            />
+            <div className="size-7 flex-none grid align-middle text-center leading-7 dark:bg-dark450 bg-white rounded-full border border-gray-500 border-opacity-20">
+               {info.row.original.icon?.url ? (
+                  <Image
+                     width={36}
+                     height={36}
+                     url={info.row.original.icon?.url}
+                     className="mx-auto"
+                     options="aspect_ratio=1:1&height=80&width=80"
+                  />
+               ) : (
+                  info.row.original.name.charAt(0)
+               )}
+            </div>
             <span className="font-semibold group-hover:underline decoration-zinc-400 underline-offset-2">
                {info.getValue()}
             </span>
