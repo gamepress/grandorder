@@ -74,7 +74,9 @@ const RewardRow = ({ data, index }: any) => {
                            >
                               {name}
                            </div>
-                           <Badge className="!text-sm">x{qty}</Badge>
+                           <Badge className="!text-sm">
+                              x{qty?.toLocaleString("en-US")}
+                           </Badge>
                            {rate ? (
                               <Badge>
                                  <span>{rate}%</span>
