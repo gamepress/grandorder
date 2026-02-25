@@ -13,6 +13,10 @@ export function CommandCodesEffect({ data: cc }: { data: CommandCodeType }) {
          header: "Acquisition Method",
          value: cc?.acquisition_method,
       },
+      {
+         header: "Description",
+         value: cc?.desc_detail,
+      },
    ];
 
    return (
