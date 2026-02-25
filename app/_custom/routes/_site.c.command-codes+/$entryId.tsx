@@ -53,6 +53,7 @@ const QUERY = gql`
          name
          command_code_id
          desc_effect
+         desc_detail
          acquisition_method
          illustrator {
             id
