@@ -304,6 +304,8 @@ const RewardRow = ({ data, index }: any) => {
 
    if (qty >= 1000000) {
       dispqty = Math.round(qty / 100000) / 10 + "M";
+   } else if (qty >= 100000) {
+      dispqty = Math.round(qty / 1000) + "k";
    } else if (qty >= 1000) {
       dispqty = Math.round(qty / 100) / 10 + "k";
    }
