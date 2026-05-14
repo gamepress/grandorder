@@ -17,9 +17,9 @@ export function QuestsEnemies({ data }: { data: any }) {
               qind == 0
                  ? true
                  : quest_details[qind]?.quest_parts !=
-                   quest_details[qind - 1]?.quest_parts
-                 ? true
-                 : false; // Controls whether the "Part" label should show up - Always show first
+                     quest_details[qind - 1]?.quest_parts
+                   ? true
+                   : false; // Controls whether the "Part" label should show up - Always show first
 
            return (
               <div key={qd}>
@@ -220,7 +220,7 @@ function EnemyAlternative({ data }: { data: any }) {
                <div className="text-sm text-blue-500">{enemy_name}</div>
             </a>
             <div className="text-sm text-1">
-               Lvl: {lvl} HP: {hp}
+               Lvl: {lvl} HP: {hp?.toLocaleString()}
             </div>
             <div
                className="text-xs"
