@@ -102,7 +102,7 @@ export default function CommandCodes() {
 
    const filters = [
       {
-         id: "_rarity",
+         id: "rarity",
          label: "Rarity",
          cols: 5 as const,
          options: [
@@ -391,6 +391,7 @@ const QUERY = gql`
                url
             }
             rarity {
+               id
                name
             }
             effect_image {
