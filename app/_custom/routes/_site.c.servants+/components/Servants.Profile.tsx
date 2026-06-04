@@ -78,7 +78,7 @@ function TableInfo({ data: servant }: { data: ServantType }) {
                               {irow.value}
                            </Link>
                         ) : (
-                           irow.value
+                           <div dangerouslySetInnerHTML={{__html: irow.value}}></div>
                         )}
                      </TableCell>
                   </TableRow>
