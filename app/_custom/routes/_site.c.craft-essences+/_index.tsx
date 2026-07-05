@@ -360,10 +360,11 @@ const columns = [
       header: "Effects",
       filterFn: (row, columnId, filterValue) => {
          return filterValue
-            ?.map((a) =>
-               row?.original?.effect_list
-                  ?.map((el) => el.effect?.id)
-                  ?.includes(a),
+            ?.map(
+               (a) =>
+                  row?.original?.effect_list
+                     ?.map((el) => el.effect?.id)
+                     ?.includes(a),
             )
             ?.every((v) => v === true);
       },
@@ -428,6 +429,7 @@ const QUERY = gql`
                url
             }
             _rarity {
+               id
                name
             }
             _ce_Type_Image {
