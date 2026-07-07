@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import clsx from "clsx";
+import { Link } from "@remix-run/react";
 
 import { Icon } from "~/components/Icon";
 import { Image } from "~/components/Image";
@@ -270,15 +271,31 @@ const SkillUpgrade = ({ skill }: any) => {
 
 export function AppendSkill({ data }: any) {
    const appendlist = data.servant?.append_skills;
-
    return (
-      <div className="space-y-3">
-         {appendlist?.map((skill: any, ai: number) => {
-            return (
-               <AppendSkillDisplay skill={skill} key={"append_display_" + ai} />
-            );
-         })}
-      </div>
+      <>
+         <div className="header2-div flex items-center">
+            <div className="flex-grow">Append Skills</div>
+            <Link
+               to={
+                  "https://grandorder.gamepress.gg/p/servant-coins-append-skills-reaching-level-120"
+               }
+            >
+               <div className="border rounded-full w-6 h-6 p-0 relative inline-flex items-center justify-center gap-x-2 border-2 font-bold border-blue-50 bg-blue-700 cursor-pointer">
+                  ?
+               </div>
+            </Link>
+         </div>
+         <div className="space-y-3">
+            {appendlist?.map((skill: any, ai: number) => {
+               return (
+                  <AppendSkillDisplay
+                     skill={skill}
+                     key={"append_display_" + ai}
+                  />
+               );
+            })}
+         </div>
+      </>
    );
 }
 
