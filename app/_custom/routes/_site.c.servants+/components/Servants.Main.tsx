@@ -198,6 +198,9 @@ function ServantImageBaseData({
          case 60:
             tierletter = "D";
             break;
+         case 61:
+            tierletter = "D+";
+            break;
          case 70:
             tierletter = "C";
             break;
