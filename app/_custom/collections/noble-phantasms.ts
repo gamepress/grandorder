@@ -84,6 +84,16 @@ export const NoblePhantasms: CollectionConfig = {
          type: "textarea",
       },
       {
+         name: "unlock_condition",
+         type: "text",
+      },
+      {
+         name: "np_upgrades",
+         type: "relationship",
+         relationTo: "noble-phantasms",
+         hasMany: true,
+      },
+      {
          name: "effect_list",
          type: "array",
          fields: [
@@ -214,16 +224,6 @@ export const NoblePhantasms: CollectionConfig = {
                type: "json",
             },
          ],
-      },
-      {
-         name: "unlock_condition",
-         type: "text",
-      },
-      {
-         name: "np_upgrades",
-         type: "relationship",
-         relationTo: "noble-phantasms",
-         hasMany: true,
       },
       {
          name: "video_link",
