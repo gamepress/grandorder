@@ -41,5 +41,5 @@ kill_timeout = "5s"
 
 [[vm]]
   cpu_kind = "performance"
-  cpus = 1
-  memory_mb = 3072
+  cpus = 2
+  memory_mb = 4096
