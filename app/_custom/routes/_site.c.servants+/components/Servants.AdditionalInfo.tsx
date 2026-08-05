@@ -118,12 +118,13 @@ function TableInfo({ data: servant }: { data: ServantType }) {
 
 function BondTable({ data: servant }: { data: ServantType }) {
    const bond = servant?.bond_experience;
+   console.log(bond);
 
    return (
       <Table grid framed dense className="mb-2.5">
          <TableBody>
             <TableRow>
-               <TableHeader>Bond Lv</TableHeader>
+               <TableHeader>Lv</TableHeader>
                {bond?.map((exp: any, ind: any) => (
                   <TableHeader key={"bond_exp_header_" + ind}>
                      {ind + 1}
@@ -131,7 +132,7 @@ function BondTable({ data: servant }: { data: ServantType }) {
                ))}
             </TableRow>
             <TableRow>
-               <TableHeader className="border-b-0">Bond EXP</TableHeader>
+               <TableHeader className="border-b-0">EXP</TableHeader>
                {bond?.map((exp: any, ind: any) => (
                   <TableCell key={"bond_exp_value_" + ind}>
                      {exp.toLocaleString()}

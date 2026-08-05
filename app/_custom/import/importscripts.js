@@ -104,3 +104,5 @@ pnpm import_collection_raw collection:command-codes,filename:CommandCode.json,id
 pnpm import_collection_data collection:costumes,filename:Costume.json,idname:drupal_nid,sync:false,overwrite:true
 
 pnpm import_collection_data collection:_class-score-nodes,filename:ClassScoreNode_Import.json,idname:id,sync:false,overwrite:false
+
+pnpm import_collection_raw collection:servants,filename:ServantBond16.json,idname:id,sync:false,overwrite:true
