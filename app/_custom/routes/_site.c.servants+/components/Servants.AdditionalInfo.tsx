@@ -118,7 +118,6 @@ function TableInfo({ data: servant }: { data: ServantType }) {
 
 function BondTable({ data: servant }: { data: ServantType }) {
    const bond = servant?.bond_experience;
-   console.log(bond);
 
    return (
       <Table grid framed dense className="mb-2.5">
