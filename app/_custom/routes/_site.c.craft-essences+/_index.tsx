@@ -59,6 +59,8 @@ const colViewSettings = [
          max_hp: false,
          max_atk: false,
          effect_list: false,
+         is_bond_ce: false,
+         servant: false,
       },
    },
    {
@@ -75,6 +77,8 @@ const colViewSettings = [
          max_hp: true,
          max_atk: true,
          effect_list: false,
+         is_bond_ce: false,
+         servant: false,
       },
    },
    {
@@ -91,6 +95,26 @@ const colViewSettings = [
          max_hp: false,
          max_atk: false,
          effect_list: true,
+         is_bond_ce: false,
+         servant: false,
+      },
+   },
+   {
+      name: "bond",
+      label: "Bond Servant",
+      setting: {
+         name: true,
+         icon: false,
+         type: false,
+         class: false,
+         _rarity: false,
+         base_hp: false,
+         base_atk: false,
+         max_hp: false,
+         max_atk: false,
+         effect_list: false,
+         is_bond_ce: false,
+         servant: true,
       },
    },
 ];
@@ -137,6 +161,21 @@ export default function CraftEssences() {
             {
                value: "1946",
                label: "5 ★",
+            },
+         ],
+      },
+      {
+         id: "is_bond_ce",
+         label: "Bond CE",
+         cols: 2 as const,
+         options: [
+            {
+               value: "true",
+               label: "Bond CE",
+            },
+            {
+               value: "false",
+               label: "Not Bond CE",
             },
          ],
       },
@@ -206,11 +245,11 @@ const ColumnSelector = ({ colView, setColView, colViewSettings }: any) => {
          <h2 className="px-4 h-8 flex items-center mb-2 w-full">
             Show Columns
          </h2>
-         <div className="grid grid-cols-3 gap-2">
+         <div className="grid grid-cols-4 gap-2">
             {colViewSettings.map((set: any, index: any) => {
                return (
                   <div
-                     className={`flex bg-3 h-9 text-sm cursor-pointer justify-center items-center dark:border-zinc-600 shadow-sm dark:shadow-zinc-800/80 rounded-md border border-zinc-300/80  ${
+                     className={`flex bg-3 h-9 text-sm cursor-pointer justify-center items-center text-center leading-none dark:border-zinc-600 shadow-sm dark:shadow-zinc-800/80 rounded-md border border-zinc-300/80  ${
                         set.name == colView
                            ? "bg-blue-50 dark:bg-gray-800 text-blue-500 dark:text-blue-500"
                            : "text-zinc-500"
@@ -400,6 +439,52 @@ const columns = [
          );
       },
    }),
+
+   columnHelper.accessor("is_bond_ce", {
+      header: "Bond CE",
+      filterFn: (row, columnId, filterValue) => {
+         const bond_status = row?.original?.is_bond_ce ? "true" : "false";
+         return filterValue.includes(bond_status);
+      },
+      cell: (info) => {
+         return info.getValue() ?? false;
+      },
+   }),
+
+   columnHelper.accessor("servant", {
+      header: "Servant",
+      filterFn: fuzzyFilter,
+      cell: (info) => {
+         return (
+            <>
+               {info.row.original.servant?.id ? (
+                  <Link
+                     to={`/c/servants/${
+                        info.row.original.servant?.slug ??
+                        info.row.original.servant?.id
+                     }`}
+                     className="flex items-center gap-3 group py-0.5"
+                  >
+                     <Image
+                        width={38}
+                        url={info.row.original.servant?.icon?.url}
+                        options="width=80"
+                     />
+                     <span className="decoration-zinc-400 underline-offset-2 truncate">
+                        <div className="truncate flex items-center gap-2 group-hover:underline text-sm pb-1">
+                           <span className="font-bold">
+                              {info.row.original.servant?.name}
+                           </span>
+                        </div>
+                     </span>
+                  </Link>
+               ) : (
+                  "-"
+               )}
+            </>
+         );
+      },
+   }),
 ];
 
 // Add stats under atk_lv120 later.
@@ -448,6 +533,15 @@ const QUERY = gql`
                value
                value_mlb
                value_type
+            }
+            is_bond_ce
+            servant {
+               id
+               name
+               icon {
+                  url
+               }
+               slug
             }
             slug
          }
