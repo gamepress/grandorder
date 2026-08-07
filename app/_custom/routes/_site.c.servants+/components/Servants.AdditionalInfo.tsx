@@ -20,8 +20,16 @@ export function AdditionalInfo({ data }: { data: any }) {
    return (
       <>
          <TableInfo data={servant} />
-         <H2Plain text="Bond" />
+         <div className="header2-div flex items-center">
+            <div className="flex-grow">Bond</div>
+            <Link to={"/p/bond-points-and-bond-experience"}>
+               <div className="border rounded-full w-6 h-6 p-0 relative inline-flex items-center justify-center gap-x-2 border-2 font-bold border-blue-50 bg-blue-700 cursor-pointer">
+                  ?
+               </div>
+            </Link>
+         </div>
          <BondTable data={servant} />
+         <h3>Bond CE</h3>
          {bond_ce?.map((bc: any) => (
             <div
                className="flex items-center gap-3 shadow-sm shadow-1 bg-2-sub border border-color-sub px-3 py-2 rounded-xl mb-3"

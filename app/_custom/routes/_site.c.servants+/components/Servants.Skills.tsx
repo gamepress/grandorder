@@ -275,11 +275,7 @@ export function AppendSkill({ data }: any) {
       <>
          <div className="header2-div flex items-center">
             <div className="flex-grow">Append Skills</div>
-            <Link
-               to={
-                  "https://grandorder.gamepress.gg/p/servant-coins-append-skills-reaching-level-120"
-               }
-            >
+            <Link to={"/p/servant-coins-append-skills-reaching-level-120"}>
                <div className="border rounded-full w-6 h-6 p-0 relative inline-flex items-center justify-center gap-x-2 border-2 font-bold border-blue-50 bg-blue-700 cursor-pointer">
                   ?
                </div>
